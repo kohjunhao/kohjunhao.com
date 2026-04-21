@@ -1,26 +1,166 @@
 @import "tailwindcss";
 
+/* ────────────────────────────────────────────────────────────
+   Aizome · design tokens
+   Japanese-calm system for kohjunhao.com
+   ──────────────────────────────────────────────────────────── */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --canvas: #fafaf7;
+  --surface: #f0eee8;
+  --ink: #0e0e0e;
+  --muted: #7a756e;
+  --accent: #2b4a6f;
+  --rule: #e0dcd2;
+
+  --measure: 68ch;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+.dark,
+[data-theme="dark"] {
+  --canvas: #121210;
+  --surface: #1c1b18;
+  --ink: #edeae0;
+  --muted: #8a847a;
+  --accent: #6e93c4;
+  --rule: #2a2823;
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  :root:not([data-theme="light"]) {
+    --canvas: #121210;
+    --surface: #1c1b18;
+    --ink: #edeae0;
+    --muted: #8a847a;
+    --accent: #6e93c4;
+    --rule: #2a2823;
   }
 }
 
+@theme inline {
+  --color-canvas: var(--canvas);
+  --color-surface: var(--surface);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-rule: var(--rule);
+
+  --font-serif: var(--font-source-serif), ui-serif, Georgia, serif;
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, "JetBrains Mono",
+    Menlo, monospace;
+}
+
+html {
+  background: var(--canvas);
+  color: var(--ink);
+  font-family: var(--font-serif);
+  font-feature-settings: "kern", "liga", "calt", "onum";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Washi dotted paper background — subtle indigo dots on a 24px grid.
+   The undertone of premium Japanese stationery in CSS. */
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background:
+    radial-gradient(
+      circle,
+      color-mix(in srgb, var(--accent) 5%, transparent) 1px,
+      transparent 1px
+    )
+    0 0 / 24px 24px,
+    var(--canvas);
+  color: var(--ink);
+  min-height: 100vh;
+  text-wrap: pretty;
+}
+
+@media (max-width: 640px) {
+  body {
+    background:
+      radial-gradient(
+        circle,
+        color-mix(in srgb, var(--accent) 4%, transparent) 1px,
+        transparent 1px
+      )
+      0 0 / 20px 20px,
+      var(--canvas);
+  }
+}
+
+h1, h2, h3 {
+  text-wrap: balance;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--canvas);
+}
+
+/* Typographic refinements for prose */
+.prose-aizome {
+  font-family: var(--font-serif);
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  color: var(--ink);
+  max-width: var(--measure);
+}
+.prose-aizome p + p {
+  margin-top: 1.15em;
+}
+.prose-aizome h1,
+.prose-aizome h2,
+.prose-aizome h3 {
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+.prose-aizome h2 {
+  font-size: 1.5rem;
+  margin-top: 2.25em;
+  margin-bottom: 0.6em;
+}
+.prose-aizome h3 {
+  font-size: 1.175rem;
+  margin-top: 1.75em;
+  margin-bottom: 0.4em;
+}
+.prose-aizome a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+}
+.prose-aizome code {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  background: var(--surface);
+  padding: 0.1em 0.3em;
+  border-radius: 2px;
+}
+.prose-aizome blockquote {
+  border-left: 2px solid var(--accent);
+  padding-left: 1em;
+  color: var(--muted);
+  font-style: italic;
+}
+
+/* Thin indigo hairline rule */
+.hairline {
+  height: 1px;
+  background: var(--rule);
+}
+
+/* Mono label chip */
+.mono {
+  font-family: var(--font-mono);
+  font-feature-settings: "tnum", "ss02";
+}
+
+/* Focus ring using accent */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 2px;
 }
