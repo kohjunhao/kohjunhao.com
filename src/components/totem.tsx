@@ -2,13 +2,6 @@
 
 import { useEffect, useRef, useState } from "react";
 
-/**
- * Hand-authored ASCII spinning top. Math-driven silhouette projection —
- * no three.js. By default (`spinOnly`) it never falls — that's Cobb's
- * dream state, the one where reality is still holding. Remove `spinOnly`
- * to get the full state machine (spinning · perturbed · fallen) and
- * click to knock.
- */
 type Phase = "spinning" | "perturbed" | "fallen";
 
 type PhysState = {
@@ -19,8 +12,9 @@ type PhysState = {
   spinRate: number;
   leanRate: number;
   precessRate: number;
-  knockedThisSession: boolean;
 };
+
+const BASE_SPIN_RATE = 4.2;
 
 function createState(): PhysState {
   return {
@@ -28,20 +22,27 @@ function createState(): PhysState {
     spin: 0,
     lean: 0,
     leanDir: 0,
-    spinRate: 4.2,
+    spinRate: BASE_SPIN_RATE,
     leanRate: 0,
     precessRate: 0,
-    knockedThisSession: false,
   };
 }
 
+/**
+ * Hand-authored ASCII spinning top. Math-driven silhouette projection.
+ *
+ * Interaction model: **deliberate drag**. A hover or single click does
+ * nothing — reality holds. Press, drag ≥ 14px, and release to perturb
+ * the top with a force proportional to how far you dragged. Once fallen,
+ * click to reset.
+ */
 export function Totem({
   cols = 30,
   rows = 24,
   charset = " ·:-=+*#█",
   cellW = 10,
   cellH = 12,
-  spinOnly = true,
+  spinOnly = false,
 }: {
   cols?: number;
   rows?: number;
@@ -52,6 +53,7 @@ export function Totem({
 }) {
   const canvasRef = useRef<HTMLPreElement>(null);
   const stateRef = useRef<PhysState>(createState());
+  const dragRef = useRef({ down: false, startX: 0, startY: 0, moved: 0 });
   const [phase, setPhase] = useState<Phase>("spinning");
 
   useEffect(() => {
@@ -80,10 +82,10 @@ export function Totem({
         depth[r] = new Array(cols).fill(-Infinity);
       }
 
-      const cosL = Math.cos(leanAngle),
-        sinL = Math.sin(leanAngle);
-      const cosA = Math.cos(azimuth),
-        sinA = Math.sin(azimuth);
+      const cosL = Math.cos(leanAngle);
+      const sinL = Math.sin(leanAngle);
+      const cosA = Math.cos(azimuth);
+      const sinA = Math.sin(azimuth);
 
       const centerX = cols / 2;
       const centerY = rows / 2 + 1.5;
@@ -207,36 +209,70 @@ export function Totem({
     };
   }, [cols, rows, charset, spinOnly, phase]);
 
-  const onPointer = (e: React.MouseEvent<HTMLPreElement>) => {
-    const s = stateRef.current;
+  const onDown = (e: React.PointerEvent<HTMLPreElement>) => {
     if (spinOnly) return;
+    const s = stateRef.current;
     if (s.phase === "fallen") {
+      // click to reset
       s.phase = "spinning";
       s.lean = 0;
       s.leanRate = 0;
       s.precessRate = 0;
-      s.spinRate = 4.2;
+      s.spinRate = BASE_SPIN_RATE;
       return;
     }
-    const rect = e.currentTarget.getBoundingClientRect();
-    const dx = (e.clientX - rect.left) / rect.width - 0.5;
-    const dy = (e.clientY - rect.top) / rect.height - 0.5;
+    dragRef.current = {
+      down: true,
+      startX: e.clientX,
+      startY: e.clientY,
+      moved: 0,
+    };
+    (e.currentTarget as HTMLElement).setPointerCapture?.(e.pointerId);
+  };
+
+  const onMove = (e: React.PointerEvent<HTMLPreElement>) => {
+    const d = dragRef.current;
+    if (!d.down) return;
+    const dx = e.clientX - d.startX;
+    const dy = e.clientY - d.startY;
+    d.moved = Math.max(d.moved, Math.hypot(dx, dy));
+  };
+
+  const onUp = (e: React.PointerEvent<HTMLPreElement>) => {
+    const d = dragRef.current;
+    if (!d.down) return;
+    d.down = false;
+    if (d.moved < 14) return; // ignore taps / hovers
+    const dx = e.clientX - d.startX;
+    const dy = e.clientY - d.startY;
     const dir = Math.atan2(dy, dx);
+    const strength = Math.min(2.2, d.moved / 60);
+    const s = stateRef.current;
+    if (s.phase === "fallen") return;
     s.phase = "perturbed";
     s.leanDir = dir;
-    s.leanRate += 0.72;
-    s.precessRate = Math.max(s.precessRate, 2.72);
-    s.knockedThisSession = true;
+    s.leanRate += 0.8 * strength;
+    s.precessRate = Math.max(s.precessRate, 2.0 + strength * 0.8);
   };
 
   const width = cols * cellW;
   const height = rows * cellH;
 
+  const caption =
+    phase === "spinning"
+      ? "push me to check reality"
+      : phase === "perturbed"
+      ? "totem · wobbling"
+      : "reality settled. tap to reset →";
+
   return (
-    <div className="flex flex-col items-center gap-2.5 text-accent">
+    <div className="flex flex-col items-center gap-3" style={{ color: "var(--totem)" }}>
       <pre
         ref={canvasRef}
-        onClick={onPointer}
+        onPointerDown={onDown}
+        onPointerMove={onMove}
+        onPointerUp={onUp}
+        onPointerCancel={onUp}
         className="font-mono m-0 p-0 whitespace-pre select-none"
         style={{
           width,
@@ -244,9 +280,13 @@ export function Totem({
           fontSize: cellH - 2,
           lineHeight: `${cellH}px`,
           letterSpacing: "0.02em",
-          cursor: spinOnly ? "default" : phase === "fallen" ? "pointer" : "grab",
+          cursor: phase === "fallen" ? "pointer" : "grab",
+          touchAction: "none",
         }}
       />
+      <div className="mono text-[0.6rem] tracking-[0.22em] uppercase text-muted">
+        — {caption}
+      </div>
     </div>
   );
 }

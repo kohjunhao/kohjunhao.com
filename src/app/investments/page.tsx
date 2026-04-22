@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { PageShell } from "@/components/page-shell";
 import { Hairline } from "@/components/hairline";
 import { InvestmentsPortfolio } from "@/components/investments-portfolio";
-import { investments } from "@/lib/stock";
+import { investments, investmentSlug } from "@/lib/stock";
 
 export const metadata: Metadata = {
   title: "Investments",
@@ -62,11 +63,9 @@ export default function InvestmentsPage() {
         </div>
         <div className="grid sm:grid-cols-2 gap-3">
           {featured.map((inv) => (
-            <a
+            <Link
               key={inv.name}
-              href={inv.url}
-              target="_blank"
-              rel="noopener noreferrer"
+              href={`/investments/${investmentSlug(inv.name)}`}
               className="group bg-surface border border-rule px-5 py-4 transition-colors hover:bg-surface/70 active:scale-[0.99] duration-150"
             >
               <div className="flex items-baseline justify-between gap-2">
@@ -74,7 +73,7 @@ export default function InvestmentsPage() {
                   {inv.name}
                 </span>
                 <span className="mono text-[0.68rem] text-muted group-hover:text-accent transition-colors">
-                  ↗
+                  →
                 </span>
               </div>
               {inv.note && (
@@ -82,7 +81,7 @@ export default function InvestmentsPage() {
                   {inv.note}
                 </div>
               )}
-            </a>
+            </Link>
           ))}
         </div>
       </section>

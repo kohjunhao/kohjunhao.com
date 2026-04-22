@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { PageShell } from "@/components/page-shell";
 import { books, type Recommendation } from "@/lib/stock";
 
@@ -25,7 +26,7 @@ export default function BooksPage() {
     <PageShell>
       <section className="mb-2">
         <div className="mono text-[0.66rem] tracking-[0.22em] uppercase text-accent mb-4">
-          06 / books
+          04 / books
         </div>
         <div className="flex items-baseline justify-between gap-4">
           <h1 className="font-serif text-[clamp(2.25rem,5vw,2.75rem)] font-medium tracking-tight leading-tight">
@@ -37,7 +38,8 @@ export default function BooksPage() {
         </div>
         <p className="mt-4 max-w-[38rem] font-serif italic text-[1.05rem] leading-[1.65] text-ink">
           Kept like a commonplace book — each row is a book I&rsquo;ve read and
-          what I&rsquo;d say if you asked me at a dinner table.
+          what I&rsquo;d say if you asked me at a dinner table. Tap any entry
+          for the full notes.
         </p>
       </section>
 
@@ -59,28 +61,30 @@ export default function BooksPage() {
 
               <ul>
                 {list.map((b) => (
-                  <li
-                    key={b.slug}
-                    className="grid sm:grid-cols-[1.5fr_1fr] gap-4 sm:gap-7 py-2.5 items-baseline"
-                  >
-                    <div>
-                      <div className="font-serif text-[1.05rem] text-ink leading-tight">
-                        {b.title}
+                  <li key={b.slug}>
+                    <Link
+                      href={`/books/${b.slug}`}
+                      className="group grid sm:grid-cols-[1.5fr_1fr] gap-4 sm:gap-7 py-3 items-baseline border-b border-rule active:scale-[0.996] transition-transform duration-150"
+                    >
+                      <div>
+                        <div className="font-serif text-[1.05rem] text-ink leading-tight group-hover:text-accent transition-colors">
+                          {b.title}
+                        </div>
+                        <div className="font-serif italic text-[0.85rem] text-muted mt-1">
+                          {b.author}
+                        </div>
                       </div>
-                      <div className="font-serif italic text-[0.85rem] text-muted mt-1">
-                        {b.author}
+                      <div className="font-serif italic text-[0.85rem] text-muted border-l border-rule pl-4 leading-[1.5] flex items-baseline gap-3">
+                        {b.note ? (
+                          <span>&ldquo;{b.note}&rdquo;</span>
+                        ) : (
+                          <span className="opacity-50">—</span>
+                        )}
+                        <span className="mono text-[0.58rem] tracking-[0.18em] uppercase text-muted opacity-60 ml-auto whitespace-nowrap">
+                          {b.year}
+                        </span>
                       </div>
-                    </div>
-                    <div className="font-serif italic text-[0.85rem] text-muted border-l border-rule pl-4 leading-[1.5] flex items-baseline gap-3">
-                      {b.note ? (
-                        <span>&ldquo;{b.note}&rdquo;</span>
-                      ) : (
-                        <span className="opacity-50">—</span>
-                      )}
-                      <span className="mono text-[0.58rem] tracking-[0.18em] uppercase text-muted opacity-60 ml-auto whitespace-nowrap">
-                        {b.year}
-                      </span>
-                    </div>
+                    </Link>
                   </li>
                 ))}
               </ul>

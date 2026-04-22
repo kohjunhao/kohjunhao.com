@@ -1,8 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { Hairline } from "./hairline";
-import { investments, type Investment } from "@/lib/stock";
+import { investments, investmentSlug, type Investment } from "@/lib/stock";
 
 type Sort = "az" | "sector";
 
@@ -66,9 +67,10 @@ export function InvestmentsPortfolio() {
             .map((inv, i) => {
               const isFeat = featuredSet.has(inv.name);
               return (
-                <div
+                <Link
                   key={inv.name}
-                  className="grid grid-cols-[2.25rem_1fr_auto] gap-2 py-1.5 border-b border-rule items-baseline"
+                  href={`/investments/${investmentSlug(inv.name)}`}
+                  className="group grid grid-cols-[2.25rem_1fr_auto] gap-2 py-1.5 border-b border-rule items-baseline hover:opacity-80 transition-opacity"
                   style={{ breakInside: "avoid" }}
                 >
                   <span className="mono text-[0.58rem] text-muted tracking-[0.12em]">
@@ -77,7 +79,7 @@ export function InvestmentsPortfolio() {
                   <span
                     className={`font-serif text-[0.88rem] ${
                       isFeat ? "text-accent font-medium" : "text-ink"
-                    }`}
+                    } group-hover:text-accent transition-colors`}
                   >
                     {inv.name}
                     {isFeat && (
@@ -86,8 +88,8 @@ export function InvestmentsPortfolio() {
                       </sup>
                     )}
                   </span>
-                  <span className="mono text-[0.6rem] text-muted">↗</span>
-                </div>
+                  <span className="mono text-[0.6rem] text-muted">→</span>
+                </Link>
               );
             })}
         </div>
@@ -110,15 +112,16 @@ export function InvestmentsPortfolio() {
                 {items.map((inv) => {
                   const isFeat = featuredSet.has(inv.name);
                   return (
-                    <div
+                    <Link
                       key={inv.name}
-                      className="grid grid-cols-[1fr_auto] gap-2 py-1 border-b border-rule items-baseline"
+                      href={`/investments/${investmentSlug(inv.name)}`}
+                      className="group grid grid-cols-[1fr_auto] gap-2 py-1 border-b border-rule items-baseline hover:opacity-80 transition-opacity"
                       style={{ breakInside: "avoid" }}
                     >
                       <span
                         className={`font-serif text-[0.88rem] ${
                           isFeat ? "text-accent font-medium" : "text-ink"
-                        }`}
+                        } group-hover:text-accent transition-colors`}
                       >
                         {inv.name}
                         {isFeat && (
@@ -127,8 +130,8 @@ export function InvestmentsPortfolio() {
                           </sup>
                         )}
                       </span>
-                      <span className="mono text-[0.58rem] text-muted">↗</span>
-                    </div>
+                      <span className="mono text-[0.58rem] text-muted">→</span>
+                    </Link>
                   );
                 })}
               </div>
