@@ -36,12 +36,11 @@ export type NavEntry = {
 };
 
 export const nav: NavEntry[] = [
-  { index: "01", slug: "articles", label: "Articles", kind: "writing", note: "DeFi research" },
-  { index: "02", slug: "blog", label: "Blog", kind: "writing", note: "Personal notes" },
-  { index: "03", slug: "projects", label: "Projects", kind: "ledger", note: "Things built" },
+  { index: "01", slug: "articles", label: "Articles", kind: "writing", note: "Long-form DeFi research" },
+  { index: "02", slug: "blog", label: "Blog", kind: "writing", note: "Public notes" },
+  { index: "03", slug: "games", label: "Games", kind: "stock", note: "What I'm playing" },
   { index: "04", slug: "investments", label: "Investments", kind: "ledger", note: "Angel portfolio" },
-  { index: "05", slug: "books", label: "Books", kind: "stock", note: "Reading list" },
-  { index: "06", slug: "movies", label: "Movies", kind: "stock", note: "Watch list" },
+  { index: "05", slug: "books", label: "Books", kind: "stock", note: "A public shelf" },
+  { index: "06", slug: "movies", label: "Movies", kind: "stock", note: "A public film log" },
   { index: "07", slug: "resume", label: "Resume", kind: "meta", note: "Background" },
-  { index: "08", slug: "design", label: "Design", kind: "meta", note: "The system" },
 ];

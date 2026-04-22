@@ -1,167 +1,93 @@
-import Link from "next/link";
 import { PageShell } from "@/components/page-shell";
-import { SectionHeader } from "@/components/section-header";
-import { LedgerList, LedgerRow } from "@/components/ledger-row";
 import { AsciiHero } from "@/components/ascii-hero";
+import { HomeLedger, type HomeLedgerEntry } from "@/components/home-ledger";
 import { RevealStack, RevealChild } from "@/components/reveal";
 import { articles } from "@/lib/articles";
-import { investments } from "@/lib/stock";
-import { site, nav } from "@/lib/site";
+import { investments, books, movies, games, blogPosts } from "@/lib/stock";
 
 export default function Home() {
-  const recent = articles.slice(0, 3);
-  const investmentCount = investments.length;
+  const count = (n: number) => (n > 0 ? String(n).padStart(2, "0") : "·");
+
+  const entries: HomeLedgerEntry[] = [
+    {
+      index: "01",
+      label: "Articles",
+      note: "Long-form DeFi research",
+      count: count(articles.length),
+      href: "/articles",
+    },
+    {
+      index: "02",
+      label: "Blog",
+      note: "Public notes",
+      count: count(blogPosts.length),
+      href: "/blog",
+    },
+    {
+      index: "03",
+      label: "Games",
+      note: "What I'm playing",
+      count: count(games.length),
+      href: "/games",
+    },
+    {
+      index: "04",
+      label: "Investments",
+      note: "Angel portfolio",
+      count: count(investments.length),
+      href: "/investments",
+    },
+    {
+      index: "05",
+      label: "Books",
+      note: "A public shelf",
+      count: count(books.length),
+      href: "/books",
+    },
+    {
+      index: "06",
+      label: "Movies",
+      note: "A public film log",
+      count: count(movies.length),
+      href: "/movies",
+    },
+    {
+      index: "07",
+      label: "Resume",
+      note: "Background",
+      count: "·",
+      href: "/resume",
+    },
+  ];
 
   return (
-    <PageShell showNav={false}>
-      {/* Hero */}
-      <section className="pt-6 pb-14">
-        <div className="grid md:grid-cols-[1fr_auto] md:gap-10 gap-6 items-start">
-          <RevealStack className="min-w-0">
-            <RevealChild>
-              <div className="mono text-[0.7rem] text-accent tracking-[0.2em] uppercase mb-6">
-                00 / home
-              </div>
+    <PageShell>
+      {/* HeroSplitTotem — totem + tagline on the left, 7-row ledger on the right */}
+      <section className="pb-14 pt-4">
+        <div className="grid gap-10 md:gap-14 lg:gap-16 md:grid-cols-[minmax(0,1fr)_minmax(0,1.3fr)] items-center">
+          {/* LEFT — totem + tagline */}
+          <RevealStack className="flex flex-col items-center md:items-start">
+            <RevealChild className="self-center">
+              <AsciiHero size={240} />
             </RevealChild>
-            <RevealChild>
-              <h1 className="font-serif text-[clamp(2.25rem,5vw,3.4rem)] leading-[1.05] tracking-tight font-medium">
-                Koh Jun Hao
-              </h1>
-            </RevealChild>
-            <RevealChild>
-              <p className="mt-4 max-w-2xl text-[1.12rem] leading-relaxed text-muted">
-                Computer Science student at{" "}
-                <span className="text-ink">
-                  {site.education.school}
-                </span>
-                , writing and investing from {site.location}. Early-stage
-                cheques into teams at the edges of crypto, DeFi, and AI &mdash;{" "}
-                <span className="text-ink">
-                  {investmentCount} companies
-                </span>{" "}
-                to date. Long-form research published as{" "}
-                <a
-                  href={site.links.paragraph}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-ink hover:text-accent transition-colors"
-                >
-                  @{site.handle.paragraph}
-                </a>
-                .
+            <RevealChild className="mt-8 w-full">
+              <p className="font-serif italic text-[clamp(1.45rem,3vw,1.75rem)] leading-[1.3] tracking-[-0.01em] text-ink text-center md:text-left">
+                Reading, writing,
+                <br />
+                writing cheques.
               </p>
             </RevealChild>
-            <RevealChild>
-              <div className="mt-7 flex flex-wrap items-baseline gap-x-4 gap-y-2 mono text-[0.72rem] text-muted tracking-wider uppercase">
-                <span className="text-accent">─ now</span>
-                <span>{site.location}</span>
-                <span className="opacity-40">·</span>
-                <span>{site.status}</span>
-                <span className="opacity-40">·</span>
-                <span className="opacity-80">
-                  press{" "}
-                  <kbd className="border border-rule px-1 py-[1px] rounded-sm text-[0.62rem] normal-case">
-                    ⌘K
-                  </kbd>{" "}
-                  to navigate
-                </span>
+            <RevealChild className="mt-4">
+              <div className="mono text-[0.62rem] tracking-[0.24em] uppercase text-muted">
+                figure i · totem
               </div>
             </RevealChild>
           </RevealStack>
 
-          <div className="hidden md:flex flex-col items-end gap-2">
-            <AsciiHero size={220} />
-            <div className="mono text-[0.58rem] text-muted/70 tracking-widest uppercase">
-              figure i &middot; seal, rotating
-            </div>
+          {/* RIGHT — ledger */}
+          <div className="min-w-0">
+            <HomeLedger entries={entries} />
           </div>
-        </div>
-
-        {/* Mobile ASCII — smaller, below bio */}
-        <div className="md:hidden mt-8 flex justify-center">
-          <AsciiHero size={180} />
-        </div>
-      </section>
-
-      {/* Index / ledger of surfaces */}
-      <section className="mb-16">
-        <SectionHeader index="01" title="Index" right="08 entries" />
-        <div className="mt-6">
-          <LedgerList>
-            {nav.map((n) => (
-              <LedgerRow
-                key={n.slug}
-                data={{
-                  left: n.index,
-                  mid: n.label,
-                  right: (n.note ?? "").toUpperCase(),
-                  href: `/${n.slug}`,
-                }}
-                tabular
-              />
-            ))}
-          </LedgerList>
-        </div>
-      </section>
-
-      {/* Recent articles */}
-      <section className="mb-16">
-        <SectionHeader
-          index="02"
-          title="Recent articles"
-          href="/articles"
-          right={`${articles.length} total`}
-        />
-        <div className="mt-6">
-          <LedgerList>
-            {recent.map((a, i) => (
-              <LedgerRow
-                key={a.slug}
-                data={{
-                  left: String(i + 1).padStart(2, "0"),
-                  mid: a.title,
-                  note: a.subtitle,
-                  right: a.dateLabel,
-                  href: `/articles/${a.slug}`,
-                }}
-                tabular
-              />
-            ))}
-          </LedgerList>
-          <div className="mt-5">
-            <Link
-              href="/articles"
-              className="group inline-flex items-baseline gap-2 mono text-[0.72rem] text-accent tracking-wider uppercase active:scale-[0.96] transition-transform duration-150"
-            >
-              <span className="relative">
-                all articles
-                <span className="absolute -bottom-0.5 left-0 h-px w-full bg-accent origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300" />
-              </span>
-              <span aria-hidden className="group-hover:translate-x-1 transition-transform duration-200">
-                →
-              </span>
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* About / contact */}
-      <section className="mb-10">
-        <SectionHeader index="03" title="Elsewhere" />
-        <div className="mt-6 prose-aizome">
-          <p>
-            I publish most long-form research at{" "}
-            <a
-              href={`https://paragraph.com/@${site.handle.paragraph}`}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              paragraph.com/@{site.handle.paragraph}
-            </a>
-            . Shorter notes live on this site&rsquo;s blog. For the system that
-            typesets all of it, see{" "}
-            <Link href="/design">the Aizome design notes</Link>.
-          </p>
         </div>
       </section>
     </PageShell>
