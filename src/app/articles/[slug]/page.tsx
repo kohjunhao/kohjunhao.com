@@ -1,8 +1,12 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import Link from "next/link";
 import { PageShell } from "@/components/page-shell";
 import { ArticleBody } from "@/components/article-body";
+import {
+  DetailCrumb,
+  DetailSiblings,
+  neighbors,
+} from "@/components/detail-nav";
 import { articles, getArticle } from "@/lib/articles";
 
 type Params = { slug: string };
@@ -28,17 +32,23 @@ export default async function ArticlePage(props: { params: Promise<Params> }) {
   const article = getArticle(slug);
   if (!article) notFound();
 
+  const sorted = [...articles].sort((a, b) => b.date.localeCompare(a.date));
+  const { prev, next, index } = neighbors(sorted, slug);
+
   return (
     <PageShell>
-      <div className="mb-6">
-        <Link
-          href="/articles"
-          className="mono text-[0.7rem] text-accent tracking-wider uppercase hover:underline"
-        >
-          ← all articles
-        </Link>
-      </div>
+      <DetailCrumb
+        parentHref="/articles"
+        parentLabel="all articles"
+        position={`${String(index + 1).padStart(2, "0")} / ${String(articles.length).padStart(2, "0")}`}
+      />
       <ArticleBody article={article} />
+      <DetailSiblings
+        parentHref="/articles"
+        parentLabel="the archive"
+        prev={prev ? { href: `/articles/${prev.slug}`, label: prev.title } : null}
+        next={next ? { href: `/articles/${next.slug}`, label: next.title } : null}
+      />
     </PageShell>
   );
 }

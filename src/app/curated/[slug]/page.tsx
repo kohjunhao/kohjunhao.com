@@ -1,8 +1,12 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import Link from "next/link";
 import { PageShell } from "@/components/page-shell";
 import { CuratedDetail } from "@/components/curated-detail";
+import {
+  DetailCrumb,
+  DetailSiblings,
+  neighbors,
+} from "@/components/detail-nav";
 import { curated, getCurated } from "@/lib/stock";
 
 type Params = { slug: string };
@@ -27,17 +31,22 @@ export default async function CuratedItemPage(props: {
   const item = getCurated(slug);
   if (!item) notFound();
 
+  const { prev, next, index } = neighbors(curated, slug);
+
   return (
     <PageShell>
-      <div className="mb-6">
-        <Link
-          href="/curated"
-          className="mono text-[0.66rem] tracking-[0.22em] uppercase text-accent hover:underline decoration-1 underline-offset-4"
-        >
-          ← all objects
-        </Link>
-      </div>
+      <DetailCrumb
+        parentHref="/curated"
+        parentLabel="all objects"
+        position={`${String(index + 1).padStart(2, "0")} / ${String(curated.length).padStart(2, "0")}`}
+      />
       <CuratedDetail item={item} />
+      <DetailSiblings
+        parentHref="/curated"
+        parentLabel="the shelf"
+        prev={prev ? { href: `/curated/${prev.slug}`, label: prev.name } : null}
+        next={next ? { href: `/curated/${next.slug}`, label: next.name } : null}
+      />
     </PageShell>
   );
 }

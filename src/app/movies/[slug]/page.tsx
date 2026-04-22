@@ -1,8 +1,12 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import Link from "next/link";
 import { PageShell } from "@/components/page-shell";
 import { MovieDetail } from "@/components/movie-detail";
+import {
+  DetailCrumb,
+  DetailSiblings,
+  neighbors,
+} from "@/components/detail-nav";
 import { movies, getMovie } from "@/lib/stock";
 
 type Params = { slug: string };
@@ -25,17 +29,25 @@ export default async function MoviePage(props: { params: Promise<Params> }) {
   const movie = getMovie(slug);
   if (!movie) notFound();
 
+  const sorted = [...movies].sort(
+    (a, b) => parseInt(a.year) - parseInt(b.year)
+  );
+  const { prev, next, index } = neighbors(sorted, slug);
+
   return (
     <PageShell>
-      <div className="mb-6">
-        <Link
-          href="/movies"
-          className="mono text-[0.66rem] tracking-[0.22em] uppercase text-accent hover:underline decoration-1 underline-offset-4"
-        >
-          ← all movies
-        </Link>
-      </div>
+      <DetailCrumb
+        parentHref="/movies"
+        parentLabel="all movies"
+        position={`${String(index + 1).padStart(2, "0")} / ${String(movies.length).padStart(2, "0")}`}
+      />
       <MovieDetail movie={movie} />
+      <DetailSiblings
+        parentHref="/movies"
+        parentLabel="the filmstrip"
+        prev={prev ? { href: `/movies/${prev.slug}`, label: prev.title } : null}
+        next={next ? { href: `/movies/${next.slug}`, label: next.title } : null}
+      />
     </PageShell>
   );
 }
