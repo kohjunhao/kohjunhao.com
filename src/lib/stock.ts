@@ -106,6 +106,30 @@ export const investments: Investment[] = rawInvestments.map((i) => ({
   sector: i.sector ?? SECTOR_MAP[i.name] ?? "Applications",
 }));
 
+export function investmentSlug(name: string): string {
+  return name
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
+}
+
+export function getInvestment(slug: string): Investment | undefined {
+  return investments.find((i) => investmentSlug(i.name) === slug);
+}
+
+export function getBook(slug: string) {
+  return books.find((b) => b.slug === slug);
+}
+export function getMovie(slug: string) {
+  return movies.find((m) => m.slug === slug);
+}
+export function getGame(slug: string) {
+  return games.find((g) => g.slug === slug);
+}
+export function getCurated(slug: string) {
+  return curated.find((c) => c.slug === slug);
+}
+
 export type Book = {
   slug: string;
   title: string;
@@ -196,3 +220,115 @@ export const recLabel: Record<Recommendation, { label: string; glyph: string }> 
   recommended: { label: "Recommend", glyph: "✓" },
   skip: { label: "Skip", glyph: "─" },
 };
+
+export type CuratedCategory =
+  | "Stationery"
+  | "Tools"
+  | "Hardware"
+  | "Wearables"
+  | "Home";
+
+export type CuratedItem = {
+  slug: string;
+  name: string;
+  maker: string;
+  category: CuratedCategory;
+  price?: string;
+  url?: string;
+  note: string;
+  bodyNote?: string;
+};
+
+// A curated.supply-style shelf — objects worth keeping. Seed list, easily
+// extended in place. Short serif notes only; no marketing copy.
+export const curated: CuratedItem[] = [
+  {
+    slug: "lamy-2000",
+    name: "Lamy 2000",
+    maker: "Lamy",
+    category: "Stationery",
+    price: "$250",
+    url: "https://www.lamy.com/en/lamy-2000/",
+    note: "The fountain pen the Bauhaus would ship.",
+    bodyNote:
+      "Designed by Gerd Müller in 1966, still in production without a single revision worth noting. Makrolon body. Brushed steel. Writes like a pencil that never dulls.",
+  },
+  {
+    slug: "muji-b6",
+    name: "Passport Memo B6",
+    maker: "Muji",
+    category: "Stationery",
+    price: "S$6",
+    url: "https://www.muji.com/sg/products/cmdty/detail/4934761580982",
+    note: "The notebook that disappears into the work.",
+    bodyNote:
+      "Slim, unrestrained, no branding. The only notebook I've used consistently for a decade. Buy twelve at a time.",
+  },
+  {
+    slug: "hario-v60",
+    name: "V60 Pour-Over",
+    maker: "Hario",
+    category: "Home",
+    price: "S$35",
+    url: "https://hario.com/",
+    note: "Honest device. One moving part — you.",
+    bodyNote:
+      "Ceramic cone, single hole, spiraled ribs. Every cup is the same if you are. Every cup is different if you are.",
+  },
+  {
+    slug: "kindle-paperwhite",
+    name: "Kindle Paperwhite",
+    maker: "Amazon",
+    category: "Hardware",
+    price: "S$220",
+    url: "https://www.amazon.com/kindle",
+    note: "An unkind interface to a kind habit.",
+    bodyNote:
+      "The software is mediocre. The hardware is transformative. I read two books a week because of this, and would read none if I only had the phone.",
+  },
+  {
+    slug: "mx-master-3s",
+    name: "MX Master 3S",
+    maker: "Logitech",
+    category: "Hardware",
+    price: "S$169",
+    url: "https://www.logitech.com/en-us/shop/p/mx-master-3s",
+    note: "A mouse that remembers which machine you're on.",
+    bodyNote:
+      "Three devices, one scroll wheel. The MagSpeed flywheel is the sound of free time arriving.",
+  },
+  {
+    slug: "blundstone-585",
+    name: "Originals 585",
+    maker: "Blundstone",
+    category: "Wearables",
+    price: "S$290",
+    url: "https://www.blundstone.com/",
+    note: "Boots that outlast the argument.",
+    bodyNote:
+      "Elastic sides, no laces, leather that ages the right way. You're never overdressed, never underdressed. A decade of daily use and still the thing I reach for.",
+  },
+  {
+    slug: "fujifilm-x100vi",
+    name: "X100VI",
+    maker: "Fujifilm",
+    category: "Hardware",
+    price: "S$2,400",
+    url: "https://fujifilm-x.com/global/products/cameras/x100vi/",
+    note: "The camera that stays on the desk, ready.",
+    bodyNote:
+      "Fixed 23mm. No zoom, no excuse. The JPEG profiles save you from Lightroom. The rangefinder styling gets it out of the bag.",
+  },
+  {
+    slug: "aesop-resurrection",
+    name: "Resurrection Hand Wash",
+    maker: "Aesop",
+    category: "Home",
+    price: "S$65",
+    url: "https://www.aesop.com/",
+    note: "The small luxury that survives every budget.",
+    bodyNote:
+      "Mandarin rind, rosemary leaf, cedar atlas. One bottle on the desk is the compound interest of a nice life.",
+  },
+];
+
