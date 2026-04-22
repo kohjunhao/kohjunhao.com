@@ -1,62 +1,113 @@
 import type { Metadata } from "next";
 import { PageShell } from "@/components/page-shell";
 import { SectionHeader } from "@/components/section-header";
-import { LedgerList, LedgerRow } from "@/components/ledger-row";
-import { movies, recLabel, type Recommendation } from "@/lib/stock";
+import { Hairline } from "@/components/hairline";
+import { movies } from "@/lib/stock";
 
 export const metadata: Metadata = {
   title: "Movies",
-  description:
-    "A watch list — films I've seen, with honest recommendations.",
+  description: "A chronological filmstrip of what I've watched.",
 };
 
-const tiers: Recommendation[] = ["highly", "recommended", "skip"];
+function tint(rec: string): { bg: string; fg: string } {
+  if (rec === "highly") return { bg: "bg-accent", fg: "text-canvas" };
+  if (rec === "recommended") return { bg: "bg-ink", fg: "text-canvas" };
+  return { bg: "bg-surface", fg: "text-muted" };
+}
 
 export default function MoviesPage() {
-  const byTier = Object.fromEntries(
-    tiers.map((t) => [t, movies.filter((m) => m.rec === t)])
-  ) as Record<Recommendation, typeof movies>;
+  const sorted = [...movies].sort((a, b) => parseInt(a.year) - parseInt(b.year));
+  const mustWatch = movies.filter((m) => m.rec === "highly");
 
   return (
     <PageShell>
-      <section className="mb-10">
-        <SectionHeader index="06" title="Movies" right={`${movies.length} seen`} />
-        <p className="prose-aizome mt-5">
-          A log of what I&rsquo;ve watched, grouped by recommendation. Mostly
-          sci-fi, tech, and finance &mdash; the shapes of the future, rendered.
+      <section className="mb-2">
+        <div className="mono text-[0.66rem] tracking-[0.22em] uppercase text-accent mb-4">
+          07 / movies
+        </div>
+        <div className="flex items-baseline justify-between gap-4">
+          <h1 className="font-serif text-[clamp(2.25rem,5vw,2.75rem)] font-medium tracking-tight leading-tight">
+            Movies
+          </h1>
+          <span className="mono text-[0.66rem] tracking-[0.2em] uppercase text-muted">
+            filmstrip
+          </span>
+        </div>
+        <p className="mt-4 max-w-[38rem] font-serif italic text-[1.05rem] leading-[1.65] text-muted">
+          Chronological. Indigo cells are must-watch. Hover to see director.
         </p>
       </section>
 
-      {tiers.map((tier, ti) => {
-        const list = byTier[tier];
-        if (list.length === 0) return null;
-        const meta = recLabel[tier];
-        return (
-          <section key={tier} className="mb-12">
-            <SectionHeader
-              index={meta.glyph}
-              title={meta.label}
-              right={`${list.length} films`}
+      <div className="mt-10">
+        {/* Sprocket strip top */}
+        <div className="flex gap-1 mb-1.5">
+          {Array.from({ length: 28 }).map((_, i) => (
+            <div
+              key={i}
+              className="w-4 h-2 bg-surface border border-rule flex-shrink-0"
             />
-            <div className="mt-5">
-              <LedgerList>
-                {list.map((m, i) => (
-                  <LedgerRow
-                    key={m.title}
-                    data={{
-                      left: String(i + 1).padStart(2, "0"),
-                      mid: m.title,
-                      note: m.year,
-                      right: ti === 0 ? "MUST WATCH" : ti === 2 ? "SKIP" : "",
-                    }}
-                    tabular
-                  />
-                ))}
-              </LedgerList>
+          ))}
+        </div>
+
+        <div className="overflow-x-auto pb-1.5">
+          <div className="flex gap-1">
+            {sorted.map((m) => {
+              const t = tint(m.rec);
+              return (
+                <div
+                  key={m.slug}
+                  title={`dir. ${m.director}`}
+                  className={`w-[10.25rem] h-[7.75rem] p-[14px] flex flex-col justify-between flex-shrink-0 cursor-default ${t.bg} ${t.fg}`}
+                >
+                  <div className="mono text-[1.6rem] tabular-nums tracking-[0.02em]">
+                    {m.year}
+                  </div>
+                  <div className="font-serif text-[0.82rem] font-medium leading-[1.2]">
+                    {m.title}
+                  </div>
+                  <div className="mono text-[0.52rem] tracking-[0.2em] uppercase opacity-70">
+                    dir. {m.director}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Sprocket strip bottom */}
+        <div className="flex gap-1 mt-1.5">
+          {Array.from({ length: 28 }).map((_, i) => (
+            <div
+              key={i}
+              className="w-4 h-2 bg-surface border border-rule flex-shrink-0"
+            />
+          ))}
+        </div>
+      </div>
+
+      <section className="mt-14">
+        <SectionHeader
+          index="01"
+          title="Must watch"
+          right={String(mustWatch.length).padStart(2, "0")}
+        />
+        <Hairline className="mt-4" />
+        <div className="pt-3 grid sm:grid-cols-2 gap-x-8 gap-y-1">
+          {mustWatch.map((m) => (
+            <div
+              key={m.slug}
+              className="flex justify-between py-1.5 border-b border-rule"
+            >
+              <span className="font-serif text-[0.95rem] text-ink">
+                {m.title}
+              </span>
+              <span className="mono text-[0.64rem] tracking-[0.15em] text-muted tabular-nums">
+                {m.year}
+              </span>
             </div>
-          </section>
-        );
-      })}
+          ))}
+        </div>
+      </section>
     </PageShell>
   );
 }

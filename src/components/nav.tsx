@@ -2,24 +2,23 @@
 
 import Link from "next/link";
 import { site } from "@/lib/site";
-import { CommandPalette } from "./command-palette";
+import { CommandPaletteTrigger } from "./command-palette";
 
-/**
- * V6 topbar — consolidated. Name + location on the left, ⌘K affordance on
- * the right. No second row of nav links; the home ledger and command
- * palette ARE the navigation.
- */
 export function TopBar() {
   return (
-    <header className="pt-8 pb-8 flex items-center justify-between gap-4">
+    <header className="pt-8 pb-8 flex items-baseline justify-between gap-4">
       <Link
         href="/"
-        className="font-serif text-[1.125rem] font-medium tracking-tight hover:text-accent transition-colors active:scale-[0.96] duration-150"
+        className="group flex items-baseline gap-3 hover:opacity-80 transition-opacity active:scale-[0.98] duration-150"
       >
-        {site.name}
-        <span className="text-muted italic font-normal"> · {site.location}</span>
+        <span className="font-serif text-[1.18rem] font-medium tracking-tight text-ink">
+          {site.name}
+        </span>
+        <span className="font-serif text-[0.92rem] italic text-muted">
+          · {site.location}
+        </span>
       </Link>
-      <CommandPalette />
+      <CommandPaletteTrigger />
     </header>
   );
 }
