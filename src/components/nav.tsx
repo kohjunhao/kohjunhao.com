@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { site } from "@/lib/site";
 import { CommandPaletteTrigger } from "./command-palette";
+import { ThemeToggle } from "./theme-toggle";
 
 export function TopBar() {
   return (
@@ -18,7 +19,11 @@ export function TopBar() {
           · {site.location}
         </span>
       </Link>
-      <CommandPaletteTrigger />
+      <div className="flex items-baseline gap-4">
+        <ThemeToggle />
+        <span className="mono text-[0.5rem] text-muted opacity-40 hidden sm:inline">·</span>
+        <CommandPaletteTrigger />
+      </div>
     </header>
   );
 }

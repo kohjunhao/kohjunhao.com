@@ -1,135 +1,237 @@
 import type { Metadata } from "next";
 import { PageShell } from "@/components/page-shell";
+import { SectionHeader } from "@/components/section-header";
 import { Hairline } from "@/components/hairline";
 
 export const metadata: Metadata = {
   title: "Design — Aizome",
   description:
-    "The Aizome design system: tokens, primitives, and principles. The system that powers this site.",
+    "The Aizome design system: tokens, primitives, motif, principles. The system that powers kohjunhao.com.",
 };
 
-const palette: [string, string, string][] = [
-  ["paper", "#F0EEE9", "canvas"],
-  ["ink", "#1B1A17", "body"],
-  ["rule", "#D9D5CC", "hairline"],
-  ["muted", "#6D6A62", "secondary"],
-  ["aizome", "#3A4A7A", "accent · once per view"],
+type Token = { name: string; value: string; note: string };
+
+const paletteLight: Token[] = [
+  { name: "canvas", value: "#F0EEE9", note: "paper" },
+  { name: "surface", value: "#E8E4DB", note: "inset" },
+  { name: "ink", value: "#1B1A17", note: "body" },
+  { name: "muted", value: "#6D6A62", note: "secondary" },
+  { name: "accent", value: "#3A4A7A", note: "aizome indigo" },
+  { name: "rule", value: "#D9D5CC", note: "hairline" },
+  { name: "hanko", value: "#8B3A3A", note: "seal red" },
+  { name: "totem", value: "#C48A42", note: "warm amber" },
 ];
 
-const primitives: [string, string][] = [
-  ["ledger row", "A left index, a title, a trailing meta. The only list pattern on this site. 1px rule between, not boxes."],
-  ["section header", "Mono index + serif title + right-aligned mono annotation. Section-level scaffolding."],
-  ["hairline", "1px rule, 16–24px vertical rhythm above and below. Never shadow; never box."],
-  ["hanko", "128px red square seal, gentle wobble animation, Japanese-character signature. Site-wide personal mark."],
-  ["totem", "Hand-authored ASCII spinning top. The Inception reference. Does not fall."],
+const paletteDark: Token[] = [
+  { name: "canvas", value: "#14161A", note: "sumi night" },
+  { name: "surface", value: "#1A1D24", note: "inset" },
+  { name: "ink", value: "#E7E4DA", note: "moonlight" },
+  { name: "muted", value: "#8A8C92", note: "stone" },
+  { name: "accent", value: "#8AA0D0", note: "washed aizome" },
+  { name: "rule", value: "#2A2E36", note: "hairline" },
+  { name: "hanko", value: "#8B3A3A", note: "seal red" },
+  { name: "totem", value: "#D9A860", note: "warm amber" },
 ];
 
-const principles: [string, string][] = [
-  ["Restraint is the material.", "If a line, a box, or a flourish is not earning its keep, remove it. One accent color per view, one gesture per section."],
-  ["Serif carries ideas; mono carries metadata.", "Never reverse the hierarchy. Mono is for labels, counts, and timestamps."],
-  ["Hairlines, not containers.", "Use 1px rules instead of cards. Boxes are a last resort."],
-  ["Every page is a ledger.", "Indexed rows with thin rules. The visual vocabulary does not change from books to investments to articles."],
-  ["Motion is an index finger, not a dance.", "Animation points; it does not perform. View transitions are 400ms crossfades. The totem is the only sustained motion on the site."],
+const spaceScale: [string, string][] = [
+  ["2", "inline whitespace"],
+  ["4", "tight stacking"],
+  ["8", "small gaps"],
+  ["12", "list row padding"],
+  ["16", "paragraph rhythm"],
+  ["24", "component to component"],
+  ["32", "section breathing"],
+  ["48", "section to section"],
+  ["64", "chapter breaks"],
+  ["96", "page margins"],
+  ["128", "hero whitespace · the 間"],
+];
+
+const manifesto: [string, string][] = [
+  ["Restraint is the material.", "間 (ma) carries meaning. Let it. One accent per view."],
+  ["Serif carries ideas; mono carries metadata.", "Never reverse the hierarchy. No sans-serif."],
+  ["Hairlines, not containers.", "1px rules do the work of cards. Shadows are a last resort."],
+  ["Every page is a ledger.", "Indexed rows, thin rules. Books to investments to articles share the same vocabulary."],
+  ["Motion is an index finger, not a dance.", "Animation points; it doesn't perform. The totem is the only sustained motion."],
+];
+
+const components: [string, string][] = [
+  ["SectionHeader", "Mono index + serif title + right-aligned mono annotation. Section-level scaffolding."],
+  ["Hairline", "1px rule at the `rule` token. 16–24px vertical rhythm. Never shadow, never box."],
+  ["LedgerRow", "Left index · title · trailing meta. The only list pattern. Spring physics on hover."],
+  ["StatusFooter", "Four-cell site-wide sign-off. LAST UPDATED · LOCATION · STATUS · LAST DISPATCH + hanko."],
+  ["Modal", "Intercepted overlay, 90%/fit. Close on backdrop / Esc / back button. Direct URL still renders full-page."],
+  ["HankoSeal", "SVG seal with feTurbulence grain, 印 character, 3.5° wobble. Site-wide personal mark."],
+  ["Totem", "Hand-authored ASCII spinning top. The Inception reference. Drag-to-knock, tap-to-reset."],
+];
+
+const antiPatterns: string[] = [
+  "Drop shadows. Use hairlines or inset rules instead.",
+  "Large radii. Nothing over 8pt. Flat is the rule.",
+  "Sans-serif. Serif carries thought; mono carries facts. No exceptions.",
+  "A second accent in a single view. If a page needs more emphasis, the page is doing too much.",
+  "Pure white or pure black canvas. The canvas always has warmth.",
+  "Autoplay / hover-only interactivity. Every motion asks for consent.",
 ];
 
 export default function DesignPage() {
   return (
     <PageShell>
-      <section className="mb-2">
+      {/* 00 — hero */}
+      <section className="mb-14">
         <div className="mono text-[0.66rem] tracking-[0.22em] uppercase text-accent mb-4">
           · / design system
         </div>
-        <h1 className="font-serif text-[clamp(2.25rem,5vw,2.75rem)] font-medium tracking-tight leading-tight">
+        <h1 className="font-serif text-[clamp(2.5rem,6vw,3.2rem)] font-medium tracking-tight leading-[1.05]">
           Aizome
         </h1>
-        <p className="mt-3 max-w-[40rem] font-serif italic text-[1.05rem] leading-[1.6] text-muted">
-          The design system that powers this site. Named for 藍染 — indigo-dyed
-          thread. Same palette, same cadence, same care as the kind of book
-          you&rsquo;d keep.
+        <p className="mt-5 max-w-[42rem] font-serif italic text-[1.08rem] leading-[1.65] text-muted">
+          Named for 藍染 — the Japanese indigo dye used on paper and cloth for
+          centuries. The design system that powers this site: the same
+          palette, the same cadence, the same care as the kind of book
+          you&rsquo;d keep. Every page on{" "}
+          <span className="text-ink">kohjunhao.com</span> is typeset in it.
         </p>
       </section>
 
-      <section className="mt-12">
-        <div className="flex items-baseline gap-4 mb-3">
-          <span className="mono text-[0.7rem] text-accent">01 /</span>
-          <span className="font-serif text-[1.2rem] font-medium">Palette</span>
+      {/* 01 — Manifesto */}
+      <section className="mb-14">
+        <SectionHeader index="01" title="Manifesto" right="5 rules" />
+        <ul className="mt-6 grid gap-3">
+          {manifesto.map(([rule, why], i) => (
+            <li
+              key={i}
+              className="grid grid-cols-[2.25rem_1fr] gap-4 items-baseline py-3 border-b border-rule"
+            >
+              <span className="mono text-[0.62rem] tracking-[0.2em] uppercase text-accent">
+                {String(i + 1).padStart(2, "0")} /
+              </span>
+              <div>
+                <div className="font-serif text-[1.05rem] text-ink leading-snug">
+                  {rule}
+                </div>
+                <div className="font-serif italic text-[0.86rem] text-muted mt-1 leading-[1.5]">
+                  {why}
+                </div>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      {/* 02 — Palette */}
+      <section className="mb-14">
+        <SectionHeader index="02" title="Palette" right="8 + 8 tokens" />
+        <p className="mt-4 font-serif italic text-[0.95rem] text-muted max-w-[40rem]">
+          Two palettes, light and dark, each eight tokens. Canvas is never
+          pure white. Neutrals carry a warm undertone.
+        </p>
+        <div className="mt-8 grid md:grid-cols-2 gap-10">
+          <PaletteColumn label="LIGHT · day" tokens={paletteLight} />
+          <PaletteColumn label="DARK · night" tokens={paletteDark} />
         </div>
-        <Hairline />
-        <div className="mt-4 grid grid-cols-2 sm:grid-cols-5 gap-4">
-          {palette.map(([name, hex, use]) => (
-            <div key={name}>
+      </section>
+
+      {/* 03 — Typography */}
+      <section className="mb-14">
+        <SectionHeader index="03" title="Typography" right="2 families" />
+        <div className="mt-6 grid gap-6">
+          <TypeSpecimen
+            label="Serif · Source Serif 4"
+            family="font-serif"
+            samples={[
+              ["500 · display", "text-[2.1rem] leading-[1.05] tracking-tight font-medium", "A quiet interface."],
+              ["500 · heading", "text-[1.3rem] font-medium", "Mechanisms and motivations."],
+              ["400 · body", "text-[1.0625rem] leading-relaxed", "Curve is an AMM that focuses on pools with similar asset types."],
+              ["400 italic · caption", "text-[1rem] italic text-muted", "originally published at Paragraph"],
+            ]}
+          />
+          <Hairline />
+          <TypeSpecimen
+            label="Mono · JetBrains Mono"
+            family="mono"
+            samples={[
+              ["500 · label", "text-[0.72rem] tracking-wider uppercase text-accent", "01 / INDEX"],
+              ["400 · numerals", "text-[0.95rem] tabular-nums", "BTC    67,412.08    +2.14%"],
+              ["400 · address", "text-[0.85rem] text-muted", "0x4a2f…9f1b"],
+            ]}
+          />
+        </div>
+      </section>
+
+      {/* 04 — Spacing */}
+      <section className="mb-14">
+        <SectionHeader index="04" title="Spacing" right="4pt scale" />
+        <p className="mt-4 font-serif italic text-[0.95rem] text-muted max-w-[40rem]">
+          Every measurement is a multiple of 4. The scale is sparse on
+          purpose — limited options force confident decisions.
+        </p>
+        <div className="mt-6 grid gap-2">
+          {spaceScale.map(([val, note]) => (
+            <div
+              key={val}
+              className="grid grid-cols-[3rem_1fr_auto] items-center gap-4"
+            >
+              <span className="mono text-[0.66rem] tracking-[0.18em] text-accent">
+                {val}pt
+              </span>
               <div
-                className="h-24 border border-rule"
-                style={{ background: hex }}
+                className="h-px bg-accent"
+                style={{ width: `${Math.min(Number(val), 180)}px` }}
               />
-              <div className="font-serif text-[0.9rem] text-ink font-medium mt-2">
-                {name}
-              </div>
-              <div className="mono text-[0.58rem] tracking-[0.2em] uppercase text-muted mt-0.5">
-                {hex}
-              </div>
-              <div className="font-serif italic text-[0.78rem] text-muted mt-0.5">
-                {use}
-              </div>
+              <span className="mono text-[0.58rem] tracking-[0.22em] uppercase text-muted">
+                {note}
+              </span>
             </div>
           ))}
         </div>
       </section>
 
-      <section className="mt-12">
-        <div className="flex items-baseline gap-4 mb-3">
-          <span className="mono text-[0.7rem] text-accent">02 /</span>
-          <span className="font-serif text-[1.2rem] font-medium">Type</span>
-        </div>
-        <Hairline />
-        <div className="mt-5 grid grid-cols-1 md:grid-cols-2 gap-8">
-          <div>
-            <div className="mono text-[0.6rem] tracking-[0.22em] uppercase text-muted">
-              serif · Source Serif 4
-            </div>
-            <div className="font-serif text-[3rem] font-medium tracking-[-0.015em] mt-2 text-ink leading-none">
-              Aa
-            </div>
-            <div className="font-serif text-[1rem] text-ink mt-2">
-              The quiet forge of small weekly acts.
-            </div>
-            <div className="font-serif italic text-[0.85rem] text-muted mt-1">
-              used for body, headings, and titles.
-            </div>
+      {/* 05 — Motif */}
+      <section className="mb-14">
+        <SectionHeader index="05" title="Motif" right="mono-numeric ledger" />
+        <p className="mt-4 font-serif italic text-[0.95rem] text-muted max-w-[40rem]">
+          The signature: every section indexed like a ledger row. The footer
+          renders a four-cell status ledger with a hanko seal. It&rsquo;s the
+          smallest idiomatic move that says &ldquo;operator, not designer.&rdquo;
+        </p>
+        <div className="mt-6 bg-surface border border-rule p-6 sm:p-8">
+          <div className="mono text-[0.66rem] tracking-[0.22em] uppercase text-accent mb-3">
+            01 / EXAMPLE SECTION
           </div>
-          <div>
-            <div className="mono text-[0.6rem] tracking-[0.22em] uppercase text-muted">
-              mono · JetBrains Mono
-            </div>
-            <div className="mono text-[3rem] mt-2 text-ink leading-none">Aa</div>
-            <div className="mono text-[0.82rem] text-ink mt-3 tracking-[0.08em]">
-              meta · timestamps · counts
-            </div>
-            <div className="font-serif italic text-[0.85rem] text-muted mt-1">
-              used for metadata, never headings.
-            </div>
+          <div className="font-serif text-[1.3rem] font-medium mb-4">
+            Section title here
+          </div>
+          <Hairline />
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mono text-[0.58rem] tracking-[0.2em] uppercase mt-4">
+            {[
+              ["LAST UPDATED", "2026.04.22"],
+              ["LOCATION", "SINGAPORE"],
+              ["STATUS", "SHIPPING"],
+              ["LAST DISPATCH", "8w AGO"],
+            ].map(([k, v]) => (
+              <div key={k}>
+                <span className="text-muted opacity-60">{k}</span>{" "}
+                <span className="text-ink">{v}</span>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
-      <section className="mt-12">
-        <div className="flex items-baseline gap-4 mb-3">
-          <span className="mono text-[0.7rem] text-accent">03 /</span>
-          <span className="font-serif text-[1.2rem] font-medium">
-            Primitives
-          </span>
-        </div>
-        <Hairline />
-        <div className="mt-2">
-          {primitives.map(([name, desc]) => (
+      {/* 06 — Components */}
+      <section className="mb-14">
+        <SectionHeader index="06" title="Components" right="7 primitives" />
+        <div className="mt-5">
+          {components.map(([name, desc]) => (
             <div
               key={name}
-              className="grid grid-cols-[10rem_1fr] gap-3 py-3 border-b border-rule"
+              className="grid grid-cols-[8rem_1fr] sm:grid-cols-[10rem_1fr] gap-4 py-3 border-b border-rule"
             >
-              <span className="mono text-[0.62rem] tracking-[0.18em] uppercase text-accent">
+              <span className="mono text-[0.6rem] tracking-[0.2em] uppercase text-accent">
                 {name}
               </span>
-              <span className="font-serif text-[0.94rem] text-ink leading-[1.55]">
+              <span className="font-serif text-[0.95rem] text-ink leading-[1.55]">
                 {desc}
               </span>
             </div>
@@ -137,40 +239,94 @@ export default function DesignPage() {
         </div>
       </section>
 
-      <section className="mt-12">
-        <div className="flex items-baseline gap-4 mb-3">
-          <span className="mono text-[0.7rem] text-accent">04 /</span>
-          <span className="font-serif text-[1.2rem] font-medium">
-            Principles
-          </span>
-        </div>
-        <Hairline />
-        <ol className="list-none pl-0 mt-2">
-          {principles.map(([k, v], i) => (
+      {/* 07 — Anti-patterns */}
+      <section className="mb-12">
+        <SectionHeader index="07" title="Anti-patterns" right="don't" />
+        <ul className="mt-6 grid gap-2">
+          {antiPatterns.map((line, i) => (
             <li
               key={i}
-              className="grid grid-cols-[2.5rem_1fr] gap-4 py-3.5 border-b border-rule"
+              className="grid grid-cols-[auto_1fr] gap-4 py-2 font-serif text-[0.98rem] text-ink leading-snug"
             >
-              <span className="mono text-[0.62rem] tracking-[0.18em] text-accent pt-1">
-                {String(i + 1).padStart(2, "0")} /
+              <span className="mono text-[0.66rem] text-accent tracking-[0.2em]">
+                ×
               </span>
-              <div>
-                <div className="font-serif text-[1.02rem] text-ink">{k}</div>
-                <div className="font-serif italic text-[0.86rem] text-muted mt-1 leading-[1.5]">
-                  {v}
-                </div>
-              </div>
+              <span>{line}</span>
             </li>
           ))}
-        </ol>
+        </ul>
       </section>
 
-      <div className="mt-12 pt-4 border-t border-rule flex justify-between items-baseline mono text-[0.58rem] tracking-[0.22em] uppercase text-muted">
+      <div className="mt-12 pt-4 border-t border-rule flex flex-wrap justify-between gap-3 mono text-[0.58rem] tracking-[0.22em] uppercase text-muted">
         <span>Aizome · v1.0 · 2026</span>
         <span className="font-serif italic normal-case tracking-normal text-[0.82rem]">
           designed in the open.
         </span>
       </div>
     </PageShell>
+  );
+}
+
+function PaletteColumn({ label, tokens }: { label: string; tokens: Token[] }) {
+  return (
+    <div>
+      <div className="mono text-[0.6rem] tracking-[0.22em] uppercase text-muted mb-4">
+        {label}
+      </div>
+      <div className="grid gap-2">
+        {tokens.map((t) => (
+          <div
+            key={t.name}
+            className="grid grid-cols-[2.25rem_1fr_auto] items-center gap-3"
+          >
+            <span
+              className="h-8 w-8 border border-rule"
+              style={{ background: t.value }}
+              aria-hidden
+            />
+            <div>
+              <div className="font-serif text-[0.9rem] text-ink">{t.name}</div>
+              <div className="font-serif italic text-[0.72rem] text-muted">
+                {t.note}
+              </div>
+            </div>
+            <span className="mono text-[0.62rem] tracking-[0.2em] uppercase text-muted">
+              {t.value}
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function TypeSpecimen({
+  label,
+  family,
+  samples,
+}: {
+  label: string;
+  family: string;
+  samples: [string, string, string][];
+}) {
+  return (
+    <div>
+      <div className="mono text-[0.6rem] tracking-[0.22em] uppercase text-muted mb-3">
+        {label}
+      </div>
+      <div className="grid gap-3">
+        {samples.map(([weight, cls, text], i) => (
+          <div
+            key={i}
+            className="grid sm:grid-cols-[9rem_1fr] gap-3 items-baseline"
+          >
+            <span className="mono text-[0.58rem] tracking-[0.22em] uppercase text-muted">
+              {weight}
+            </span>
+            <span className={`${family} ${cls}`}>{text}</span>
+          </div>
+        ))}
+      </div>
+    </div>
   );
 }

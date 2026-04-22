@@ -35,6 +35,20 @@ export const metadata: Metadata = {
   },
 };
 
+// Pre-hydration theme script — reads saved preference, defaults to LIGHT,
+// and applies data-theme + .dark class before React paints. Prevents
+// flash-of-wrong-theme and means OS dark-mode no longer force-applies.
+const themeInitScript = `
+try {
+  var saved = localStorage.getItem('theme');
+  var theme = saved === 'dark' || saved === 'light' ? saved : 'light';
+  document.documentElement.setAttribute('data-theme', theme);
+  if (theme === 'dark') document.documentElement.classList.add('dark');
+} catch (e) {
+  document.documentElement.setAttribute('data-theme', 'light');
+}
+`;
+
 export default function RootLayout({
   children,
   modal,
@@ -45,8 +59,12 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      data-theme="light"
       className={`${sourceSerif.variable} ${jetbrainsMono.variable} antialiased`}
     >
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+      </head>
       <body className="min-h-screen bg-canvas text-ink">
         {children}
         {modal}
