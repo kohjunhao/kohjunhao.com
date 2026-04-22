@@ -22,7 +22,7 @@ export default function ResumePage() {
           <h1 className="font-serif text-[clamp(2.25rem,5vw,2.75rem)] font-medium tracking-tight leading-tight">
             Resume
           </h1>
-          <span className="mono text-[0.66rem] tracking-[0.2em] uppercase text-muted">
+          <span className="mono text-[0.66rem] tracking-[0.22em] uppercase text-muted">
             v. {site.lastUpdated}
           </span>
         </div>
@@ -48,7 +48,7 @@ export default function ResumePage() {
                 key={k}
                 className="py-1.5 border-b border-rule flex justify-between gap-3"
               >
-                <span className="mono text-[0.58rem] tracking-[0.2em] uppercase text-muted">
+                <span className="mono text-[0.58rem] tracking-[0.22em] uppercase text-muted">
                   {k}
                 </span>
                 <span className="font-serif text-[0.82rem] text-ink">{v}</span>

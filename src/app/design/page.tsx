@@ -103,7 +103,7 @@ export default function DesignPage() {
               key={i}
               className="grid grid-cols-[2.25rem_1fr] gap-4 items-baseline py-3 border-b border-rule"
             >
-              <span className="mono text-[0.62rem] tracking-[0.2em] uppercase text-accent">
+              <span className="mono text-[0.62rem] tracking-[0.22em] uppercase text-accent">
                 {String(i + 1).padStart(2, "0")} /
               </span>
               <div>
@@ -203,7 +203,7 @@ export default function DesignPage() {
             Section title here
           </div>
           <Hairline />
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mono text-[0.58rem] tracking-[0.2em] uppercase mt-4">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mono text-[0.58rem] tracking-[0.22em] uppercase mt-4">
             {[
               ["LAST UPDATED", "2026.04.22"],
               ["LOCATION", "SINGAPORE"],
@@ -228,7 +228,7 @@ export default function DesignPage() {
               key={name}
               className="grid grid-cols-[8rem_1fr] sm:grid-cols-[10rem_1fr] gap-4 py-3 border-b border-rule"
             >
-              <span className="mono text-[0.6rem] tracking-[0.2em] uppercase text-accent">
+              <span className="mono text-[0.6rem] tracking-[0.22em] uppercase text-accent">
                 {name}
               </span>
               <span className="font-serif text-[0.95rem] text-ink leading-[1.55]">
@@ -248,7 +248,7 @@ export default function DesignPage() {
               key={i}
               className="grid grid-cols-[auto_1fr] gap-4 py-2 font-serif text-[0.98rem] text-ink leading-snug"
             >
-              <span className="mono text-[0.66rem] text-accent tracking-[0.2em]">
+              <span className="mono text-[0.66rem] text-accent tracking-[0.22em]">
                 ×
               </span>
               <span>{line}</span>
@@ -290,7 +290,7 @@ function PaletteColumn({ label, tokens }: { label: string; tokens: Token[] }) {
                 {t.note}
               </div>
             </div>
-            <span className="mono text-[0.62rem] tracking-[0.2em] uppercase text-muted">
+            <span className="mono text-[0.62rem] tracking-[0.22em] uppercase text-muted">
               {t.value}
             </span>
           </div>

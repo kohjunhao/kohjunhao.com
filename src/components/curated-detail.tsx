@@ -19,7 +19,7 @@ export function CuratedDetail({ item }: { item: CuratedItem }) {
             href={item.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="mono text-[0.7rem] tracking-[0.2em] uppercase text-accent hover:underline decoration-1 underline-offset-4"
+            className="mono text-[0.7rem] tracking-[0.22em] uppercase text-accent hover:underline decoration-1 underline-offset-4"
           >
             {item.url.replace(/^https?:\/\//, "").replace(/\/$/, "")} ↗
           </a>

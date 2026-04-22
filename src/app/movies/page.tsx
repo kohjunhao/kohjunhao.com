@@ -32,7 +32,7 @@ export default function MoviesPage() {
           <h1 className="font-serif text-[clamp(2.25rem,5vw,2.75rem)] font-medium tracking-tight leading-tight">
             Movies
           </h1>
-          <span className="mono text-[0.66rem] tracking-[0.2em] uppercase text-muted">
+          <span className="mono text-[0.66rem] tracking-[0.22em] uppercase text-muted">
             filmstrip
           </span>
         </div>
@@ -69,7 +69,7 @@ export default function MoviesPage() {
                   <div className="font-serif text-[0.82rem] font-medium leading-[1.2]">
                     {m.title}
                   </div>
-                  <div className="mono text-[0.52rem] tracking-[0.2em] uppercase opacity-70">
+                  <div className="mono text-[0.52rem] tracking-[0.22em] uppercase opacity-70">
                     dir. {m.director}
                   </div>
                 </Link>
@@ -105,7 +105,7 @@ export default function MoviesPage() {
                 <span className="font-serif text-[0.95rem] text-ink group-hover:text-accent transition-colors">
                   {m.title}
                 </span>
-                <span className="mono text-[0.64rem] tracking-[0.15em] text-muted tabular-nums">
+                <span className="mono text-[0.64rem] tracking-[0.18em] text-muted tabular-nums">
                   {m.year}
                 </span>
               </Link>

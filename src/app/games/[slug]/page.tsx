@@ -30,7 +30,7 @@ export default async function GamePage(props: { params: Promise<Params> }) {
       <div className="mb-6">
         <Link
           href="/games"
-          className="mono text-[0.66rem] tracking-[0.2em] uppercase text-accent hover:underline decoration-1 underline-offset-4"
+          className="mono text-[0.66rem] tracking-[0.22em] uppercase text-accent hover:underline decoration-1 underline-offset-4"
         >
           ← all games
         </Link>

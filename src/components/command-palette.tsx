@@ -3,13 +3,14 @@
 import { Command } from "cmdk";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { AnimatePresence, motion } from "motion/react";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { nav, site } from "@/lib/site";
 import { articles } from "@/lib/articles";
 
 export function CommandPalette() {
   const [open, setOpen] = useState(false);
   const router = useRouter();
+  const reduce = useReducedMotion();
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -46,10 +47,11 @@ export function CommandPalette() {
         type="button"
         onClick={() => setOpen(true)}
         aria-label="Open command palette"
+        title="Search (⌘K)"
         className="mono text-[0.66rem] tracking-[0.28em] uppercase text-muted hover:text-accent transition-colors active:scale-[0.96] duration-150"
       >
         <span>⌘K</span>
-        <span className="hidden sm:inline"> · navigate</span>
+        <span className="hidden sm:inline"> · search</span>
       </button>
 
       <AnimatePresence>
@@ -57,10 +59,10 @@ export function CommandPalette() {
           <motion.div
             key="cmd-shell"
             className="fixed inset-0 z-[60] flex items-start justify-center pt-[14vh] px-4"
-            initial={{ opacity: 0 }}
+            initial={reduce ? { opacity: 1 } : { opacity: 0 }}
             animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.15 }}
+            exit={reduce ? { opacity: 1 } : { opacity: 0 }}
+            transition={{ duration: reduce ? 0 : 0.15 }}
           >
             <button
               type="button"
@@ -70,9 +72,17 @@ export function CommandPalette() {
             />
             <motion.div
               key="cmd-dialog"
-              initial={{ opacity: 0, y: -8, filter: "blur(3px)" }}
+              initial={
+                reduce
+                  ? { opacity: 1, y: 0, filter: "blur(0px)" }
+                  : { opacity: 0, y: -8, filter: "blur(3px)" }
+              }
               animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-              exit={{ opacity: 0, y: -8, filter: "blur(3px)" }}
+              exit={
+                reduce
+                  ? { opacity: 1 }
+                  : { opacity: 0, y: -8, filter: "blur(3px)" }
+              }
               transition={{ type: "spring", duration: 0.35, bounce: 0 }}
               className="relative w-full max-w-[36rem] bg-canvas border border-rule"
             >
@@ -83,6 +93,7 @@ export function CommandPalette() {
                   </span>
                   <Command.Input
                     autoFocus
+                    aria-label="Search site"
                     placeholder="Jump to a section, article, or link…"
                     className="flex-1 bg-transparent outline-none font-serif text-[1rem] text-ink placeholder:text-muted/70"
                   />
@@ -188,8 +199,8 @@ function CommandRow({
       onSelect={onSelect}
       className="
         group grid grid-cols-[2.2rem_1fr_auto] items-baseline gap-3 px-4 py-2
-        cursor-default
-        data-[selected=true]:bg-surface data-[selected=true]:text-accent
+        cursor-default border-l-2 border-transparent
+        data-[selected=true]:bg-surface data-[selected=true]:border-accent
         aria-selected:bg-surface
         transition-colors duration-100
       "

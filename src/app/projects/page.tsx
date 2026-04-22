@@ -29,7 +29,7 @@ export default function ProjectsPage() {
           <h1 className="font-serif text-[clamp(2.25rem,5vw,2.75rem)] font-medium tracking-tight leading-tight">
             Projects
           </h1>
-          <span className="mono text-[0.66rem] tracking-[0.2em] uppercase text-muted">
+          <span className="mono text-[0.66rem] tracking-[0.22em] uppercase text-muted">
             {String(inFlight).padStart(2, "0")} · in flight
           </span>
         </div>
@@ -58,7 +58,7 @@ export default function ProjectsPage() {
           {projects.map((p, i) => {
             const content = (
               <div className="grid grid-cols-[2rem_0.75rem_1fr_auto_auto_1.5rem] gap-4 py-4 items-center border-b border-rule group cursor-default active:scale-[0.996] transition-transform duration-150">
-                <span className="mono text-[0.68rem] text-muted tracking-[0.15em]">
+                <span className="mono text-[0.68rem] text-muted tracking-[0.18em]">
                   {String(i + 1).padStart(2, "0")}
                 </span>
                 <span
@@ -77,7 +77,7 @@ export default function ProjectsPage() {
                 <span className="mono text-[0.58rem] tracking-[0.22em] uppercase text-muted hidden sm:inline">
                   {STATUS[p.status].label}
                 </span>
-                <span className="mono text-[0.62rem] tracking-[0.15em] text-muted">
+                <span className="mono text-[0.62rem] tracking-[0.18em] text-muted">
                   {p.year}
                 </span>
                 <span

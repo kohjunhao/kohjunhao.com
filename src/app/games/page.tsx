@@ -33,7 +33,7 @@ export default function GamesPage() {
           <h1 className="font-serif text-[clamp(2.25rem,5vw,2.75rem)] font-medium tracking-tight leading-tight">
             Games
           </h1>
-          <span className="mono text-[0.66rem] tracking-[0.2em] uppercase text-muted">
+          <span className="mono text-[0.66rem] tracking-[0.22em] uppercase text-muted">
             {games.length} logged
           </span>
         </div>
@@ -129,12 +129,12 @@ export default function GamesPage() {
                             {g.title}
                           </span>
                           {g.note && (
-                            <span className="mono text-[0.58rem] tracking-[0.15em] uppercase text-muted ml-3">
+                            <span className="mono text-[0.58rem] tracking-[0.18em] uppercase text-muted ml-3">
                               — {g.note}
                             </span>
                           )}
                         </div>
-                        <span className="mono text-[0.6rem] tracking-[0.15em] uppercase text-muted">
+                        <span className="mono text-[0.6rem] tracking-[0.18em] uppercase text-muted">
                           {g.hours}h
                         </span>
                       </Link>

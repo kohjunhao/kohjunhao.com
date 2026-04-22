@@ -32,7 +32,7 @@ export default function CuratedPage() {
           <h1 className="font-serif text-[clamp(2.25rem,5vw,2.75rem)] font-medium tracking-tight leading-tight">
             Curated
           </h1>
-          <span className="mono text-[0.66rem] tracking-[0.2em] uppercase text-muted">
+          <span className="mono text-[0.66rem] tracking-[0.22em] uppercase text-muted">
             {curated.length} objects
           </span>
         </div>
@@ -48,12 +48,12 @@ export default function CuratedPage() {
           <section key={cat}>
             <div className="flex items-baseline justify-between mb-5">
               <div className="flex items-baseline gap-4">
-                <span className="mono text-[0.6rem] tracking-[0.24em] uppercase text-accent">
+                <span className="mono text-[0.6rem] tracking-[0.22em] uppercase text-accent">
                   {cat}
                 </span>
                 <span className="flex-1 h-px bg-rule w-24" />
               </div>
-              <span className="mono text-[0.58rem] tracking-[0.2em] text-muted">
+              <span className="mono text-[0.58rem] tracking-[0.22em] text-muted">
                 {String(items.length).padStart(2, "0")}
               </span>
             </div>
@@ -66,10 +66,10 @@ export default function CuratedPage() {
                   className="group flex flex-col bg-surface border border-rule p-5 min-h-[11rem] transition-colors hover:bg-canvas active:scale-[0.99] duration-150"
                 >
                   <div className="flex items-baseline justify-between gap-3 mb-2">
-                    <span className="mono text-[0.56rem] tracking-[0.24em] uppercase text-muted">
+                    <span className="mono text-[0.56rem] tracking-[0.22em] uppercase text-muted">
                       {item.maker}
                     </span>
-                    <span className="mono text-[0.56rem] tracking-[0.2em] text-muted">
+                    <span className="mono text-[0.56rem] tracking-[0.22em] text-muted">
                       {item.price ?? "—"}
                     </span>
                   </div>
@@ -80,7 +80,7 @@ export default function CuratedPage() {
                     &ldquo;{item.note}&rdquo;
                   </p>
                   <div className="mt-auto pt-4 flex items-baseline justify-between">
-                    <span className="mono text-[0.54rem] tracking-[0.24em] uppercase text-muted">
+                    <span className="mono text-[0.54rem] tracking-[0.22em] uppercase text-muted">
                       {item.category}
                     </span>
                     <span className="mono text-[0.72rem] text-muted group-hover:text-accent transition-colors">

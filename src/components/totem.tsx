@@ -74,13 +74,27 @@ export function Totem({
       return 0;
     }
 
-    function render(leanAngle: number, azimuth: number, spin: number) {
+    // Deterministic per-cell pseudo-random, stable per spin phase so the
+    // noise reads as a *property of the object* rather than noise in the
+    // render. Values in [-0.5, 0.5].
+    function hashJitter(gx: number, gy: number, phase: number): number {
+      const n = Math.sin(gx * 12.9898 + gy * 78.233 + phase * 37.719) * 43758.5453;
+      return (n - Math.floor(n)) - 0.5;
+    }
+
+    function render(
+      leanAngle: number,
+      azimuth: number,
+      spin: number,
+      noise: number
+    ) {
       const grid: string[][] = new Array(rows);
       const depth: number[][] = new Array(rows);
       for (let r = 0; r < rows; r++) {
         grid[r] = new Array(cols).fill(" ");
         depth[r] = new Array(cols).fill(-Infinity);
       }
+      const phase = Math.floor(spin * 4);
 
       const cosL = Math.cos(leanAngle);
       const sinL = Math.sin(leanAngle);
@@ -144,6 +158,11 @@ export function Totem({
         const ll = Math.sqrt(lxl * lxl + lyl * lyl + lzl * lzl);
         const lam = (n3x * lxl + n3y * lyl + n3z * lzl) / ll;
         let shade = 0.25 + 0.75 * Math.max(0, lam);
+        // Wobble decay — at peak energy the silhouette loses precision; as
+        // the top settles (noise → 0) it snaps back to a crisp render.
+        if (noise > 0) {
+          shade += hashJitter(gx, gy, phase) * noise * 1.1;
+        }
         shade = Math.max(0, Math.min(1, shade));
         const idx = Math.min(
           charset.length - 1,
@@ -197,7 +216,14 @@ export function Totem({
       step(dt);
       const s = stateRef.current;
       const lean = s.phase === "fallen" ? Math.PI / 2 : s.lean;
-      node.textContent = render(lean, s.leanDir, s.spin);
+      // Energy proxy — lean rate (how fast it's tipping) + a fraction of
+      // the precession rate (how hard the circle is drawing). 0 when true,
+      // climbs when perturbed, decays as friction bleeds the wobble out.
+      const energy =
+        s.phase === "perturbed"
+          ? Math.min(0.7, Math.abs(s.leanRate) * 0.9 + s.precessRate * 0.08)
+          : 0;
+      node.textContent = render(lean, s.leanDir, s.spin, energy);
       if (s.phase !== phase) setPhase(s.phase);
       raf = requestAnimationFrame(loop);
     }

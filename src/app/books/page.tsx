@@ -32,7 +32,7 @@ export default function BooksPage() {
           <h1 className="font-serif text-[clamp(2.25rem,5vw,2.75rem)] font-medium tracking-tight leading-tight">
             Books
           </h1>
-          <span className="mono text-[0.66rem] tracking-[0.2em] uppercase text-muted">
+          <span className="mono text-[0.66rem] tracking-[0.22em] uppercase text-muted">
             {counts.highly}·{counts.recommended}·{counts.skip}
           </span>
         </div>
@@ -54,7 +54,7 @@ export default function BooksPage() {
                   {word}
                 </span>
                 <span className="flex-1 h-px bg-rule" />
-                <span className="mono text-[0.66rem] tracking-[0.2em] text-muted">
+                <span className="mono text-[0.66rem] tracking-[0.22em] text-muted">
                   {String(list.length).padStart(2, "0")}
                 </span>
               </div>

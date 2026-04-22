@@ -23,7 +23,7 @@ export function InvestmentDetail({ inv }: { inv: Investment }) {
               href={inv.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="mono text-[0.7rem] tracking-[0.2em] uppercase text-accent hover:underline decoration-1 underline-offset-4"
+              className="mono text-[0.7rem] tracking-[0.22em] uppercase text-accent hover:underline decoration-1 underline-offset-4"
             >
               {inv.url.replace(/^https?:\/\//, "")} ↗
             </a>

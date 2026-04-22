@@ -19,7 +19,7 @@ export function DetailShell({
   return (
     <article className="w-full">
       {eyebrow && (
-        <div className="mono text-[0.6rem] tracking-[0.24em] uppercase text-accent mb-3">
+        <div className="mono text-[0.6rem] tracking-[0.22em] uppercase text-accent mb-3">
           {eyebrow}
         </div>
       )}

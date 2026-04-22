@@ -29,14 +29,14 @@ export default function Home() {
   return (
     <PageShell>
       <section className="pb-10 pt-2">
-        <div className="grid gap-10 md:gap-14 lg:gap-20 md:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)] items-center">
+        <div className="grid gap-10 lg:gap-20 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)] items-center">
           {/* LEFT — totem + tagline */}
-          <RevealStack className="flex flex-col items-center md:items-center">
+          <RevealStack className="flex flex-col items-center">
             <RevealChild>
               <Totem cols={30} rows={24} cellW={10} cellH={12} />
             </RevealChild>
             <RevealChild className="mt-8 w-full max-w-[22rem]">
-              <p className="font-serif italic text-[clamp(1.55rem,3vw,1.9rem)] leading-[1.25] tracking-[-0.01em] text-ink text-center md:text-left">
+              <p className="font-serif italic text-[clamp(1.55rem,3vw,1.9rem)] leading-[1.25] tracking-[-0.01em] text-ink text-center lg:text-left">
                 Reading, writing,
                 <br />
                 writing cheques.

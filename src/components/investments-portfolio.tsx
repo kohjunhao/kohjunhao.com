@@ -31,7 +31,9 @@ export function InvestmentsPortfolio() {
     <section className="mt-14">
       <div className="flex items-baseline gap-4 mb-4 flex-wrap">
         <span className="font-serif text-[1.2rem] font-medium">
-          <span className="mono text-[0.66rem] text-accent mr-3">·&nbsp;/</span>
+          <span className="mono text-[0.66rem] text-accent mr-3 tracking-[0.22em]">
+            ·&nbsp;/
+          </span>
           Portfolio
         </span>
         <div className="ml-auto flex border border-rule">
@@ -58,10 +60,7 @@ export function InvestmentsPortfolio() {
       <Hairline />
 
       {sort === "az" ? (
-        <div
-          className="pt-4"
-          style={{ columnCount: 3, columnGap: "2.25rem" }}
-        >
+        <div className="pt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-9 gap-y-0">
           {[...investments]
             .sort((a, b) => a.name.localeCompare(b.name))
             .map((inv, i) => {
@@ -71,9 +70,8 @@ export function InvestmentsPortfolio() {
                   key={inv.name}
                   href={`/investments/${investmentSlug(inv.name)}`}
                   className="group grid grid-cols-[2.25rem_1fr_auto] gap-2 py-1.5 border-b border-rule items-baseline hover:opacity-80 transition-opacity"
-                  style={{ breakInside: "avoid" }}
                 >
-                  <span className="mono text-[0.58rem] text-muted tracking-[0.12em]">
+                  <span className="mono text-[0.58rem] text-muted tracking-[0.18em] tabular-nums">
                     {String(i + 1).padStart(3, "0")}
                   </span>
                   <span
@@ -83,7 +81,7 @@ export function InvestmentsPortfolio() {
                   >
                     {inv.name}
                     {isFeat && (
-                      <sup className="mono text-[0.5rem] text-accent tracking-[0.2em] ml-1">
+                      <sup className="mono text-[0.5rem] text-accent tracking-[0.22em] ml-1">
                         ★
                       </sup>
                     )}
@@ -101,14 +99,11 @@ export function InvestmentsPortfolio() {
                 <span className="mono text-[0.66rem] tracking-[0.22em] uppercase text-accent">
                   {sector}
                 </span>
-                <span className="mono text-[0.6rem] tracking-[0.2em] text-muted">
+                <span className="mono text-[0.6rem] tracking-[0.22em] text-muted">
                   {String(items.length).padStart(2, "0")}
                 </span>
               </div>
-              <div
-                className="border-t border-rule pt-1"
-                style={{ columnCount: 3, columnGap: "2rem" }}
-              >
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-0 border-t border-rule pt-1">
                 {items.map((inv) => {
                   const isFeat = featuredSet.has(inv.name);
                   return (
@@ -116,7 +111,6 @@ export function InvestmentsPortfolio() {
                       key={inv.name}
                       href={`/investments/${investmentSlug(inv.name)}`}
                       className="group grid grid-cols-[1fr_auto] gap-2 py-1 border-b border-rule items-baseline hover:opacity-80 transition-opacity"
-                      style={{ breakInside: "avoid" }}
                     >
                       <span
                         className={`font-serif text-[0.88rem] ${
@@ -125,7 +119,7 @@ export function InvestmentsPortfolio() {
                       >
                         {inv.name}
                         {isFeat && (
-                          <sup className="mono text-[0.5rem] text-accent tracking-[0.2em] ml-1">
+                          <sup className="mono text-[0.5rem] text-accent tracking-[0.22em] ml-1">
                             ★
                           </sup>
                         )}

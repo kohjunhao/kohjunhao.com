@@ -24,7 +24,7 @@ export default function InvestmentsPage() {
           <h1 className="font-serif text-[clamp(2.25rem,5vw,2.75rem)] font-medium tracking-tight leading-tight">
             Investments
           </h1>
-          <span className="mono text-[0.66rem] tracking-[0.2em] uppercase text-muted">
+          <span className="mono text-[0.66rem] tracking-[0.22em] uppercase text-muted">
             {investments.length} companies
           </span>
         </div>
@@ -57,7 +57,7 @@ export default function InvestmentsPage() {
             <span className="mono text-[0.66rem] text-accent mr-3">·&nbsp;/</span>
             Featured
           </span>
-          <span className="mono text-[0.6rem] tracking-[0.2em] uppercase text-muted">
+          <span className="mono text-[0.6rem] tracking-[0.22em] uppercase text-muted">
             spotlight
           </span>
         </div>
@@ -77,7 +77,7 @@ export default function InvestmentsPage() {
                 </span>
               </div>
               {inv.note && (
-                <div className="mono text-[0.58rem] tracking-[0.2em] uppercase text-muted mt-1.5">
+                <div className="mono text-[0.58rem] tracking-[0.22em] uppercase text-muted mt-1.5">
                   {inv.note}
                 </div>
               )}
