@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { PageShell } from "@/components/page-shell";
-import { SectionHeader } from "@/components/section-header";
-import { Hairline } from "@/components/hairline";
 import { curated, type CuratedCategory } from "@/lib/stock";
 
 export const metadata: Metadata = {
@@ -20,11 +18,8 @@ const categoryOrder: CuratedCategory[] = [
 ];
 
 export default function CuratedPage() {
-  const byCat = categoryOrder
-    .map((cat) => ({
-      cat,
-      items: curated.filter((i) => i.category === cat),
-    }))
+  const grouped = categoryOrder
+    .map((cat) => ({ cat, items: curated.filter((i) => i.category === cat) }))
     .filter((g) => g.items.length > 0);
 
   return (
@@ -43,48 +38,58 @@ export default function CuratedPage() {
         </div>
         <p className="mt-4 max-w-[38rem] font-serif italic text-[1.05rem] leading-[1.65] text-muted">
           A running shelf of things whose design or utility earned their
-          place. Kept for as long as they deserve to be kept. Click any entry
-          for the short note.
+          place. Each tile is a small note on why it stays. Tap for the
+          longer thought.
         </p>
       </section>
 
-      <div className="mt-10">
-        {byCat.map(({ cat, items }) => (
-          <section key={cat} className="mb-10">
-            <div className="flex items-baseline justify-between mb-3">
-              <span className="mono text-[0.64rem] tracking-[0.22em] uppercase text-accent">
-                {cat}
-              </span>
-              <span className="mono text-[0.6rem] tracking-[0.2em] text-muted">
+      <div className="mt-12 space-y-14">
+        {grouped.map(({ cat, items }) => (
+          <section key={cat}>
+            <div className="flex items-baseline justify-between mb-5">
+              <div className="flex items-baseline gap-4">
+                <span className="mono text-[0.6rem] tracking-[0.24em] uppercase text-accent">
+                  {cat}
+                </span>
+                <span className="flex-1 h-px bg-rule w-24" />
+              </div>
+              <span className="mono text-[0.58rem] tracking-[0.2em] text-muted">
                 {String(items.length).padStart(2, "0")}
               </span>
             </div>
-            <Hairline />
-            <ul>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
               {items.map((item) => (
-                <li key={item.slug}>
-                  <Link
-                    href={`/curated/${item.slug}`}
-                    className="group grid grid-cols-[1.5fr_1fr_auto] gap-4 items-baseline py-3 border-b border-rule active:scale-[0.996] transition-transform duration-150"
-                  >
-                    <div>
-                      <span className="font-serif text-[1.02rem] text-ink group-hover:text-accent transition-colors">
-                        {item.name}
-                      </span>
-                      <span className="font-serif italic text-[0.82rem] text-muted ml-3">
-                        — {item.maker}
-                      </span>
-                    </div>
-                    <span className="font-serif italic text-[0.85rem] text-muted leading-snug hidden sm:inline">
-                      &ldquo;{item.note}&rdquo;
+                <Link
+                  key={item.slug}
+                  href={`/curated/${item.slug}`}
+                  className="group flex flex-col bg-surface border border-rule p-5 min-h-[11rem] transition-colors hover:bg-canvas active:scale-[0.99] duration-150"
+                >
+                  <div className="flex items-baseline justify-between gap-3 mb-2">
+                    <span className="mono text-[0.56rem] tracking-[0.24em] uppercase text-muted">
+                      {item.maker}
                     </span>
-                    <span className="mono text-[0.62rem] tracking-[0.15em] text-muted whitespace-nowrap">
+                    <span className="mono text-[0.56rem] tracking-[0.2em] text-muted">
                       {item.price ?? "—"}
                     </span>
-                  </Link>
-                </li>
+                  </div>
+                  <div className="font-serif text-[1.15rem] font-medium tracking-[-0.01em] text-ink leading-snug group-hover:text-accent transition-colors">
+                    {item.name}
+                  </div>
+                  <p className="mt-2 font-serif italic text-[0.88rem] text-muted leading-[1.45]">
+                    &ldquo;{item.note}&rdquo;
+                  </p>
+                  <div className="mt-auto pt-4 flex items-baseline justify-between">
+                    <span className="mono text-[0.54rem] tracking-[0.24em] uppercase text-muted">
+                      {item.category}
+                    </span>
+                    <span className="mono text-[0.72rem] text-muted group-hover:text-accent transition-colors">
+                      →
+                    </span>
+                  </div>
+                </Link>
               ))}
-            </ul>
+            </div>
           </section>
         ))}
       </div>
