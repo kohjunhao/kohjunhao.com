@@ -1,8 +1,12 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import Link from "next/link";
 import { PageShell } from "@/components/page-shell";
 import { BookDetail } from "@/components/book-detail";
+import {
+  DetailCrumb,
+  DetailSiblings,
+  neighbors,
+} from "@/components/detail-nav";
 import { books, getBook } from "@/lib/stock";
 
 type Params = { slug: string };
@@ -25,17 +29,22 @@ export default async function BookPage(props: { params: Promise<Params> }) {
   const book = getBook(slug);
   if (!book) notFound();
 
+  const { prev, next, index } = neighbors(books, slug);
+
   return (
     <PageShell>
-      <div className="mb-6">
-        <Link
-          href="/books"
-          className="mono text-[0.66rem] tracking-[0.22em] uppercase text-accent hover:underline decoration-1 underline-offset-4"
-        >
-          ← all books
-        </Link>
-      </div>
+      <DetailCrumb
+        parentHref="/books"
+        parentLabel="all books"
+        position={`${String(index + 1).padStart(2, "0")} / ${String(books.length).padStart(2, "0")}`}
+      />
       <BookDetail book={book} />
+      <DetailSiblings
+        parentHref="/books"
+        parentLabel="the shelf"
+        prev={prev ? { href: `/books/${prev.slug}`, label: prev.title } : null}
+        next={next ? { href: `/books/${next.slug}`, label: next.title } : null}
+      />
     </PageShell>
   );
 }

@@ -1,8 +1,12 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import Link from "next/link";
 import { PageShell } from "@/components/page-shell";
 import { GameDetail } from "@/components/game-detail";
+import {
+  DetailCrumb,
+  DetailSiblings,
+  neighbors,
+} from "@/components/detail-nav";
 import { games, getGame } from "@/lib/stock";
 
 type Params = { slug: string };
@@ -25,17 +29,23 @@ export default async function GamePage(props: { params: Promise<Params> }) {
   const game = getGame(slug);
   if (!game) notFound();
 
+  const sorted = [...games].sort((a, b) => b.hours - a.hours);
+  const { prev, next, index } = neighbors(sorted, slug);
+
   return (
     <PageShell>
-      <div className="mb-6">
-        <Link
-          href="/games"
-          className="mono text-[0.66rem] tracking-[0.22em] uppercase text-accent hover:underline decoration-1 underline-offset-4"
-        >
-          ← all games
-        </Link>
-      </div>
+      <DetailCrumb
+        parentHref="/games"
+        parentLabel="all games"
+        position={`${String(index + 1).padStart(2, "0")} / ${String(games.length).padStart(2, "0")}`}
+      />
       <GameDetail game={game} />
+      <DetailSiblings
+        parentHref="/games"
+        parentLabel="the log"
+        prev={prev ? { href: `/games/${prev.slug}`, label: prev.title } : null}
+        next={next ? { href: `/games/${next.slug}`, label: next.title } : null}
+      />
     </PageShell>
   );
 }

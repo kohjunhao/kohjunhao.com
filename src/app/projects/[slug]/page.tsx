@@ -1,8 +1,12 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import Link from "next/link";
 import { PageShell } from "@/components/page-shell";
 import { ProjectDetail } from "@/components/project-detail";
+import {
+  DetailCrumb,
+  DetailSiblings,
+  neighbors,
+} from "@/components/detail-nav";
 import { projects, getProject } from "@/lib/stock";
 
 type Params = { slug: string };
@@ -25,17 +29,22 @@ export default async function ProjectPage(props: { params: Promise<Params> }) {
   const project = getProject(slug);
   if (!project) notFound();
 
+  const { prev, next, index } = neighbors(projects, slug);
+
   return (
-    <PageShell>
-      <div className="mb-6">
-        <Link
-          href="/projects"
-          className="mono text-[0.66rem] tracking-[0.22em] uppercase text-accent hover:underline decoration-1 underline-offset-4"
-        >
-          ← all projects
-        </Link>
-      </div>
+    <PageShell wide={Boolean(project.embed)}>
+      <DetailCrumb
+        parentHref="/projects"
+        parentLabel="all projects"
+        position={`${String(index + 1).padStart(2, "0")} / ${String(projects.length).padStart(2, "0")}`}
+      />
       <ProjectDetail project={project} />
+      <DetailSiblings
+        parentHref="/projects"
+        parentLabel="in flight"
+        prev={prev ? { href: `/projects/${prev.slug}`, label: prev.name } : null}
+        next={next ? { href: `/projects/${next.slug}`, label: next.name } : null}
+      />
     </PageShell>
   );
 }
