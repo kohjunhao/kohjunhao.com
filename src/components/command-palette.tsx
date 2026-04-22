@@ -46,12 +46,10 @@ export function CommandPalette() {
         type="button"
         onClick={() => setOpen(true)}
         aria-label="Open command palette"
-        className="group flex items-center gap-1.5 mono text-[0.68rem] text-muted tracking-wider uppercase hover:text-accent transition-colors active:scale-[0.96] duration-150"
+        className="mono text-[0.66rem] tracking-[0.28em] uppercase text-muted hover:text-accent transition-colors active:scale-[0.96] duration-150"
       >
-        <kbd className="border border-rule px-1.5 py-[1px] rounded-sm text-[0.64rem] group-hover:border-accent transition-colors">
-          ⌘K
-        </kbd>
-        <span className="hidden sm:inline">navigate</span>
+        <span>⌘K</span>
+        <span className="hidden sm:inline"> · navigate</span>
       </button>
 
       <AnimatePresence>
@@ -171,6 +169,8 @@ export function CommandPalette() {
     </>
   );
 }
+
+export const CommandPaletteTrigger = CommandPalette;
 
 function CommandRow({
   onSelect,

@@ -165,3 +165,19 @@ h1, h2, h3 {
   outline-offset: 2px;
   border-radius: 2px;
 }
+
+/* Hanko wobble — used on /not-found */
+@keyframes hanko-wobble {
+  0%, 100% { transform: rotate(-3.5deg); }
+  50%      { transform: rotate(3.5deg); }
+}
+
+/* Live pulse — used on /games currently-playing indicator */
+@keyframes pulse-ring {
+  0%, 100% { opacity: 0.5; transform: scale(1); }
+  50%      { opacity: 0;   transform: scale(1.8); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hanko-wobble, .pulse-ring { animation: none !important; }
+}

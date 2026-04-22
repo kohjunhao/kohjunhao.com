@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import { PageShell } from "@/components/page-shell";
-import { SectionHeader } from "@/components/section-header";
-import { LedgerList, LedgerRow } from "@/components/ledger-row";
 import { Hairline } from "@/components/hairline";
+import { InvestmentsPortfolio } from "@/components/investments-portfolio";
 import { investments } from "@/lib/stock";
 
 export const metadata: Metadata = {
@@ -13,64 +12,74 @@ export const metadata: Metadata = {
 
 export default function InvestmentsPage() {
   const featured = investments.filter((i) => i.featured);
-  const rest = investments
-    .filter((i) => !i.featured)
-    .sort((a, b) => a.name.localeCompare(b.name));
 
   return (
     <PageShell>
-      {/* Summary */}
-      <section className="mb-10">
-        <SectionHeader
-          index="04"
-          title="Investments"
-          right={`${investments.length} companies`}
-        />
-        <p className="prose-aizome mt-5">
+      <section className="mb-2">
+        <div className="mono text-[0.66rem] tracking-[0.22em] uppercase text-accent mb-4">
+          05 / investments
+        </div>
+        <div className="flex items-baseline justify-between gap-4">
+          <h1 className="font-serif text-[clamp(2.25rem,5vw,2.75rem)] font-medium tracking-tight leading-tight">
+            Investments
+          </h1>
+          <span className="mono text-[0.66rem] tracking-[0.2em] uppercase text-muted">
+            {investments.length} companies
+          </span>
+        </div>
+        <p className="mt-4 max-w-[38rem] font-serif italic text-[1.05rem] leading-[1.65] text-muted">
           Small cheques written as an angel into founders at the edges of
           crypto, DeFi, and AI. I look for teams solving a specific technical
-          problem, not narratives chasing a market. Below is the current
-          portfolio &mdash; featured entries first, then the full ledger.
+          problem, not narratives chasing a market.
         </p>
-        <div className="mt-6 grid grid-cols-2 sm:grid-cols-4 gap-y-3 gap-x-6 mono text-[0.72rem] text-muted tracking-wider uppercase">
-          <Stat label="Total" value={String(investments.length).padStart(2, "0")} />
-          <Stat label="Featured" value={String(featured.length).padStart(2, "0")} />
-          <Stat label="Thesis" value="Infra · AI · DeFi" />
-          <Stat label="Stage" value="Pre-seed · Seed" />
-        </div>
       </section>
 
-      {/* Featured */}
-      <section className="mb-14">
-        <SectionHeader index="·" title="Featured" right="spotlight" />
-        <div className="mt-5 grid sm:grid-cols-2 gap-4">
+      <section className="mt-10 grid grid-cols-2 sm:grid-cols-4 gap-y-4 gap-x-8">
+        {[
+          ["Total", String(investments.length).padStart(2, "0")],
+          ["Featured", String(featured.length).padStart(2, "0")],
+          ["Thesis", "Infra · AI · DeFi"],
+          ["Stage", "Pre-seed · Seed"],
+        ].map(([k, v]) => (
+          <div key={k}>
+            <div className="mono text-[0.6rem] tracking-[0.22em] uppercase text-muted mb-1">
+              {k}
+            </div>
+            <div className="font-serif text-[0.95rem] text-ink">{v}</div>
+          </div>
+        ))}
+      </section>
+
+      <section className="mt-12">
+        <div className="flex items-baseline justify-between gap-4 mb-4">
+          <span className="font-serif text-[1.2rem] font-medium">
+            <span className="mono text-[0.66rem] text-accent mr-3">·&nbsp;/</span>
+            Featured
+          </span>
+          <span className="mono text-[0.6rem] tracking-[0.2em] uppercase text-muted">
+            spotlight
+          </span>
+        </div>
+        <div className="grid sm:grid-cols-2 gap-3">
           {featured.map((inv) => (
             <a
               key={inv.name}
               href={inv.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="group block bg-surface/60 hover:bg-surface border border-rule px-5 py-4 transition-colors active:scale-[0.985] duration-150"
+              className="group bg-surface border border-rule px-5 py-4 transition-colors hover:bg-surface/70 active:scale-[0.99] duration-150"
             >
-              <div className="flex items-baseline justify-between gap-3">
-                <span className="font-serif text-[1.08rem] group-hover:text-accent transition-colors">
+              <div className="flex items-baseline justify-between gap-2">
+                <span className="font-serif text-[1.02rem] text-ink group-hover:text-accent transition-colors">
                   {inv.name}
                 </span>
-                <span
-                  aria-hidden
-                  className="mono text-[0.68rem] text-muted tracking-wider opacity-60 group-hover:opacity-100 group-hover:text-accent transition-all"
-                >
+                <span className="mono text-[0.68rem] text-muted group-hover:text-accent transition-colors">
                   ↗
                 </span>
               </div>
               {inv.note && (
-                <div className="mono text-[0.68rem] text-muted tracking-wider mt-1.5 uppercase">
+                <div className="mono text-[0.58rem] tracking-[0.2em] uppercase text-muted mt-1.5">
                   {inv.note}
-                </div>
-              )}
-              {inv.url && (
-                <div className="font-serif text-[0.85rem] text-muted/80 italic mt-1">
-                  {inv.url.replace(/^https?:\/\//, "")}
                 </div>
               )}
             </a>
@@ -78,68 +87,38 @@ export default function InvestmentsPage() {
         </div>
       </section>
 
-      {/* Full ledger */}
-      <section className="mb-10">
-        <SectionHeader
-          index="·"
-          title="Portfolio"
-          right="A–Z"
-        />
-        <div className="mt-5">
-          <LedgerList>
-            {rest.map((inv, i) => (
-              <LedgerRow
-                key={inv.name}
-                data={{
-                  left: String(i + 1).padStart(3, "0"),
-                  mid: inv.name,
-                  right: inv.url ? "↗" : "",
-                  href: inv.url,
-                }}
-                tabular
-              />
-            ))}
-          </LedgerList>
-        </div>
-      </section>
+      <InvestmentsPortfolio />
 
-      {/* Thesis */}
-      <section className="mb-12">
-        <SectionHeader index="·" title="Thesis" />
-        <div className="mt-5 prose-aizome">
-          <p className="mb-0">What I look for in a founder / team:</p>
+      <section className="mt-14">
+        <div className="flex items-baseline gap-4 mb-3">
+          <span className="font-serif text-[1.2rem] font-medium">
+            <span className="mono text-[0.66rem] text-accent mr-3">·&nbsp;/</span>
+            Thesis
+          </span>
         </div>
-        <Hairline className="mt-4 mb-3" />
-        <ul className="grid grid-cols-1 sm:grid-cols-2 gap-y-2 gap-x-8">
+        <Hairline />
+        <p className="font-serif italic text-[0.92rem] text-muted mt-3">
+          What I look for in a founder / team:
+        </p>
+        <div className="mt-3 grid sm:grid-cols-2 gap-x-7 gap-y-2">
           {[
             ["Technical depth", "Built the thing, not commissioned it"],
             ["Edge", "Something non-obvious they've seen first"],
             ["Sustainable tokenomics", "Revenue path, not emissions path"],
             ["Clear market pull", "Users who would pay cash, not just tokens"],
           ].map(([k, v]) => (
-            <li key={k} className="grid grid-cols-[auto_1fr] gap-3 py-1.5">
-              <span className="mono text-[0.7rem] text-accent tracking-wider uppercase">
-                ·
-              </span>
+            <div key={k} className="grid grid-cols-[auto_1fr] gap-3 py-1.5">
+              <span className="mono text-[0.65rem] text-accent">·</span>
               <div>
-                <span className="font-serif text-[0.98rem]">{k}</span>
-                <span className="mono text-[0.66rem] text-muted tracking-wider ml-2 uppercase">
-                  {v}
+                <span className="font-serif text-[0.95rem] text-ink">{k}</span>
+                <span className="font-serif italic text-[0.82rem] text-muted ml-2">
+                  — {v}
                 </span>
               </div>
-            </li>
+            </div>
           ))}
-        </ul>
+        </div>
       </section>
     </PageShell>
-  );
-}
-
-function Stat({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="flex items-baseline gap-2">
-      <span className="opacity-60">{label}</span>
-      <span className="text-ink">{value}</span>
-    </div>
   );
 }
