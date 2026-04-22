@@ -14,15 +14,29 @@ export const blogPosts: BlogPost[] = [
 export type ProjectStatus = "shipping" | "exploring" | "paused" | "dormant";
 
 export type Project = {
+  slug: string;
   name: string;
   status: ProjectStatus;
   year: string;
   note: string;
   article?: string;
+  embed?: string;
+  about?: string;
 };
 
 export const projects: Project[] = [
   {
+    slug: "blackjack",
+    name: "Blackjack Simulator",
+    status: "shipping",
+    year: "2026",
+    note: "EV, variance, and deviations against real shoes",
+    embed: "/embeds/blackjack/index.html",
+    about:
+      "A browser-native blackjack simulator. Runs millions of hands against configurable rule sets, basic strategy, and index deviations — plots EV, variance, and bankroll drawdown in real time. Built to quickly A/B a rule change or an indexed play before committing table hours to it.",
+  },
+  {
+    slug: "kohjunhao-com",
     name: "kohjunhao.com",
     status: "shipping",
     year: "2026",
@@ -30,30 +44,38 @@ export const projects: Project[] = [
     article: "starting-again-in-public",
   },
   {
+    slug: "aizome",
     name: "Aizome",
     status: "shipping",
     year: "2026",
     note: "The design system that powers this site",
   },
   {
+    slug: "x-likes-aggregator",
     name: "x-likes-aggregator",
     status: "paused",
     year: "2025",
     note: "Parse, categorize, and search your Twitter/X likes export",
   },
   {
+    slug: "alfred",
     name: "Alfred",
     status: "exploring",
     year: "2025",
     note: "Crypto AI companion · private beta",
   },
   {
+    slug: "compendium",
     name: "Compendium",
     status: "dormant",
     year: "2023",
     note: "Remember all the games, books, and movies in your life",
   },
 ];
+
+export function getProject(slug: string): Project | undefined {
+  return projects.find((p) => p.slug === slug);
+}
 
 export type Investment = {
   name: string;

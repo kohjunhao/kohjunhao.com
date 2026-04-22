@@ -3,7 +3,13 @@
 import { useCallback, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 
-export function Modal({ children }: { children: React.ReactNode }) {
+export function Modal({
+  children,
+  wide = false,
+}: {
+  children: React.ReactNode;
+  wide?: boolean;
+}) {
   const router = useRouter();
   const dialogRef = useRef<HTMLDivElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
@@ -99,8 +105,18 @@ export function Modal({ children }: { children: React.ReactNode }) {
         >
           ×
         </button>
-        <div className="overflow-y-auto flex-1 px-6 sm:px-10 md:px-16 lg:px-24 py-10 sm:py-14 md:py-16">
-          <div className="mx-auto max-w-2xl">{children}</div>
+        <div
+          className={
+            wide
+              ? "overflow-y-auto flex-1 px-4 sm:px-6 md:px-8 py-8 sm:py-10"
+              : "overflow-y-auto flex-1 px-6 sm:px-10 md:px-16 lg:px-24 py-10 sm:py-14 md:py-16"
+          }
+        >
+          {wide ? (
+            <div className="w-full">{children}</div>
+          ) : (
+            <div className="mx-auto max-w-2xl">{children}</div>
+          )}
         </div>
       </div>
     </div>

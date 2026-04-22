@@ -17,13 +17,15 @@ const STATUS: Record<ProjectStatus, { label: string; color: string }> = {
 };
 
 export default function ProjectsPage() {
-  const inFlight = projects.filter((p) => p.status === "shipping" || p.status === "exploring").length;
+  const inFlight = projects.filter(
+    (p) => p.status === "shipping" || p.status === "exploring"
+  ).length;
 
   return (
     <PageShell>
       <section className="mb-2">
         <div className="mono text-[0.66rem] tracking-[0.22em] uppercase text-accent mb-4">
-          03 / projects
+          02 / projects
         </div>
         <div className="flex items-baseline justify-between gap-4">
           <h1 className="font-serif text-[clamp(2.25rem,5vw,2.75rem)] font-medium tracking-tight leading-tight">
@@ -34,13 +36,11 @@ export default function ProjectsPage() {
           </span>
         </div>
         <p className="mt-4 max-w-[38rem] font-serif italic text-[1.05rem] leading-[1.65] text-muted">
-          Things I&rsquo;m building, quietly and in public. Click a project to
-          read the notes written alongside it. Empty entries are still
-          works-in-progress.
+          Things I&rsquo;m building, quietly and in public. Tap any row to
+          open the write-up — some embed a live piece of the thing itself.
         </p>
       </section>
 
-      {/* Legend */}
       <div className="mt-6 flex flex-wrap gap-x-6 gap-y-2">
         {Object.entries(STATUS).map(([k, v]) => (
           <div key={k} className="flex items-center gap-2">
@@ -56,51 +56,46 @@ export default function ProjectsPage() {
         <Hairline />
         <ul>
           {projects.map((p, i) => {
-            const content = (
-              <div className="grid grid-cols-[2rem_0.75rem_1fr_auto_auto_1.5rem] gap-4 py-4 items-center border-b border-rule group cursor-default active:scale-[0.996] transition-transform duration-150">
-                <span className="mono text-[0.68rem] text-muted tracking-[0.18em]">
-                  {String(i + 1).padStart(2, "0")}
-                </span>
-                <span
-                  className={`w-1.5 h-1.5 rounded-full inline-block ${
-                    STATUS[p.status].color
-                  }`}
-                />
-                <div className="min-w-0">
-                  <span className="font-serif text-[1.08rem] text-ink font-medium group-hover:text-accent transition-colors">
-                    {p.name}
-                  </span>
-                  <span className="font-serif italic text-[0.82rem] text-muted ml-3">
-                    {p.note}
-                  </span>
-                </div>
-                <span className="mono text-[0.58rem] tracking-[0.22em] uppercase text-muted hidden sm:inline">
-                  {STATUS[p.status].label}
-                </span>
-                <span className="mono text-[0.62rem] tracking-[0.18em] text-muted">
-                  {p.year}
-                </span>
-                <span
-                  className={`mono text-[0.72rem] tracking-[0.1em] ${
-                    p.article ? "text-accent" : "text-muted opacity-30"
-                  }`}
-                >
-                  {p.article ? "→" : "·"}
-                </span>
-              </div>
-            );
+            const hasDetail = Boolean(p.article || p.embed || p.about);
+            const affordance = p.embed ? "▢" : p.article ? "→" : "·";
             return (
-              <li key={p.name}>
-                {p.article ? (
-                  <Link
-                    href={`/articles/${p.article}`}
-                    aria-label={`Read ${p.name}`}
+              <li key={p.slug}>
+                <Link
+                  href={`/projects/${p.slug}`}
+                  aria-label={`Open ${p.name}`}
+                  className="grid grid-cols-[2rem_0.75rem_1fr_auto_auto_1.5rem] gap-4 py-4 items-center border-b border-rule group cursor-default active:scale-[0.996] transition-transform duration-150"
+                >
+                  <span className="mono text-[0.68rem] text-muted tracking-[0.18em]">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <span
+                    className={`w-1.5 h-1.5 rounded-full inline-block ${
+                      STATUS[p.status].color
+                    }`}
+                  />
+                  <div className="min-w-0">
+                    <span className="font-serif text-[1.08rem] text-ink font-medium group-hover:text-accent transition-colors">
+                      {p.name}
+                    </span>
+                    <span className="font-serif italic text-[0.82rem] text-muted ml-3">
+                      {p.note}
+                    </span>
+                  </div>
+                  <span className="mono text-[0.58rem] tracking-[0.22em] uppercase text-muted hidden sm:inline">
+                    {STATUS[p.status].label}
+                  </span>
+                  <span className="mono text-[0.62rem] tracking-[0.18em] text-muted">
+                    {p.year}
+                  </span>
+                  <span
+                    className={`mono text-[0.72rem] tracking-[0.1em] ${
+                      hasDetail ? "text-accent" : "text-muted opacity-30"
+                    }`}
+                    title={p.embed ? "interactive" : p.article ? "write-up" : ""}
                   >
-                    {content}
-                  </Link>
-                ) : (
-                  content
-                )}
+                    {affordance}
+                  </span>
+                </Link>
               </li>
             );
           })}
@@ -108,8 +103,8 @@ export default function ProjectsPage() {
       </div>
 
       <div className="mt-8 pt-4 border-t border-rule flex flex-wrap justify-between gap-3 mono text-[0.58rem] tracking-[0.22em] uppercase text-muted">
-        <span>arrow → links to the write-up · dot = status</span>
-        <span>⌘K to navigate</span>
+        <span>▢ = live · → = write-up · · = in progress</span>
+        <span>⌘K to search</span>
       </div>
     </PageShell>
   );
