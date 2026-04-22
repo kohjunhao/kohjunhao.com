@@ -29,7 +29,7 @@ export default function ArticlesPage() {
           <h1 className="font-serif text-[clamp(2.25rem,5vw,2.75rem)] font-medium tracking-tight leading-tight">
             Articles
           </h1>
-          <span className="mono text-[0.66rem] tracking-[0.2em] uppercase text-muted">
+          <span className="mono text-[0.66rem] tracking-[0.22em] uppercase text-muted">
             long-form
           </span>
         </div>
@@ -52,7 +52,7 @@ export default function ArticlesPage() {
           href={`/articles/${feature.slug}`}
           className="group block mt-12 bg-surface border-l-2 border-accent px-7 py-8 sm:px-9 sm:py-10 transition-colors hover:bg-surface/70 active:scale-[0.995] duration-150"
         >
-          <div className="mono text-[0.6rem] tracking-[0.24em] uppercase text-accent mb-3">
+          <div className="mono text-[0.6rem] tracking-[0.22em] uppercase text-accent mb-3">
             feature · {feature.dateLabel}
           </div>
           <h2 className="font-serif text-[clamp(1.6rem,3.5vw,2rem)] font-medium tracking-[-0.015em] leading-[1.15] text-ink">
@@ -68,7 +68,7 @@ export default function ArticlesPage() {
             <span className="mono text-[0.7rem] tracking-[0.18em] uppercase text-accent group-hover:underline decoration-1 underline-offset-2">
               read in modal →
             </span>
-            <span className="mono text-[0.58rem] tracking-[0.2em] uppercase text-muted">
+            <span className="mono text-[0.58rem] tracking-[0.22em] uppercase text-muted">
               {readingMinutes(feature.body)} min · {feature.tags.join(" · ")}
             </span>
           </div>
@@ -89,7 +89,7 @@ export default function ArticlesPage() {
                 href={`/articles/${a.slug}`}
                 className="group grid grid-cols-[2.25rem_1fr_auto_auto] gap-3 sm:gap-5 items-baseline py-3.5 border-b border-rule active:scale-[0.995] transition-transform duration-150"
               >
-                <span className="mono text-[0.68rem] text-muted tracking-[0.15em]">
+                <span className="mono text-[0.68rem] text-muted tracking-[0.18em]">
                   {String(i + 2).padStart(2, "0")}
                 </span>
                 <div>
@@ -100,10 +100,10 @@ export default function ArticlesPage() {
                     {a.subtitle}
                   </div>
                 </div>
-                <span className="mono text-[0.64rem] tracking-[0.15em] uppercase text-muted hidden sm:inline">
+                <span className="mono text-[0.64rem] tracking-[0.18em] uppercase text-muted hidden sm:inline">
                   {readingMinutes(a.body)} min
                 </span>
-                <span className="mono text-[0.64rem] tracking-[0.15em] uppercase text-muted">
+                <span className="mono text-[0.64rem] tracking-[0.18em] uppercase text-muted">
                   {a.dateLabel}
                 </span>
               </Link>

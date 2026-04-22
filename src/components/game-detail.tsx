@@ -1,15 +1,9 @@
 import type { Game } from "@/lib/stock";
+import { recLabel } from "@/lib/stock";
 import { DetailShell, DetailEmpty, DetailProse } from "./detail-shell";
 
 export function GameDetail({ game }: { game: Game }) {
-  const tier =
-    game.rec === "highly"
-      ? "must play"
-      : game.rec === "recommended"
-      ? "recommend"
-      : game.rec === "skip"
-      ? "skip"
-      : "logged";
+  const tier = game.rec ? recLabel[game.rec].label.toLowerCase() : "logged";
 
   return (
     <DetailShell

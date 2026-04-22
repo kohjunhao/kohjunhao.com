@@ -33,6 +33,12 @@ export const metadata: Metadata = {
     siteName: "Koh Jun Hao",
     type: "website",
   },
+  twitter: {
+    card: "summary_large_image",
+    title: "Koh Jun Hao",
+    description:
+      "Operator, researcher — crypto, DeFi, AI. Writing and building, quietly.",
+  },
 };
 
 // Pre-hydration theme script — reads saved preference, defaults to LIGHT,
@@ -66,6 +72,12 @@ export default function RootLayout({
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
       </head>
       <body className="min-h-screen bg-canvas text-ink">
+        <a
+          href="#main"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:bg-canvas focus:text-ink focus:px-4 focus:py-2 focus:border focus:border-accent focus:outline-none"
+        >
+          Skip to content
+        </a>
         {children}
         {modal}
         <div id="modal-root" />

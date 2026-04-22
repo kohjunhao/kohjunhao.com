@@ -2,12 +2,12 @@
 
 import Link from "next/link";
 import { site } from "@/lib/site";
-import { CommandPaletteTrigger } from "./command-palette";
+import { CommandPalette } from "./command-palette";
 import { ThemeToggle } from "./theme-toggle";
 
 export function TopBar() {
   return (
-    <header className="pt-8 pb-8 flex items-baseline justify-between gap-4">
+    <header className="pt-8 pb-8 flex items-center justify-between gap-4">
       <Link
         href="/"
         className="group flex items-baseline gap-3 hover:opacity-80 transition-opacity active:scale-[0.98] duration-150"
@@ -19,10 +19,9 @@ export function TopBar() {
           · {site.location}
         </span>
       </Link>
-      <div className="flex items-baseline gap-4">
+      <div className="flex items-center gap-4">
         <ThemeToggle />
-        <span className="mono text-[0.5rem] text-muted opacity-40 hidden sm:inline">·</span>
-        <CommandPaletteTrigger />
+        <CommandPalette />
       </div>
     </header>
   );

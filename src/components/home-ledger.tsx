@@ -16,7 +16,7 @@ export function HomeLedger({ entries }: { entries: HomeLedgerEntry[] }) {
   return (
     <div>
       <div className="flex items-baseline justify-between mb-4">
-        <span className="mono text-[0.62rem] tracking-[0.3em] uppercase text-muted">
+        <span className="mono text-[0.62rem] tracking-[0.28em] uppercase text-muted">
           — the ledger —
         </span>
         <span className="mono text-[0.6rem] tracking-[0.22em] uppercase text-muted">
@@ -55,7 +55,7 @@ export function HomeLedger({ entries }: { entries: HomeLedgerEntry[] }) {
                 aria-hidden
                 className="pointer-events-none absolute left-0 top-1/2 -translate-y-1/2 h-[54%] w-[2px] bg-accent origin-top scale-y-0 group-hover:scale-y-100 transition-transform duration-300 ease-[cubic-bezier(0.22,0.61,0.36,1)]"
               />
-              <span className="mono text-[0.7rem] tracking-[0.2em] text-accent">
+              <span className="mono text-[0.7rem] tracking-[0.22em] text-accent">
                 {e.index}
               </span>
               <span className="font-serif text-[1.18rem] sm:text-[1.3rem] font-medium tracking-[-0.005em] text-ink group-hover:text-accent transition-colors duration-200">
@@ -64,7 +64,7 @@ export function HomeLedger({ entries }: { entries: HomeLedgerEntry[] }) {
               <span className="hidden sm:inline font-serif italic text-[0.86rem] text-muted leading-snug">
                 {e.note}
               </span>
-              <span className="mono text-[0.68rem] tracking-[0.15em] text-muted text-right tabular-nums">
+              <span className="mono text-[0.68rem] tracking-[0.18em] text-muted text-right tabular-nums">
                 {e.count}
               </span>
             </Link>

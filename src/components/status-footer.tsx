@@ -3,15 +3,12 @@ import { articles } from "@/lib/articles";
 import { HankoSeal } from "./hanko-seal";
 
 export function StatusFooter() {
-  const lastDispatch = [...articles].sort((a, b) => b.date.localeCompare(a.date))[0];
-  const lastDispatchAgo = lastDispatch ? dispatchAgo(lastDispatch.date) : "—";
-
-  const cells: [string, string][] = [
-    ["LAST UPDATED", site.lastUpdated],
-    ["LOCATION", `${site.location.toUpperCase()} · 1.290°N`],
-    ["STATUS", "Reading, writing, writing cheques"],
-    ["LAST DISPATCH", lastDispatch ? `${lastDispatchAgo} · @${site.handle.paragraph}` : "—"],
-  ];
+  const lastDispatch = [...articles].sort((a, b) =>
+    b.date.localeCompare(a.date)
+  )[0];
+  const dispatchLabel = lastDispatch
+    ? `${dispatchAgo(lastDispatch.date)} · @${site.handle.paragraph}`
+    : "—";
 
   const socials: [string, string][] = [
     ["paragraph", site.links.paragraph],
@@ -24,20 +21,27 @@ export function StatusFooter() {
   return (
     <footer className="mt-24 mb-10">
       <div className="hairline mb-8" aria-hidden />
-      <div className="grid grid-cols-1 sm:grid-cols-[1fr_auto] gap-10 items-end">
+      <div className="grid grid-cols-1 sm:grid-cols-[1fr_auto] gap-8 items-end">
         <div>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-5">
-            {cells.map(([k, v]) => (
-              <div key={k}>
-                <div className="mono text-[0.6rem] tracking-[0.22em] uppercase text-muted mb-1.5">
-                  {k}
-                </div>
-                <div className="font-serif text-[0.88rem] text-ink leading-snug">
-                  {v}
-                </div>
+          <div className="grid grid-cols-2 gap-x-8 gap-y-4">
+            <div>
+              <div className="mono text-[0.6rem] tracking-[0.22em] uppercase text-muted mb-1.5">
+                LAST UPDATED
               </div>
-            ))}
+              <div className="font-serif text-[0.88rem] text-ink leading-snug">
+                {site.lastUpdated}
+              </div>
+            </div>
+            <div>
+              <div className="mono text-[0.6rem] tracking-[0.22em] uppercase text-muted mb-1.5">
+                LAST DISPATCH
+              </div>
+              <div className="font-serif text-[0.88rem] text-ink leading-snug">
+                {dispatchLabel}
+              </div>
+            </div>
           </div>
+
           <div className="mt-7 mono text-[0.62rem] tracking-[0.22em] uppercase text-muted flex gap-5 flex-wrap">
             {socials.map(([name, href]) => (
               <a
@@ -52,7 +56,7 @@ export function StatusFooter() {
             ))}
           </div>
           <div className="mt-3 font-serif text-[0.78rem] italic text-muted">
-            Aizome. 藍染. &ldquo;dyed in indigo.&rdquo; — Typeset in Source Serif 4 &amp; JetBrains Mono.
+            Aizome. 藍染. &ldquo;dyed in indigo.&rdquo;
           </div>
         </div>
         <div className="flex flex-col items-center gap-2">

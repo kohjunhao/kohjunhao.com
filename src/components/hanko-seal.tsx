@@ -1,5 +1,3 @@
-"use client";
-
 /**
  * V7 hanko — SVG seal with procedural grain (feTurbulence), 印 character,
  * optional wobble animation for the 404 page.
