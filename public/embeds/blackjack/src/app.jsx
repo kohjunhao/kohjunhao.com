@@ -60,6 +60,7 @@ function App() {
 
   const [tweaksOpen, setTweaksOpen] = useState(false);
   const [infoOpen, setInfoOpen] = useState(false);
+  const [labOpen, setLabOpen] = useState(false);
   const [tweaks, setTweaks] = useState({
     showHud: true,
     showStrategy: true,
@@ -482,6 +483,7 @@ function App() {
         if (e.key === 'y' || e.key === 'Y') takeInsurance(true);
         else if (e.key === 'n' || e.key === 'N') takeInsurance(false);
       }
+      if (e.key === 'l' || e.key === 'L') setLabOpen(v => !v);
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
@@ -629,6 +631,31 @@ function App() {
           onClose={() => setInfoOpen(false)}
         />
       )}
+
+      <button
+        onClick={() => setLabOpen(true)}
+        title="Monte Carlo lab (L)"
+        style={{
+          position: 'fixed',
+          bottom: 16,
+          right: 16,
+          zIndex: 60,
+          padding: '8px 14px',
+          background: 'var(--bg-2)',
+          border: '1px solid var(--line-2)',
+          color: 'var(--green)',
+          fontFamily: 'JetBrains Mono, monospace',
+          fontSize: 10,
+          letterSpacing: '0.22em',
+          textTransform: 'uppercase',
+          cursor: 'pointer',
+          borderRadius: 2,
+        }}
+      >
+        ⚡ lab
+      </button>
+
+      {labOpen && <LabPanel open={labOpen} onClose={() => setLabOpen(false)} tweaks={tweaks} />}
     </div>
   );
 }
