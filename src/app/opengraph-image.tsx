@@ -43,17 +43,6 @@ export default async function OpengraphImage() {
           >
             Koh Jun Hao
           </div>
-          <div
-            style={{
-              fontSize: 36,
-              fontStyle: "italic",
-              color: "#6d6a62",
-              maxWidth: 880,
-              lineHeight: 1.25,
-            }}
-          >
-            Reading, writing, writing cheques.
-          </div>
         </div>
 
         <div

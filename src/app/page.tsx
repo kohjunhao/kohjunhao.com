@@ -35,13 +35,6 @@ export default function Home() {
             <RevealChild>
               <Totem cols={30} rows={24} cellW={10} cellH={12} />
             </RevealChild>
-            <RevealChild className="mt-8 w-full max-w-[22rem]">
-              <p className="font-serif italic text-[clamp(1.55rem,3vw,1.9rem)] leading-[1.25] tracking-[-0.01em] text-ink text-center lg:text-left">
-                Reading, writing,
-                <br />
-                writing cheques.
-              </p>
-            </RevealChild>
           </RevealStack>
 
           {/* RIGHT — the ledger */}

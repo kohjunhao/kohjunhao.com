@@ -34,9 +34,6 @@ export default function ResumePage() {
           <div className="font-serif text-[1.45rem] font-medium tracking-[-0.01em] text-ink">
             {site.name}
           </div>
-          <div className="mono text-[0.62rem] tracking-[0.22em] uppercase text-muted mt-1.5">
-            Reading, writing, writing cheques
-          </div>
           <div className="mt-8">
             {[
               ["Location", site.location],
