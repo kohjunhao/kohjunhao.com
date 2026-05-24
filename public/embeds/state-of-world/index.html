@@ -311,12 +311,22 @@ document.querySelectorAll(".grid[data-section]").forEach(g=>{
   g.innerHTML = (sections[s]||[]).map(card).join("");
 });
 
-/* Sync theme with parent kohjunhao.com if it sends one via postMessage */
-window.addEventListener("message", (e) => {
-  if (e.data && typeof e.data === "object" && e.data.type === "aizome-theme") {
-    document.documentElement.setAttribute("data-theme", e.data.value === "dark" ? "dark" : "light");
-  }
-});
+/* Sync theme with the parent kohjunhao.com site.
+   Same-origin iframe, so we can read & observe parent <html> directly.
+   Falls back to OS prefers-color-scheme when not embedded. */
+(function syncTheme(){
+  let parentHtml;
+  try { parentHtml = window.parent !== window ? window.parent.document.documentElement : null; }
+  catch { parentHtml = null; }
+  if (!parentHtml) return;
+  const apply = () => {
+    const t = parentHtml.getAttribute("data-theme")
+           || (parentHtml.classList.contains("dark") ? "dark" : "light");
+    document.documentElement.setAttribute("data-theme", t === "dark" ? "dark" : "light");
+  };
+  apply();
+  new MutationObserver(apply).observe(parentHtml, {attributes:true, attributeFilter:["data-theme","class"]});
+})();
 </script>
 </body>
 </html>
