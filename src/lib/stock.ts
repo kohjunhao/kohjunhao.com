@@ -36,6 +36,16 @@ export const projects: Project[] = [
       "A browser-native blackjack simulator. Runs millions of hands against configurable rule sets, basic strategy, and index deviations — plots EV, variance, and bankroll drawdown in real time. Built to quickly A/B a rule change or an indexed play before committing table hours to it.",
   },
   {
+    slug: "state-of-world",
+    name: "State of the World",
+    status: "shipping",
+    year: "2026",
+    note: "Fifty indicators, drawn small and side by side",
+    embed: "/embeds/state-of-world/index.html",
+    about:
+      "A one-page dashboard of fifty indicators across eight domains — macroeconomy, demographics, climate, energy, geopolitics, technology, markets, health. Small multiples, sparkline + value + delta, range frames, single accent. Built in the Aizome system following Tufte's rules: above all else, show the data.",
+  },
+  {
     slug: "kohjunhao-com",
     name: "kohjunhao.com",
     status: "shipping",

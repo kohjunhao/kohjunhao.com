@@ -1,0 +1,322 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>State of the World · 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+  :root{
+    --canvas:#f0eee9; --surface:#e8e4db; --ink:#1b1a17; --muted:#6d6a62;
+    --accent:#3a4a7a; --rule:#d9d5cc; --hanko:#8b3a3a; --totem:#c48a42;
+    --serif:"Source Serif 4",ui-serif,Georgia,serif;
+    --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --canvas:#14161a; --surface:#1a1d24; --ink:#e7e4da; --muted:#8a8c92;
+      --accent:#8aa0d0; --rule:#2a2e36; --hanko:#c87878; --totem:#d9a860;
+    }
+  }
+  [data-theme="dark"]{
+    --canvas:#14161a; --surface:#1a1d24; --ink:#e7e4da; --muted:#8a8c92;
+    --accent:#8aa0d0; --rule:#2a2e36; --hanko:#c87878; --totem:#d9a860;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:
+      url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.78' numOctaves='2' stitchTiles='stitch' seed='7'/><feColorMatrix values='0 0 0 0 0.42  0 0 0 0 0.38  0 0 0 0 0.30  0 0 0 0.085 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"),
+      radial-gradient(circle, color-mix(in srgb, var(--accent) 4%, transparent) 1px, transparent 1px) 0 0 / 24px 24px,
+      var(--canvas);
+    color:var(--ink);
+    font-family:var(--serif);
+    font-feature-settings:"kern","liga","calt","onum";
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    text-rendering:optimizeLegibility;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]) body{
+      background:
+        url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.78' numOctaves='2' stitchTiles='stitch' seed='7'/><feColorMatrix values='0 0 0 0 0.85  0 0 0 0 0.83  0 0 0 0 0.78  0 0 0 0.045 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"),
+        radial-gradient(circle, color-mix(in srgb, var(--accent) 10%, transparent) 1px, transparent 1px) 0 0 / 24px 24px,
+        var(--canvas);
+    }
+  }
+
+  .wrap{max-width:1180px;margin:0 auto;padding:32px 28px 64px}
+
+  header.h{border-bottom:1px solid var(--rule);padding-bottom:16px;margin-bottom:28px}
+  .index{font-family:var(--mono);font-size:0.66rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--accent);margin-bottom:10px}
+  h1{font-family:var(--serif);font-weight:500;letter-spacing:-0.015em;font-size:clamp(1.75rem,3.5vw,2.25rem);line-height:1.18;margin:0 0 6px}
+  .sub{font-family:var(--serif);font-style:italic;color:var(--muted);font-size:1.0rem;line-height:1.5;max-width:42rem}
+  .meta{margin-top:14px;font-family:var(--mono);font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--muted)}
+
+  section{margin-top:30px}
+  h2{font-family:var(--mono);font-weight:500;font-size:0.66rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--accent);margin:0 0 12px;padding-bottom:8px;border-bottom:1px solid var(--rule);display:flex;justify-content:space-between;align-items:baseline}
+  h2 .count{color:var(--muted);font-size:0.58rem;letter-spacing:0.22em}
+
+  .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:22px 26px}
+  @media (max-width:960px){.grid{grid-template-columns:repeat(3,1fr)}}
+  @media (max-width:720px){.grid{grid-template-columns:repeat(2,1fr)}}
+  @media (max-width:460px){.grid{grid-template-columns:1fr}}
+
+  figure{margin:0;display:flex;flex-direction:column;gap:3px}
+  .ttl{font-family:var(--mono);font-weight:500;font-size:0.62rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink)}
+  .scope{font-family:var(--serif);font-style:italic;font-size:0.78rem;line-height:1.3;color:var(--muted);margin-top:-1px}
+  .row{display:flex;align-items:baseline;gap:8px;margin-top:5px}
+  .val{font-family:var(--serif);font-weight:500;font-size:1.5rem;line-height:1;letter-spacing:-0.01em;color:var(--ink);font-feature-settings:"tnum","onum"}
+  .delta{font-family:var(--mono);font-size:0.66rem;letter-spacing:0.04em;color:var(--muted);font-feature-settings:"tnum"}
+  .delta.bad{color:var(--hanko)}
+  .delta.good{color:var(--accent)}
+  .spark{margin-top:8px;display:block}
+  .foot{font-family:var(--serif);font-style:italic;font-size:0.7rem;line-height:1.3;color:var(--muted);margin-top:4px}
+
+  .axis{stroke:var(--rule);stroke-width:0.6;fill:none}
+  .data{stroke:var(--ink);stroke-width:1.1;fill:none}
+  .dot{fill:var(--accent)}
+  .dot-soft{fill:var(--muted);opacity:0.6}
+  .band{fill:var(--surface)}
+  .endlbl{font-family:var(--mono);font-size:9px;fill:var(--muted);font-feature-settings:"tnum"}
+
+  footer{margin-top:48px;padding-top:14px;border-top:1px solid var(--rule);font-family:var(--serif);font-style:italic;font-size:0.78rem;line-height:1.55;color:var(--muted);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+  footer code{font-family:var(--mono);font-style:normal;font-size:0.7rem;color:var(--muted)}
+  .hanko{font-family:var(--serif);color:var(--hanko);font-style:normal}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="h">
+  <div class="index">00 / state of the world</div>
+  <h1>Fifty indicators, drawn small.</h1>
+  <div class="sub">Eight domains &mdash; macroeconomy, demographics, climate, energy, geopolitics, technology, markets, health. Side by side, so the eye can compare without the chart getting in the way.</div>
+  <div class="meta">Updated 2026.05.25 &middot; Compiled from IMF · World Bank · IEA · OWID · SIPRI · Epoch · IIASA · WHO · UNHCR</div>
+</header>
+
+<section id="macro">
+<h2><span>01 / macroeconomy</span><span class="count">eight charts</span></h2>
+<div class="grid" data-section="macro"></div>
+</section>
+
+<section id="demographics">
+<h2><span>02 / demographics</span><span class="count">six charts</span></h2>
+<div class="grid" data-section="demographics"></div>
+</section>
+
+<section id="climate">
+<h2><span>03 / climate</span><span class="count">seven charts</span></h2>
+<div class="grid" data-section="climate"></div>
+</section>
+
+<section id="energy">
+<h2><span>04 / energy</span><span class="count">six charts</span></h2>
+<div class="grid" data-section="energy"></div>
+</section>
+
+<section id="geopolitics">
+<h2><span>05 / geopolitics</span><span class="count">six charts</span></h2>
+<div class="grid" data-section="geopolitics"></div>
+</section>
+
+<section id="tech">
+<h2><span>06 / technology &amp; ai</span><span class="count">eight charts</span></h2>
+<div class="grid" data-section="tech"></div>
+</section>
+
+<section id="markets">
+<h2><span>07 / markets</span><span class="count">five charts</span></h2>
+<div class="grid" data-section="markets"></div>
+</section>
+
+<section id="health">
+<h2><span>08 / health</span><span class="count">four charts</span></h2>
+<div class="grid" data-section="health"></div>
+</section>
+
+<footer>
+  <span>Series are illustrative reconstructions through Q1 2026, rounded for legibility. Deltas are <code>YoY</code> unless noted; <span class="hanko">hanko red</span> marks a move in the worsening direction, indigo a move in the improving one.</span>
+  <span>Drawn in the Aizome system &middot; range frames, direct labels, single accent.</span>
+</footer>
+</div>
+
+<script>
+const C = [
+/* ========== MACRO ========== */
+{s:"macro",t:"Global real GDP",scope:"world, % YoY",val:"3.1%",d:"+0.4pp",dCls:"good",
+ yrs:[2015,2026],series:[3.5,3.4,3.8,3.6,2.9,-2.8,6.3,3.5,3.3,3.2,2.7,3.1],note:"IMF WEO"},
+{s:"macro",t:"Headline CPI · US",scope:"% YoY",val:"2.6%",d:"-0.5pp",dCls:"good",
+ yrs:[2018,2026],series:[2.4,1.8,1.2,4.7,8.0,4.1,2.9,3.1,2.6],note:"BLS"},
+{s:"macro",t:"Headline CPI · euro area",scope:"% YoY",val:"2.1%",d:"-0.3pp",dCls:"good",
+ yrs:[2018,2026],series:[1.8,1.2,0.3,2.6,8.4,5.4,2.4,2.5,2.1],note:"Eurostat"},
+{s:"macro",t:"Policy rate · Fed",scope:"upper bound, %",val:"4.25%",d:"-100bp",dCls:"good",
+ yrs:[2018,2026],series:[2.5,1.75,0.25,0.25,4.5,5.5,5.25,4.5,4.25],note:"FOMC"},
+{s:"macro",t:"Policy rate · ECB",scope:"deposit, %",val:"2.25%",d:"-150bp",dCls:"good",
+ yrs:[2018,2026],series:[-0.4,-0.5,-0.5,-0.5,2.0,4.0,3.5,2.75,2.25],note:"ECB"},
+{s:"macro",t:"Unemployment · OECD",scope:"%",val:"4.9%",d:"+0.1pp",dCls:"bad",
+ yrs:[2015,2026],series:[6.7,6.3,5.8,5.4,5.4,7.2,6.2,4.9,4.8,4.7,4.8,4.9],note:"OECD"},
+{s:"macro",t:"US 10-year yield",scope:"%",val:"4.18%",d:"-22bp",dCls:"",
+ yrs:[2018,2026],series:[2.7,1.9,0.9,1.5,3.9,3.9,4.6,4.4,4.18],note:"Treasury"},
+{s:"macro",t:"DXY dollar index",scope:"USD vs basket",val:"103.4",d:"-2.1%",dCls:"",
+ yrs:[2018,2026],series:[96,96,90,96,103,102,108,106,103.4],note:"ICE"},
+
+/* ========== DEMOGRAPHICS ========== */
+{s:"demographics",t:"World population",scope:"billions",val:"8.20",d:"+0.07",dCls:"",
+ yrs:[1960,2026],series:[3.03,3.7,4.45,5.32,6.15,6.96,7.84,8.06,8.13,8.20],note:"UN WPP"},
+{s:"demographics",t:"Total fertility rate",scope:"births / woman",val:"2.25",d:"-0.03",dCls:"",
+ yrs:[1960,2026],series:[5.0,4.4,3.7,3.3,2.7,2.5,2.32,2.28,2.27,2.25],note:"UN WPP"},
+{s:"demographics",t:"Median age · world",scope:"years",val:"30.9",d:"+0.2",dCls:"",
+ yrs:[1960,2026],series:[21.5,22.4,23.0,24.3,26.5,28.4,30.0,30.5,30.7,30.9],note:"UN WPP"},
+{s:"demographics",t:"Urban share",scope:"% of population",val:"57.3%",d:"+0.4pp",dCls:"",
+ yrs:[1960,2026],series:[33.6,36.5,39.3,42.9,46.7,51.7,55.7,56.3,56.8,57.3],note:"World Bank"},
+{s:"demographics",t:"International migrants",scope:"millions",val:"297",d:"+6",dCls:"",
+ yrs:[1990,2026],series:[153,173,191,221,247,272,281,290,297],note:"UN DESA"},
+{s:"demographics",t:"Life expectancy at birth",scope:"years, world",val:"73.5",d:"+0.4",dCls:"good",
+ yrs:[1960,2026],series:[52,58,63,65,68,71,72.8,71.3,72.6,73.1,73.5],note:"World Bank"},
+
+/* ========== CLIMATE ========== */
+{s:"climate",t:"Global CO₂ emissions",scope:"Gt CO₂, fossil",val:"37.4",d:"+0.1%",dCls:"bad",
+ yrs:[1960,2026],series:[9.4,15.5,19.4,21.4,25.2,33.2,36.3,36.9,37.1,37.4],note:"Global Carbon Project"},
+{s:"climate",t:"Global mean temp anomaly",scope:"°C vs 1850-1900",val:"+1.47",d:"+0.05",dCls:"bad",
+ yrs:[1960,2026],series:[0.03,-0.07,0.18,0.45,0.61,1.02,1.20,1.45,1.55,1.47],note:"NASA GISTEMP"},
+{s:"climate",t:"Atmospheric CO₂",scope:"ppm · Mauna Loa",val:"425.1",d:"+2.5",dCls:"bad",
+ yrs:[1960,2026],series:[316,326,338,354,369,389,414,420,422,425.1],note:"NOAA"},
+{s:"climate",t:"Sea level rise",scope:"mm vs 1993",val:"107",d:"+4.6",dCls:"bad",
+ yrs:[1993,2026],series:[0,15,30,45,60,75,92,98,102,107],note:"NASA"},
+{s:"climate",t:"Arctic sea ice · Sept min",scope:"million km²",val:"4.30",d:"-0.05",dCls:"bad",
+ yrs:[1980,2026],series:[7.6,7.2,6.5,5.6,4.8,4.6,4.0,4.2,4.35,4.30],note:"NSIDC"},
+{s:"climate",t:"Renewables · electricity",scope:"% generation",val:"32%",d:"+2pp",dCls:"good",
+ yrs:[2010,2026],series:[19.5,21.3,22.7,23.4,26.3,28.7,30.2,32.0],note:"Ember"},
+{s:"climate",t:"Recorded climate disasters",scope:"events / year",val:"412",d:"+18",dCls:"bad",
+ yrs:[1980,2026],series:[120,170,210,260,330,360,395,402,408,412],note:"EM-DAT"},
+
+/* ========== ENERGY ========== */
+{s:"energy",t:"Primary energy demand",scope:"EJ · world",val:"618",d:"+1.5%",dCls:"",
+ yrs:[1990,2026],series:[365,400,440,510,560,585,604,610,618],note:"IEA"},
+{s:"energy",t:"Brent crude",scope:"$/bbl",val:"71",d:"-9%",dCls:"",
+ yrs:[2014,2026],series:[99,53,45,55,72,71,42,71,99,82,75,71],note:"ICE"},
+{s:"energy",t:"Solar PV installed",scope:"GW · cumulative",val:"2,150",d:"+490",dCls:"good",
+ yrs:[2010,2026],series:[40,100,180,300,420,580,840,1180,1620,2150],note:"IRENA"},
+{s:"energy",t:"EV share of new cars",scope:"% world",val:"24%",d:"+6pp",dCls:"good",
+ yrs:[2016,2026],series:[1.0,1.4,2.1,2.5,4.2,8.7,14,18,21,24],note:"IEA"},
+{s:"energy",t:"Nuclear electricity",scope:"% of generation",val:"9.5%",d:"+0.1pp",dCls:"good",
+ yrs:[2000,2026],series:[16.5,15.2,13.5,10.6,10.3,9.8,9.2,9.3,9.4,9.5],note:"IAEA"},
+{s:"energy",t:"Grid battery storage",scope:"GW · cumulative",val:"320",d:"+95",dCls:"good",
+ yrs:[2015,2026],series:[1,2,4,8,17,28,55,110,180,225,320],note:"BNEF"},
+
+/* ========== GEOPOLITICS ========== */
+{s:"geopolitics",t:"Global military spending",scope:"$T · constant",val:"2.55",d:"+5.4%",dCls:"bad",
+ yrs:[2000,2026],series:[1.10,1.45,1.75,1.78,1.82,1.90,2.10,2.24,2.42,2.55],note:"SIPRI"},
+{s:"geopolitics",t:"Active armed conflicts",scope:"state-based",val:"59",d:"+3",dCls:"bad",
+ yrs:[2000,2026],series:[31,29,32,37,40,52,55,56,58,59],note:"UCDP"},
+{s:"geopolitics",t:"Forcibly displaced",scope:"millions",val:"122",d:"+5",dCls:"bad",
+ yrs:[2000,2026],series:[40,42,43,59,65,82,108,114,117,122],note:"UNHCR"},
+{s:"geopolitics",t:"Battle-related deaths",scope:"thousands / yr",val:"112",d:"-18",dCls:"good",
+ yrs:[2010,2026],series:[28,55,105,72,52,120,238,170,130,112],note:"UCDP"},
+{s:"geopolitics",t:"Global nuclear warheads",scope:"thousand",val:"12.1",d:"-0.1",dCls:"good",
+ yrs:[1990,2026],series:[60,40,28,22,15,13.4,12.7,12.5,12.2,12.1],note:"FAS"},
+{s:"geopolitics",t:"Democracy index",scope:"world avg · /10",val:"5.17",d:"-0.06",dCls:"bad",
+ yrs:[2006,2026],series:[5.52,5.55,5.46,5.52,5.49,5.44,5.28,5.23,5.20,5.17],note:"EIU"},
+
+/* ========== TECH / AI ========== */
+{s:"tech",t:"Frontier training compute",scope:"FLOP · log₁₀",val:"26.4",d:"+0.6",dCls:"",
+ yrs:[2015,2026],series:[19.0,19.6,20.5,21.4,22.0,23.0,23.8,24.5,25.4,26.0,26.4],note:"Epoch AI"},
+{s:"tech",t:"AI on MMLU",scope:"% · top model",val:"92",d:"+3",dCls:"",
+ yrs:[2019,2026],series:[32,43,57,70,86.4,88,90,92],note:"public evals"},
+{s:"tech",t:"AI on GPQA-Diamond",scope:"% · top model",val:"86",d:"+18",dCls:"",
+ yrs:[2023,2026],series:[33,53,68,86],note:"public evals"},
+{s:"tech",t:"Hyperscaler AI capex",scope:"$B · top 4",val:"310",d:"+95",dCls:"",
+ yrs:[2018,2026],series:[70,95,120,138,160,180,215,260,310],note:"company filings"},
+{s:"tech",t:"Semiconductor sales",scope:"$B · world",val:"685",d:"+9%",dCls:"",
+ yrs:[2010,2026],series:[298,335,412,468,440,556,575,520,627,685],note:"SIA"},
+{s:"tech",t:"Hyperscale data centers",scope:"count · world",val:"1,180",d:"+95",dCls:"",
+ yrs:[2015,2026],series:[259,338,431,541,659,759,892,1006,1085,1180],note:"Synergy"},
+{s:"tech",t:"Internet users",scope:"billions",val:"5.65",d:"+0.15",dCls:"",
+ yrs:[2005,2026],series:[1.0,2.0,3.2,4.1,4.9,5.3,5.4,5.5,5.65],note:"ITU"},
+{s:"tech",t:"Private AI investment",scope:"$B · /yr",val:"170",d:"-12",dCls:"",
+ yrs:[2015,2026],series:[12,18,29,43,68,98,135,189,182,170],note:"Stanford AI Index"},
+
+/* ========== MARKETS ========== */
+{s:"markets",t:"S&P 500",scope:"index",val:"5,920",d:"+0.7% YTD",dCls:"",
+ yrs:[2015,2026],series:[2058,2238,2673,2506,3230,3756,4766,3839,4769,5881,5920],note:"S&P"},
+{s:"markets",t:"MSCI Emerging Markets",scope:"index",val:"1,082",d:"+2.4% YTD",dCls:"",
+ yrs:[2015,2026],series:[794,862,1158,966,1115,1291,1232,956,1023,1057,1082],note:"MSCI"},
+{s:"markets",t:"Gold",scope:"$/oz",val:"2,640",d:"-3% YTD",dCls:"",
+ yrs:[2015,2026],series:[1060,1152,1303,1282,1517,1898,1829,1824,2063,2625,2640],note:"LBMA"},
+{s:"markets",t:"Bitcoin",scope:"$ thousand",val:"94",d:"-2% YTD",dCls:"",
+ yrs:[2015,2026],series:[0.43,0.96,14.2,3.7,7.2,29,46.3,16.5,42.3,93.4,94],note:"CoinDesk"},
+{s:"markets",t:"VIX",scope:"index",val:"17.8",d:"+1.2",dCls:"",
+ yrs:[2015,2026],series:[18.2,14.0,11.0,25.4,13.8,22.8,17.2,21.7,12.5,17.4,17.8],note:"CBOE"},
+
+/* ========== HEALTH ========== */
+{s:"health",t:"Maternal mortality",scope:"per 100k live births",val:"190",d:"-5",dCls:"good",
+ yrs:[1990,2026],series:[385,339,300,248,211,223,201,195,190],note:"WHO"},
+{s:"health",t:"Under-5 mortality",scope:"per 1k live births",val:"36",d:"-1",dCls:"good",
+ yrs:[1990,2026],series:[93,77,63,52,43,39,37.5,37,36.5,36],note:"UNICEF"},
+{s:"health",t:"Adult obesity · world",scope:"% of adults",val:"15.3%",d:"+0.3pp",dCls:"bad",
+ yrs:[1990,2026],series:[5.6,7.4,9.0,10.7,12.4,13.9,14.7,14.9,15.1,15.3],note:"NCD-RisC"},
+{s:"health",t:"DTP3 immunisation",scope:"% infants",val:"84%",d:"+1pp",dCls:"good",
+ yrs:[1990,2026],series:[75,81,85,86,86,86,81,83,83.5,84],note:"WHO / UNICEF"}
+];
+
+/* ---------- renderer ---------- */
+const W=240,H=68,PADX=6,PADY=12;
+
+function spark(series){
+  const min=Math.min(...series), max=Math.max(...series);
+  const span = max-min || 1;
+  const n = series.length;
+  const xs = series.map((_,i)=> PADX + i*(W-2*PADX)/(n-1));
+  const ys = series.map(v => H-PADY - (v-min)/span * (H-2*PADY));
+  const pts = xs.map((x,i)=> x.toFixed(1)+","+ys[i].toFixed(1)).join(" ");
+  const last = n-1;
+  const fmt = v => {
+    if (Math.abs(v) >= 1000) return v.toLocaleString();
+    if (Number.isInteger(v)) return v.toString();
+    return (+v.toFixed(2)).toString();
+  };
+  return `
+    <svg class="spark" viewBox="0 0 ${W} ${H}" width="100%" height="${H}" preserveAspectRatio="none">
+      <line x1="${PADX}" y1="${H-PADY+3}" x2="${W-PADX}" y2="${H-PADY+3}" class="axis"/>
+      <polyline class="data" points="${pts}"/>
+      <circle cx="${xs[0]}" cy="${ys[0]}" r="1.6" class="dot-soft"/>
+      <circle cx="${xs[last]}" cy="${ys[last]}" r="2.6" class="dot"/>
+      <text x="${PADX}" y="${H-1}" class="endlbl">${fmt(series[0])}</text>
+      <text x="${W-PADX}" y="${H-1}" text-anchor="end" class="endlbl">${fmt(series[last])}</text>
+    </svg>`;
+}
+
+function card(c){
+  const yrs = `${c.yrs[0]}–${c.yrs[c.yrs.length-1]}`;
+  return `
+    <figure>
+      <div class="ttl">${c.t}</div>
+      <div class="scope">${c.scope} &middot; ${yrs}</div>
+      <div class="row">
+        <span class="val">${c.val}</span>
+        <span class="delta ${c.dCls||""}">${c.d}</span>
+      </div>
+      ${spark(c.series)}
+      <div class="foot">${c.note}</div>
+    </figure>`;
+}
+
+const sections = {};
+C.forEach(c => {(sections[c.s]=sections[c.s]||[]).push(c);});
+document.querySelectorAll(".grid[data-section]").forEach(g=>{
+  const s = g.getAttribute("data-section");
+  g.innerHTML = (sections[s]||[]).map(card).join("");
+});
+
+/* Sync theme with parent kohjunhao.com if it sends one via postMessage */
+window.addEventListener("message", (e) => {
+  if (e.data && typeof e.data === "object" && e.data.type === "aizome-theme") {
+    document.documentElement.setAttribute("data-theme", e.data.value === "dark" ? "dark" : "light");
+  }
+});
+</script>
+</body>
+</html>
