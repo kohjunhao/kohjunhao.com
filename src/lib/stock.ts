@@ -131,6 +131,11 @@ const rawInvestments: Investment[] = [
   { name: "Sundial" }, { name: "Superform Labs" }, { name: "Theoriq" }, { name: "Usual" },
   { name: "Veda" }, { name: "Volmex" }, { name: "WalletConnect" }, { name: "Wildcat Labs" },
   { name: "WINR" }, { name: "Yala" }, { name: "Zerion" },
+  // — added Jun 2026 —
+  { name: "1X" }, { name: "Beezie" }, { name: "Cowboy Space Corp" },
+  { name: "Crusoe" }, { name: "Exowatt" }, { name: "Humans&" },
+  { name: "Noise" }, { name: "Oligo Space" }, { name: "Project Prometheus" },
+  { name: "Rip.fun" }, { name: "Thalassa" },
 ];
 
 export const investments: Investment[] = rawInvestments.map((i) => ({
