@@ -32,7 +32,7 @@ const SORTS: { key: Sort; label: string }[] = [
 const LABEL_EVERY = 10;
 
 const byTitle = (a: WallFilm, b: WallFilm) =>
-  a.title.localeCompare(b.title, "en", { sensitivity: "base", ignorePunctuation: true });
+  a.title.localeCompare(b.title, "en", { sensitivity: "base" });
 
 /** Undated titles sort last whichever way the years run. */
 function byYear(direction: 1 | -1) {

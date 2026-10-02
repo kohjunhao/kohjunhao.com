@@ -39,7 +39,12 @@ export type Cover = {
 
 type CoverEntry = { w: number; h: number; page: string; color?: string };
 
-export const films = shelfData.films as Film[];
+/** The sheet writes "-" for an unknown director. */
+const UNKNOWN_DIRECTOR = "-";
+
+export const films = (shelfData.films as Film[]).map((f) =>
+  f.director === UNKNOWN_DIRECTOR ? { ...f, director: "" } : f,
+);
 export const books = shelfData.books as Book[];
 export const games = shelfData.games as Game[];
 export const boardGames = shelfData.boardGames as Game[];
@@ -72,4 +77,4 @@ export function tint(slug: string): string {
 }
 
 export const byTitle = <T extends { title: string }>(a: T, b: T) =>
-  a.title.localeCompare(b.title, "en", { sensitivity: "base", ignorePunctuation: true });
+  a.title.localeCompare(b.title, "en", { sensitivity: "base" });
