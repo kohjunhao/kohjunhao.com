@@ -162,4 +162,25 @@ for (const kind of only) {
     await sleep(PAUSE_MS);
   }
 }
-console.log(`done: ${done} covers written, ${missed} without`);
+// The books page colours each spine from its cover, so every manifest entry carries the
+// cover's dominant colour. Computed here from the saved file, so a run that only needs
+// colours is quick and needs no network.
+async function fillColours() {
+  let coloured = 0;
+  for (const kind of Object.keys(manifest)) {
+    for (const [slug, entry] of Object.entries(manifest[kind])) {
+      const file = join(OUT_DIR, kind, `${slug}.webp`);
+      if (entry.color || !existsSync(file)) {
+        continue;
+      }
+      const { dominant } = await sharp(file).stats();
+      entry.color = `#${[dominant.r, dominant.g, dominant.b].map((c) => c.toString(16).padStart(2, "0")).join("")}`;
+      coloured += 1;
+    }
+  }
+  writeFileSync(MANIFEST, JSON.stringify(manifest));
+  return coloured;
+}
+
+const coloured = await fillColours();
+console.log(`done: ${done} covers written, ${missed} without, ${coloured} colours added`);
