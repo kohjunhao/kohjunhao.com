@@ -84,17 +84,15 @@ export default async function ArticlePage(props: { params: Promise<Params> }) {
         </article>
 
         <nav className="v3-column v3-pager" aria-label="More essays">
-          {older ? (
+          {older && (
             <Link href={`/articles/${older.slug}`} className="v3-pager-link">
-              <span className="v3-caption">Previous</span>
+              <span className="v3-caption">Previous</span>{" "}
               {older.title}
             </Link>
-          ) : (
-            <span />
           )}
           {newer && (
             <Link href={`/articles/${newer.slug}`} className="v3-pager-link v3-pager-next">
-              <span className="v3-caption">Next</span>
+              <span className="v3-caption">Next</span>{" "}
               {newer.title}
             </Link>
           )}
