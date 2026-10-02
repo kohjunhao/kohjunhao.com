@@ -33,7 +33,7 @@ const ELSEWHERE: FooterLink[] = [
 ];
 
 const COLUMNS: { heading: string; links: FooterLink[] }[] = [
-  { heading: "Site", links: [{ label: "Log", href: "/" }, ...sections] },
+  { heading: "Site", links: [{ label: "Log", href: "/#log" }, ...sections] },
   {
     heading: "Building",
     links: [

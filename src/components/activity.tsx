@@ -60,7 +60,9 @@ export function Activity({ calendar }: { calendar: Calendar }) {
         <span className="v3-caption">{span}, one square per day</span>
       </div>
 
-      <div className="v3-toggle" role="group" aria-label="What the squares count">
+      <div className="v3-activity-grid">
+        <div>
+          <div className="v3-toggle" role="group" aria-label="What the squares count">
         {(Object.keys(METRICS) as Metric[]).map((m) => (
           <button key={m} type="button" className="v3-pill" aria-pressed={metric === m} onClick={() => setMetric(m)}>
             {METRICS[m]}
@@ -111,8 +113,9 @@ export function Activity({ calendar }: { calendar: Calendar }) {
           more
         </div>
       </div>
+        </div>
 
-      <dl className="v3-cards">
+        <dl className="v3-cards">
         {stats(calendar).map((stat, i) => (
           <div key={stat.label} className="v3-card">
             <dt className="v3-card-label">{stat.label}</dt>
@@ -128,7 +131,8 @@ export function Activity({ calendar }: { calendar: Calendar }) {
             </dd>
           </div>
         ))}
-      </dl>
+        </dl>
+      </div>
     </section>
   );
 }
