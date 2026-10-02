@@ -173,6 +173,8 @@ export function SkyFooter() {
       <img
         className="sky-art"
         src="/footer/singapore-1828.webp"
+        srcSet="/footer/singapore-1828-1200.webp 1200w, /footer/singapore-1828.webp 2400w"
+        sizes="100vw"
         width="2400"
         height="840"
         alt=""
