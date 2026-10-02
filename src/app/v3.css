@@ -888,6 +888,16 @@ body {
   object-fit: cover;
 }
 
+/* A wide title card or box photo in a portrait tile is shown whole on the
+   cover's own colour instead of being cropped to a sliver. */
+.v3-tile[data-wide][data-ratio="portrait"] {
+  background: var(--tint);
+}
+
+.v3-tile[data-wide][data-ratio="portrait"] img {
+  object-fit: contain;
+}
+
 .v3-tile:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 18px -10px rgba(0, 0, 0, 0.35);

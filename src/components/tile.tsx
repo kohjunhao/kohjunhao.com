@@ -49,7 +49,12 @@ export function Tile({
   }
 
   return (
-    <div className="v3-tile" data-ratio={ratio} style={{ "--tint": art.color ?? tint(slug) } as CSSProperties}>
+    <div
+      className="v3-tile"
+      data-ratio={ratio}
+      data-wide={art.w > art.h || undefined}
+      style={{ "--tint": art.color ?? tint(slug) } as CSSProperties}
+    >
       {/* eslint-disable-next-line @next/next/no-img-element -- covers are already 240px webp; the optimiser would only re-encode them */}
       <img src={art.src} width={art.w} height={art.h} alt="" loading="lazy" decoding="async" />
       <span className="v3-tile-cap">
