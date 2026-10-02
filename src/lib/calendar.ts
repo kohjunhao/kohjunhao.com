@@ -1,10 +1,8 @@
 import activity from "@/data/activity.json";
-import type { LogEntry } from "@/content/log";
 
 export const METRICS = {
   prompts: "Prompts",
   commits: "Commits",
-  shipped: "Shipped",
 } as const;
 
 export type Metric = keyof typeof METRICS;
@@ -19,6 +17,8 @@ export type CalendarDay = {
 
 export type Calendar = {
   weeks: number;
+  /** The newest day with data. */
+  through: string;
   /** Seven per week, Monday first, so the grid fills column by column. */
   days: CalendarDay[];
   monthLabels: { week: number; label: string }[];
@@ -28,14 +28,12 @@ export type Calendar = {
     repos: number;
     daysWorked: number;
     spanDays: number;
-    entries: number;
   };
   record: { date: string; prompts: number };
 };
 
 const DAY_MS = 86_400_000;
 const DAYS_PER_WEEK = 7;
-const MAX_LEVEL = 4;
 const COMMITS = 0;
 const PROMPTS = 1;
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -59,22 +57,15 @@ function quantileLevel(values: number[]) {
   return (v: number) => (v === 0 ? 0 : 1 + cuts.filter((c) => v > c).length);
 }
 
-// Most days ship one thing, so quartiles would paint every square the same.
-const shippedLevel = (v: number) => (v === 0 ? 0 : Math.min(MAX_LEVEL, v + 1));
+export function shortDay(iso: string) {
+  const d = toDate(iso);
+  return `${d.getUTCDate()} ${MONTHS[d.getUTCMonth()]}`;
+}
 
-export function buildCalendar(log: LogEntry[]): Calendar {
+export function buildCalendar(): Calendar {
   const perDay = activity.days as Record<string, number[]>;
-  const shipped: Record<string, number> = {};
-  for (const entry of log) {
-    shipped[entry.date] = (shipped[entry.date] ?? 0) + 1;
-  }
-
-  const logDays = log.flatMap((entry) => [entry.date, entry.until ?? entry.date]).sort();
-  const first = [activity.from, logDays[0]].sort()[0];
-  const last = [activity.through, logDays.at(-1) ?? activity.through].sort().at(-1) as string;
-
-  const start = mondayOf(toDate(first));
-  const end = toDate(last);
+  const start = mondayOf(toDate(activity.from));
+  const end = toDate(activity.through);
   const weeks = Math.floor((mondayOf(end).getTime() - start.getTime()) / (DAY_MS * DAYS_PER_WEEK)) + 1;
 
   const promptLevel = quantileLevel(Object.values(perDay).map((v) => v[PROMPTS]));
@@ -96,7 +87,6 @@ export function buildCalendar(log: LogEntry[]): Calendar {
       const counts = {
         prompts: perDay[iso]?.[PROMPTS] ?? 0,
         commits: perDay[iso]?.[COMMITS] ?? 0,
-        shipped: shipped[iso] ?? 0,
       };
       days.push({
         date: iso,
@@ -105,7 +95,6 @@ export function buildCalendar(log: LogEntry[]): Calendar {
         levels: {
           prompts: promptLevel(counts.prompts),
           commits: commitLevel(counts.commits),
-          shipped: shippedLevel(counts.shipped),
         },
       });
     }
@@ -115,6 +104,7 @@ export function buildCalendar(log: LogEntry[]): Calendar {
 
   return {
     weeks,
+    through: activity.through,
     days,
     monthLabels,
     totals: {
@@ -123,7 +113,6 @@ export function buildCalendar(log: LogEntry[]): Calendar {
       repos: activity.repos,
       daysWorked: Object.keys(perDay).length,
       spanDays: Math.round((toDate(activity.through).getTime() - toDate(activity.from).getTime()) / DAY_MS) + 1,
-      entries: log.length,
     },
     record: { date: record.date, prompts: record.counts.prompts },
   };

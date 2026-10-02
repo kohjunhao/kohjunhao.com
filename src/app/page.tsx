@@ -1,84 +1,70 @@
-import { Archivo } from "next/font/google";
 import Link from "next/link";
-import { ShipLog } from "@/components/ship-log";
-import { log } from "@/content/log";
+import { Activity } from "@/components/activity";
+import { TopBar } from "@/components/top-bar";
 import { buildCalendar } from "@/lib/calendar";
-import { site } from "@/lib/site";
+import { sections, site } from "@/lib/site";
 import { investments } from "@/lib/stock";
-import "./v2.css";
 
-const archivo = Archivo({
-  variable: "--font-archivo",
-  subsets: ["latin"],
-  axes: ["wdth"],
-  display: "swap",
-});
-
-const SECTIONS = [
-  { label: "Log", href: "#log" },
-  { label: "Investments", href: "/investments" },
-  { label: "Shelf", href: "/books" },
-  { label: "Writing", href: "/articles" },
-];
-
-const ELSEWHERE = [
-  { label: "X", href: site.links.twitter },
-  { label: "Telegram", href: site.links.telegram },
-  { label: "GitHub", href: site.links.github },
-  { label: "LinkedIn", href: site.links.linkedin },
-  { label: "Paragraph", href: site.links.paragraph },
-];
+const SECTION_COUNTS: Partial<Record<string, number>> = {
+  "/investments": investments.length,
+};
 
 export default function Home() {
-  const calendar = buildCalendar(log);
-
   return (
-    <div className={`v2 ${archivo.variable}`}>
-      <div className="v2-wrap">
-        <header className="v2-top">
-          <span className="v2-mono">kohjunhao.com</span>
-          <nav className="v2-nav v2-mono" aria-label="Sections">
-            {SECTIONS.map(({ label, href }) => (
-              <Link key={href} href={href}>
-                {label}
+    <>
+      <TopBar />
+      <div className="v3-rule" aria-hidden />
+
+      <main id="main">
+        <section className="v3-frame v3-intro">
+          <div>
+            <h1 className="v3-label">{site.name}</h1>
+            <p className="v3-line">Ships things. This is the log.</p>
+            <p className="v3-facts">
+              Operator at Ouroboros Capital. Building{" "}
+              <a href="https://fullmarks.sg" target="_blank" rel="noopener noreferrer">
+                FullMarks
+              </a>{" "}
+              and{" "}
+              <a href="https://groundcrewrobotics.com" target="_blank" rel="noopener noreferrer">
+                Groundcrew Robotics
+              </a>
+              . Angel in <Link href="/investments">{investments.length} companies</Link>.
+            </p>
+          </div>
+
+          <nav className="v3-rows" aria-label="Pages">
+            {sections.map(({ label, href }) => (
+              <Link key={href} href={href} className="v3-row">
+                <span>
+                  {label}
+                  {SECTION_COUNTS[href] !== undefined && (
+                    <>
+                      {" "}
+                      <span className="v3-row-count">{SECTION_COUNTS[href]}</span>
+                    </>
+                  )}
+                </span>
+                <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden>
+                  <path
+                    d="M5.5 3 9.5 7l-4 4"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.3"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
               </Link>
             ))}
           </nav>
-        </header>
+        </section>
 
-        <main id="main">
-          <h1 className="v2-name">{site.name}</h1>
-          <p className="v2-line">
-            ships things. <span>This is the log.</span>
-          </p>
-          <p className="v2-facts">
-            Operator at Ouroboros Capital. Building{" "}
-            <a href="https://fullmarks.sg" target="_blank" rel="noopener noreferrer">
-              FullMarks
-            </a>{" "}
-            and{" "}
-            <a href="https://groundcrewrobotics.com" target="_blank" rel="noopener noreferrer">
-              Groundcrew Robotics
-            </a>
-            . Angel in <Link href="/investments">{investments.length} companies</Link>.
-          </p>
+        <div className="v3-rule" aria-hidden />
+        <Activity calendar={buildCalendar()} />
+      </main>
 
-          <ShipLog calendar={calendar} entries={log} />
-        </main>
-
-        <footer className="v2-foot v2-mono">
-          <span>
-            {site.name} · {site.location} · Studying {site.education.degree} at the {site.education.school}
-          </span>
-          <nav aria-label="Elsewhere">
-            {ELSEWHERE.map(({ label, href }) => (
-              <a key={label} href={href} target="_blank" rel="noopener noreferrer">
-                {label}
-              </a>
-            ))}
-          </nav>
-        </footer>
-      </div>
-    </div>
+      <div className="v3-rule" aria-hidden />
+    </>
   );
 }

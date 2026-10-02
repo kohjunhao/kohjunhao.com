@@ -19,6 +19,16 @@
   --cream-dim: rgba(246, 234, 210, 0.74);
 
   --frame-w: min(1400px, 100% - 20px);
+  --frame-pad: 32px;
+  --rule-h: 33px;
+  --cross-size: 15px;
+  --cross-mid: 7px;
+}
+
+@media (max-width: 640px) {
+  :root {
+    --frame-pad: 16px;
+  }
 }
 
 /* Cal Sans ships an ital axis, but the face is declared upright only, so an
@@ -29,4 +39,438 @@ html {
 
 body {
   font-optical-sizing: auto;
+}
+
+/* ── frame and rules ─────────────────────────────────── */
+
+.v3-frame {
+  width: var(--frame-w);
+  margin-inline: auto;
+  padding-inline: var(--frame-pad);
+  border-inline: 1px solid var(--line);
+}
+
+/* The frame's side lines stop at each rule and a crosshair marks where they
+   would cross it, as on the Cal Sans specimen page. */
+.v3-rule {
+  position: relative;
+  width: var(--frame-w);
+  height: var(--rule-h);
+  margin-inline: auto;
+}
+
+.v3-rule::before {
+  content: "";
+  position: absolute;
+  top: calc((var(--rule-h) - 1px) / 2);
+  left: 12px;
+  right: 12px;
+  height: 1px;
+  background: var(--line);
+}
+
+.v3-rule::after {
+  --stroke: linear-gradient(var(--cross), var(--cross));
+  content: "";
+  position: absolute;
+  top: calc((var(--rule-h) - var(--cross-size)) / 2);
+  left: calc(0px - var(--cross-mid));
+  right: calc(0px - var(--cross-mid));
+  height: var(--cross-size);
+  background:
+    var(--stroke) var(--cross-mid) 0 / 1px 100% no-repeat,
+    var(--stroke) 0 var(--cross-mid) / var(--cross-size) 1px no-repeat,
+    var(--stroke) right var(--cross-mid) top 0 / 1px 100% no-repeat,
+    var(--stroke) right 0 top var(--cross-mid) / var(--cross-size) 1px no-repeat;
+}
+
+/* ── top bar ─────────────────────────────────────────── */
+
+.v3-top {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  grid-template-areas: "brand nav hi";
+  align-items: center;
+  gap: 12px 28px;
+  padding-block: 14px;
+}
+
+.v3-wordmark {
+  grid-area: brand;
+  color: var(--ink);
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+}
+
+.v3-nav {
+  grid-area: nav;
+  justify-self: end;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 26px;
+}
+
+.v3-nav a {
+  color: var(--text);
+  font-size: 15px;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.v3-nav a:hover {
+  color: var(--ink);
+}
+
+.v3-hi {
+  grid-area: hi;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 8px;
+  background: var(--ink);
+  color: var(--paper);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.2;
+  text-decoration: none;
+}
+
+.v3-hi:hover {
+  background: #000;
+}
+
+/* ── intro ───────────────────────────────────────────── */
+
+.v3-intro {
+  display: grid;
+  grid-template-columns: minmax(0, 55fr) minmax(0, 45fr);
+  gap: 48px;
+  padding-block: 56px;
+}
+
+.v3-label {
+  color: var(--ink);
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+.v3-line {
+  margin-top: 18px;
+  color: var(--ink);
+  font-size: 22px;
+  font-weight: 500;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+}
+
+.v3-facts {
+  max-width: 36em;
+  margin-top: 10px;
+  color: var(--text);
+  font-size: 17px;
+  line-height: 1.55;
+}
+
+.v3-facts a {
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+.v3-rows {
+  align-self: start;
+  border-top: 1px solid var(--line);
+}
+
+.v3-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding-block: 20px;
+  border-bottom: 1px solid var(--line);
+  color: var(--ink);
+  font-size: 18px;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.v3-row-count {
+  color: var(--muted);
+}
+
+.v3-row svg {
+  flex-shrink: 0;
+  color: var(--muted);
+  transition:
+    transform 150ms ease,
+    color 150ms ease;
+}
+
+.v3-row:hover svg {
+  color: var(--ink);
+  transform: translateX(3px);
+}
+
+/* ── activity ────────────────────────────────────────── */
+
+.v3-activity {
+  --gap: 4px;
+  padding-block: 48px;
+}
+
+.v3-activity-head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 6px 16px;
+}
+
+.v3-caption {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.v3-toggle {
+  display: flex;
+  gap: 6px;
+  margin-top: 16px;
+}
+
+.v3-pill {
+  padding: 6px 12px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--paper);
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.2;
+  cursor: pointer;
+}
+
+.v3-pill:hover {
+  border-color: var(--cross);
+}
+
+.v3-pill[aria-pressed="true"] {
+  border-color: var(--ink);
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.v3-months,
+.v3-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--weeks), minmax(0, 1fr));
+  gap: var(--gap);
+}
+
+.v3-months {
+  margin-top: 24px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.v3-months span {
+  white-space: nowrap;
+}
+
+.v3-grid {
+  grid-template-rows: repeat(7, auto);
+  grid-auto-flow: column;
+  margin-top: 8px;
+}
+
+.v3-day {
+  display: block;
+  aspect-ratio: 1;
+  border-radius: 3px;
+  background: var(--l0);
+}
+
+.v3-day[data-level="1"] {
+  background: var(--l1);
+}
+
+.v3-day[data-level="2"] {
+  background: var(--l2);
+}
+
+.v3-day[data-level="3"] {
+  background: var(--l3);
+}
+
+.v3-day[data-level="4"] {
+  background: var(--l4);
+}
+
+.v3-day[data-future] {
+  visibility: hidden;
+}
+
+.v3-grid .v3-day:hover {
+  outline: 2px solid var(--ink);
+  outline-offset: 1px;
+}
+
+.v3-readout-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 24px;
+  margin-top: 16px;
+}
+
+.v3-readout {
+  min-height: 1.5em;
+  color: var(--text);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.v3-readout b {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.v3-legend {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 4px;
+  padding-top: 2px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.v3-legend .v3-day {
+  width: 12px;
+}
+
+.v3-cards {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 36px;
+}
+
+.v3-card {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  grid-template-areas:
+    "meta"
+    "n"
+    "label";
+  aspect-ratio: 5 / 4;
+  padding: 10px 10px 26px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--paper);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.v3-card-meta {
+  grid-area: meta;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  padding-right: 4px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.v3-chip {
+  padding: 2px 7px;
+  border-radius: 6px;
+  background: var(--wash);
+  line-height: 1.4;
+}
+
+.v3-card-n {
+  grid-area: n;
+  align-self: center;
+  color: var(--ink);
+  font-size: clamp(36px, 4vw, 56px);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  text-align: center;
+}
+
+.v3-card-n small {
+  color: var(--muted);
+  font-size: 0.45em;
+  font-weight: 500;
+  letter-spacing: 0;
+}
+
+.v3-card-label {
+  grid-area: label;
+  color: var(--text);
+  font-size: 13px;
+  text-align: center;
+}
+
+/* ── narrower screens ────────────────────────────────── */
+
+@media (max-width: 900px) {
+  .v3-cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .v3-card {
+    aspect-ratio: 2 / 1;
+  }
+}
+
+@media (max-width: 760px) {
+  .v3-intro {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 36px;
+    padding-block: 40px;
+  }
+}
+
+@media (max-width: 640px) {
+  .v3-top {
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      "brand hi"
+      "nav nav";
+    padding-block: 12px;
+  }
+
+  .v3-nav {
+    justify-self: start;
+  }
+
+  .v3-activity {
+    --gap: 2px;
+    padding-block: 36px;
+  }
+
+  .v3-day {
+    border-radius: 2px;
+  }
+
+  .v3-readout-row {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .v3-card {
+    aspect-ratio: auto;
+    min-height: 150px;
+    padding-bottom: 16px;
+  }
 }
