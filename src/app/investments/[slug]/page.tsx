@@ -34,11 +34,11 @@ export default async function InvestmentPage(props: {
   const inv = getInvestment(slug);
   if (!inv) notFound();
 
-  const sectorOrder = ["Infrastructure", "DeFi", "AI", "DePIN", "Applications"];
+  const categoryOrder = ["Crypto", "Frontier Tech"];
   const ordered = [...investments].sort((a, b) => {
-    const sa = sectorOrder.indexOf(a.sector ?? "Applications");
-    const sb = sectorOrder.indexOf(b.sector ?? "Applications");
-    if (sa !== sb) return sa - sb;
+    const ca = categoryOrder.indexOf(a.category ?? "Crypto");
+    const cb = categoryOrder.indexOf(b.category ?? "Crypto");
+    if (ca !== cb) return ca - cb;
     return a.name.localeCompare(b.name);
   });
   const { prev, next, index } = neighbors(ordered, slug, (i) =>

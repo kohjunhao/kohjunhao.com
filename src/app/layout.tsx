@@ -23,12 +23,12 @@ export const metadata: Metadata = {
     template: "%s · Koh Jun Hao",
   },
   description:
-    "Operator, researcher — crypto, DeFi, AI. Writing and building, quietly.",
+    "Koh Jun Hao ships things. This is the log.",
   metadataBase: new URL("https://kohjunhao.com"),
   openGraph: {
     title: "Koh Jun Hao",
     description:
-      "Operator, researcher — crypto, DeFi, AI. Writing and building, quietly.",
+      "Koh Jun Hao ships things. This is the log.",
     url: "https://kohjunhao.com",
     siteName: "Koh Jun Hao",
     type: "website",
@@ -37,7 +37,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Koh Jun Hao",
     description:
-      "Operator, researcher — crypto, DeFi, AI. Writing and building, quietly.",
+      "Koh Jun Hao ships things. This is the log.",
   },
 };
 

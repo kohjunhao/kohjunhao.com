@@ -5,8 +5,8 @@ export const site = {
   status: "shipping",
   lastUpdated: "2026.04.22",
   education: {
-    school: "National University of Singapore",
-    degree: "B. Comp. Sci.",
+    school: "University of London",
+    degree: "BSc Computer Science",
     years: "2022 – 2026",
     focus: "Distributed Systems, Blockchain, AI/ML",
   },

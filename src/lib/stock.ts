@@ -91,10 +91,18 @@ export type Investment = {
   name: string;
   url?: string;
   featured?: boolean;
+  category?: "Crypto" | "Frontier Tech";
   sector?: "Infrastructure" | "DeFi" | "AI" | "DePIN" | "Applications";
   note?: string;
   year?: string;
 };
+
+// Non-crypto holdings — AI, robotics, space, energy. Everything else is Crypto.
+const FRONTIER = new Set<string>([
+  "OpenAI", "xAI", "Crusoe", "1X", "Apptronik", "Figure", "Humans&",
+  "Project Prometheus", "Thalassa", "Exowatt", "Oligo Space", "Cowboy Space Corp",
+  "Atoms", "Dyna Robotics", "Nous Research", "Replit",
+]);
 
 const SECTOR_MAP: Record<string, Investment["sector"]> = {};
 const infraList = ["MegaETH","Plasma","Fogo","Citrea","Initia","Morph","Polymer Labs","Hyperlane","Anoma","N1","Rise","Stratum","aPriori","Fluent","Cysic","Irys","Octra","Spicenet","Milkyway"];
@@ -132,15 +140,20 @@ const rawInvestments: Investment[] = [
   { name: "Veda" }, { name: "Volmex" }, { name: "WalletConnect" }, { name: "Wildcat Labs" },
   { name: "WINR" }, { name: "Yala" }, { name: "Zerion" },
   // — added Jun 2026 —
-  { name: "1X" }, { name: "Beezie" }, { name: "Cowboy Space Corp" },
-  { name: "Crusoe" }, { name: "Exowatt" }, { name: "Humans&" },
-  { name: "Noise" }, { name: "Oligo Space" }, { name: "Project Prometheus" },
-  { name: "Rip.fun" }, { name: "Thalassa" },
+  { name: "1X" }, { name: "Apptronik" }, { name: "Beezie" },
+  { name: "Cowboy Space Corp" }, { name: "Crusoe" }, { name: "Exowatt" },
+  { name: "Figure" }, { name: "Humans&" }, { name: "Noise" },
+  { name: "Oligo Space" }, { name: "Project Prometheus" }, { name: "Rip.fun" },
+  { name: "Thalassa" },
+  // — added Oct 2026 —
+  { name: "Acier" }, { name: "Atoms" }, { name: "Dyna Robotics" },
+  { name: "Nous Research" }, { name: "Replit" },
 ];
 
 export const investments: Investment[] = rawInvestments.map((i) => ({
   ...i,
   sector: i.sector ?? SECTOR_MAP[i.name] ?? "Applications",
+  category: (FRONTIER.has(i.name) ? "Frontier Tech" : "Crypto") as Investment["category"],
 }));
 
 export function investmentSlug(name: string): string {

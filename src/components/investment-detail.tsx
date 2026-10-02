@@ -2,7 +2,7 @@ import type { Investment } from "@/lib/stock";
 import { DetailShell, DetailEmpty, DetailProse } from "./detail-shell";
 
 export function InvestmentDetail({ inv }: { inv: Investment }) {
-  const meta = [inv.sector, inv.year, inv.featured ? "featured" : null]
+  const meta = [inv.category, inv.year, inv.featured ? "featured" : null]
     .filter(Boolean)
     .join(" · ");
 

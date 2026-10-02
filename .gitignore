@@ -39,3 +39,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# revamp working files (never public)
+.audit/
+data/raw/
+inbox/

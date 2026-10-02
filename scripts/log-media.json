@@ -1,0 +1,61 @@
+[
+  {
+    "name": "fullmarks",
+    "url": "https://fullmarks.sg/",
+    "wait": 6000
+  },
+  {
+    "name": "groundcrew",
+    "url": "https://groundcrewrobotics.com/",
+    "wait": 4000
+  },
+  {
+    "name": "robotics-primer",
+    "url": "https://groundcrewrobotics.com/research/primer",
+    "wait": 4000
+  },
+  {
+    "name": "robotics-landscape",
+    "url": "https://robotics-landscape.vercel.app/",
+    "wait": 3500
+  },
+  {
+    "name": "last-ledger",
+    "url": "https://last-ledger.vercel.app/",
+    "wait": 6000
+  },
+  {
+    "name": "primer-garden",
+    "url": "https://garden-primer.vercel.app/",
+    "wait": 3500
+  },
+  {
+    "name": "nkhy",
+    "url": "https://nkhynix.com/",
+    "wait": 4000
+  },
+  {
+    "name": "blackjack",
+    "url": "https://kohjunhao.com/embeds/blackjack/index.html",
+    "wait": 3000
+  },
+  {
+    "name": "state-of-world",
+    "url": "https://kohjunhao.com/embeds/state-of-world/index.html",
+    "wait": 3000
+  },
+  {
+    "name": "openlogi",
+    "url": "https://github.com/AprilNEA/OpenLogi/pull/469",
+    "wait": 4000
+  },
+  {
+    "name": "yuzu-video",
+    "video": "~/code/yuzu-video/renders/yuzu-money.mp4",
+    "at": 12
+  },
+  {
+    "name": "eel",
+    "file": "~/code/eel-navigation/out/fig_tracks.png"
+  }
+]
