@@ -1,6 +1,5 @@
 export const site = {
   name: "Koh Jun Hao",
-  tagline: "Operator · Researcher",
   location: "Singapore",
   status: "shipping",
   lastUpdated: "2026.04.22",

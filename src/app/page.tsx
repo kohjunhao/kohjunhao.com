@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { Activity } from "@/components/activity";
+import { LogFeed } from "@/components/log-feed";
 import { TopBar } from "@/components/top-bar";
+import { log } from "@/content/log";
 import { buildCalendar } from "@/lib/calendar";
 import { sections, site } from "@/lib/site";
 import { investments } from "@/lib/stock";
@@ -21,7 +23,7 @@ export default function Home() {
             <h1 className="v3-label">{site.name}</h1>
             <p className="v3-line">Ships things. This is the log.</p>
             <p className="v3-facts">
-              Operator at Ouroboros Capital. Building{" "}
+              Analyst at Ouroboros Capital. Building{" "}
               <a href="https://fullmarks.sg" target="_blank" rel="noopener noreferrer">
                 FullMarks
               </a>{" "}
@@ -62,6 +64,9 @@ export default function Home() {
 
         <div className="v3-rule" aria-hidden />
         <Activity calendar={buildCalendar()} />
+
+        <div className="v3-rule" aria-hidden />
+        <LogFeed entries={log} />
       </main>
 
       <div className="v3-rule" aria-hidden />
