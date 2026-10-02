@@ -1,97 +1,67 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import { PageShell } from "@/components/page-shell";
-import { books, type Recommendation } from "@/lib/stock";
+import { Spine } from "@/components/spine";
+import { TopBar } from "@/components/top-bar";
+import { books, type Book } from "@/lib/shelf";
 
 export const metadata: Metadata = {
   title: "Books",
-  description:
-    "A public reading list — books I've read with honest verdicts, kept like a commonplace book.",
+  description: "Every book I have finished, on a shelf, grouped by the year I read it.",
 };
 
-const tiers: { key: Recommendation; word: string }[] = [
-  { key: "highly", word: "must" },
-  { key: "recommended", word: "worth" },
-  { key: "skip", word: "pass" },
-];
+const UNDATED = "Undated";
+
+/** Biggest year first, so the full shelves lead; books with no date go last. */
+function byYearRead(list: Book[]) {
+  const groups = new Map<string, Book[]>();
+  for (const book of list) {
+    const key = book.read ? book.read.slice(0, 4) : UNDATED;
+    groups.set(key, [...(groups.get(key) ?? []), book]);
+  }
+  return [...groups.entries()].sort(([a, x], [b, y]) => {
+    if (a === UNDATED) {
+      return 1;
+    }
+    if (b === UNDATED) {
+      return -1;
+    }
+    return y.length - x.length || Number(b) - Number(a);
+  });
+}
 
 export default function BooksPage() {
-  const counts = {
-    highly: books.filter((b) => b.rec === "highly").length,
-    recommended: books.filter((b) => b.rec === "recommended").length,
-    skip: books.filter((b) => b.rec === "skip").length,
-  };
+  const groups = byYearRead(books);
+  const topYear = groups[0][0];
 
   return (
-    <PageShell>
-      <section className="mb-2">
-        <div className="mono text-[0.66rem] tracking-[0.22em] uppercase text-accent mb-4">
-          04 / books
-        </div>
-        <div className="flex items-baseline justify-between gap-4">
-          <h1 className="font-serif text-[clamp(2.25rem,5vw,2.75rem)] font-medium tracking-tight leading-tight">
-            Books
-          </h1>
-          <span className="mono text-[0.66rem] tracking-[0.22em] uppercase text-muted">
-            {counts.highly}·{counts.recommended}·{counts.skip}
-          </span>
-        </div>
-        <p className="mt-4 max-w-[38rem] font-serif italic text-[1.05rem] leading-[1.65] text-ink">
-          Kept like a commonplace book — each row is a book I&rsquo;ve read and
-          what I&rsquo;d say if you asked me at a dinner table. Tap any entry
-          for the full notes.
-        </p>
-      </section>
+    <>
+      <TopBar />
+      <div className="v3-rule" aria-hidden />
 
-      <div className="mt-12">
-        {tiers.map(({ key, word }) => {
-          const list = books.filter((b) => b.rec === key);
-          if (list.length === 0) return null;
-          return (
-            <section key={key} className="mb-10">
-              <div className="flex items-baseline gap-4 mb-3">
-                <span className="mono text-[0.66rem] tracking-[0.22em] uppercase text-accent font-medium">
-                  {word}
-                </span>
-                <span className="flex-1 h-px bg-rule" />
-                <span className="mono text-[0.66rem] tracking-[0.22em] text-muted">
-                  {String(list.length).padStart(2, "0")}
-                </span>
-              </div>
+      <main id="main" className="v3-frame v3-shelf v3-books">
+        <header className="v3-shelf-head">
+          <h1 className="v3-label">Books</h1>
+          <p className="v3-sum">
+            {books.length} finished, most of them in {topYear}
+          </p>
+        </header>
 
-              <ul>
-                {list.map((b) => (
-                  <li key={b.slug}>
-                    <Link
-                      href={`/books/${b.slug}`}
-                      className="group grid sm:grid-cols-[1.5fr_1fr] gap-4 sm:gap-7 py-3 items-baseline border-b border-rule active:scale-[0.996] transition-transform duration-150"
-                    >
-                      <div>
-                        <div className="font-serif text-[1.05rem] text-ink leading-tight group-hover:text-accent transition-colors">
-                          {b.title}
-                        </div>
-                        <div className="font-serif italic text-[0.85rem] text-muted mt-1">
-                          {b.author}
-                        </div>
-                      </div>
-                      <div className="font-serif italic text-[0.85rem] text-muted border-l border-rule pl-4 leading-[1.5] flex items-baseline gap-3">
-                        {b.note ? (
-                          <span>&ldquo;{b.note}&rdquo;</span>
-                        ) : (
-                          <span className="opacity-50">—</span>
-                        )}
-                        <span className="mono text-[0.58rem] tracking-[0.18em] uppercase text-muted opacity-60 ml-auto whitespace-nowrap">
-                          {b.year}
-                        </span>
-                      </div>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </section>
-          );
-        })}
-      </div>
-    </PageShell>
+        {groups.map(([year, list]) => (
+          <section key={year} className="v3-bookcase-group" aria-label={year}>
+            <h2 className="v3-label">
+              {year} <span className="v3-row-count">{list.length}</span>
+            </h2>
+            <ul className="v3-bookcase">
+              {list.map((book) => (
+                <Spine key={book.slug} book={book} />
+              ))}
+            </ul>
+          </section>
+        ))}
+
+        <p className="v3-credit">Covers and colours from Open Library</p>
+      </main>
+
+      <div className="v3-rule" aria-hidden />
+    </>
   );
 }

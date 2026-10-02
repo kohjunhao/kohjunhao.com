@@ -932,7 +932,7 @@ body {
   flex-direction: column;
   justify-content: space-between;
   gap: 8px;
-  padding: 9cqi 9cqi 8cqi;
+  padding: 10px 10px 9px;
   box-shadow: inset 0 0 0 4px rgba(255, 255, 255, 0.35);
 }
 
@@ -1018,5 +1018,272 @@ body {
 
   .v3-wall[data-ratio="landscape"] {
     --cols: 2;
+  }
+}
+
+/* ── shelf: films ────────────────────────────────────── */
+
+.v3-shelf {
+  padding-bottom: 56px;
+}
+
+.v3-ruler-wrap {
+  margin-bottom: 28px;
+}
+
+.v3-ruler-readout {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  min-height: 1.5em;
+  margin-bottom: 10px;
+  color: var(--text);
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+}
+
+.v3-ruler-clear {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--muted);
+  font: inherit;
+  font-size: 13px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.v3-ruler-clear:hover {
+  color: var(--ink);
+}
+
+.v3-ruler,
+.v3-ruler-years {
+  display: grid;
+  grid-template-columns: repeat(var(--years), minmax(0, 1fr));
+  gap: 3px;
+}
+
+/* The bars stand on a hairline, so a year with one title still reads. */
+.v3-ruler {
+  grid-template-rows: 96px;
+  align-items: end;
+  border-bottom: 1px solid var(--line);
+}
+
+.v3-bar {
+  height: max(3px, calc(var(--h) * 100%));
+  padding: 0;
+  border: 0;
+  border-radius: 2px 2px 0 0;
+  background: var(--l3);
+  cursor: pointer;
+  transition: background-color 120ms ease;
+}
+
+.v3-bar[data-empty] {
+  height: 0;
+  cursor: default;
+}
+
+.v3-bar:hover,
+.v3-bar:focus-visible,
+.v3-bar[aria-pressed="true"] {
+  background: var(--ink);
+}
+
+.v3-ruler-years {
+  margin-top: 6px;
+  color: var(--muted);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+
+.v3-ruler-years span {
+  white-space: nowrap;
+}
+
+.v3-wall-tools {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 10px 16px;
+  margin-bottom: 20px;
+}
+
+@media (max-width: 640px) {
+  .v3-ruler,
+  .v3-ruler-years {
+    gap: 1px;
+  }
+
+  .v3-ruler {
+    grid-template-rows: 72px;
+  }
+
+  .v3-bar {
+    border-radius: 1px 1px 0 0;
+  }
+}
+
+/* ── shelf: books ────────────────────────────────────── */
+
+/* Spines are drawn in a fixed-height slot so every row of the wrap is the
+   same height, which lets one repeating gradient draw a board under each row. */
+.v3-books {
+  --k: 1;
+  --slot: calc(260px * var(--k));
+  --board: 7px;
+  --gap: 44px;
+  overflow-x: clip;
+}
+
+.v3-bookcase-group + .v3-bookcase-group {
+  margin-top: 48px;
+}
+
+.v3-bookcase {
+  display: flex;
+  flex-wrap: wrap;
+  row-gap: var(--gap);
+  margin-top: 14px;
+  padding: 0 4px calc(var(--board) + 10px);
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0 var(--slot),
+    var(--line) var(--slot) calc(var(--slot) + 1px),
+    var(--wash) calc(var(--slot) + 1px) calc(var(--slot) + var(--board)),
+    rgba(0, 0, 0, 0.08) calc(var(--slot) + var(--board)),
+    transparent calc(var(--slot) + var(--board) + 9px),
+    transparent calc(var(--slot) + var(--gap))
+  );
+}
+
+.v3-slot {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  height: var(--slot);
+  margin-right: 2px;
+}
+
+.v3-spine {
+  --edge: rgba(0, 0, 0, 0.22);
+  --band: rgba(0, 0, 0, 0.13);
+  display: flex;
+  gap: 4px;
+  width: calc(var(--w) * 1px * var(--k));
+  height: calc(var(--h) * 1px * var(--k));
+  padding: 14px 0 12px;
+  overflow: hidden;
+  border: 0;
+  border-radius: 2px 2px 0 0;
+  background:
+    linear-gradient(var(--band), var(--band)) 0 9px / 100% 1px no-repeat,
+    linear-gradient(var(--band), var(--band)) 0 calc(100% - 9px) / 100% 1px no-repeat,
+    var(--spine);
+  box-shadow:
+    inset 1px 0 0 var(--edge),
+    inset -2px 0 0 rgba(255, 255, 255, 0.35);
+  color: var(--ink);
+  writing-mode: vertical-rl;
+  text-align: start;
+  cursor: pointer;
+  transform-origin: bottom left;
+  transition: transform 220ms cubic-bezier(0.3, 0.7, 0.4, 1);
+}
+
+.v3-spine[data-ink="light"] {
+  --band: rgba(255, 255, 255, 0.25);
+  color: #fff;
+}
+
+.v3-spine-title,
+.v3-spine-author {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.v3-spine-title {
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.v3-spine-author {
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.25;
+  opacity: 0.75;
+}
+
+.v3-slot:hover .v3-spine,
+.v3-slot:focus-within .v3-spine {
+  transform: rotate(-8deg);
+}
+
+.v3-spine:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+
+.v3-spine-card {
+  position: absolute;
+  bottom: calc(100% + 10px);
+  left: 50%;
+  z-index: 5;
+  display: none;
+  gap: 2px;
+  width: 168px;
+  padding: 10px 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--paper);
+  box-shadow: 0 14px 30px -14px rgba(0, 0, 0, 0.35);
+  color: var(--text);
+  font-size: 12px;
+  line-height: 1.35;
+  translate: -50% 0;
+  pointer-events: none;
+}
+
+.v3-spine-card img {
+  width: 100%;
+  height: auto;
+  margin-bottom: 8px;
+  border-radius: 6px;
+  background: var(--wash);
+}
+
+.v3-spine-card b {
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.v3-spine-when {
+  margin-top: 4px;
+  color: var(--muted);
+}
+
+.v3-slot:hover .v3-spine-card,
+.v3-slot:focus-within .v3-spine-card {
+  display: grid;
+}
+
+@media (max-width: 640px) {
+  .v3-books {
+    --k: 0.78;
+    --gap: 36px;
+  }
+
+  .v3-spine-title {
+    font-size: 12px;
+  }
+
+  .v3-spine-author {
+    font-size: 10px;
   }
 }
