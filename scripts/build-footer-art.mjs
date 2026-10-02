@@ -42,13 +42,13 @@ const CLOUD_THRESHOLD = 0.7;
 const SKY_THRESHOLD = 0.9;
 const HORIZON_ROW = 0.6;
 const SEA_ROW = 0.66;
-// The print was folded twice into its book, so two faint vertical bands cross the scan at
-// about 31% and 62% of its width. A per-column gain, measured on rows where the band
-// crosses even texture, flattens each without smearing the drawing.
-const SEAMS = [
-  { x0: 0.285, x1: 0.33, rows: [0.7, 0.95] },
-  { x0: 0.59, x1: 0.655, rows: [0.12, 0.48] },
-];
+// The print was folded twice into its book. The right fold is a soft darker band at about
+// 62% of the width, flattened by a per-column gain measured where it crosses the sky. The
+// left fold is a sharp bright crease at about 30.6%, too narrow for a gain, so its few
+// columns are covered with a copy of the strip just left of them: repeated hatching is
+// invisible at footer size, where a smooth interpolated band reads as a stripe.
+const SEAMS = [{ x0: 0.59, x1: 0.655, rows: [0.12, 0.48] }];
+const CREASES = [{ x: 0.3065, halfWidth: 8 }];
 // The plate's border line runs along the very top, so the fill is seeded from the top
 // few percent of rows rather than the first row alone.
 const SKY_SEED_ROWS = 0.05;
@@ -90,6 +90,18 @@ function flattenSeam(gray, w, h, seam) {
     const gain = Math.min(1.5, Math.max(1, trend / columnMean(x)));
     for (let y = 0; y < h; y++) {
       gray[y * w + x] = Math.min(255, Math.round(gray[y * w + x] * gain));
+    }
+  }
+}
+
+function fillCrease(gray, w, h, crease) {
+  const centre = Math.round(w * crease.x);
+  const x0 = centre - crease.halfWidth;
+  const x1 = centre + crease.halfWidth;
+  const span = x1 - x0 + 1;
+  for (let y = 0; y < h; y++) {
+    for (let x = x0; x <= x1; x++) {
+      gray[y * w + x] = gray[y * w + x - span];
     }
   }
 }
@@ -196,6 +208,9 @@ async function build() {
   const { width: w, height: h } = info;
   for (const seam of SEAMS) {
     flattenSeam(gray, w, h, seam);
+  }
+  for (const crease of CREASES) {
+    fillCrease(gray, w, h, crease);
   }
 
   const paper = await paperTone(gray, w, h);
