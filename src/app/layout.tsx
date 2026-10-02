@@ -1,11 +1,20 @@
 import type { Metadata } from "next";
-import { Source_Serif_4, JetBrains_Mono } from "next/font/google";
+import { EB_Garamond, JetBrains_Mono } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
+import "./v3.css";
 
-const sourceSerif = Source_Serif_4({
-  variable: "--font-source-serif",
+const calSans = localFont({
+  src: "../fonts/CalSansVF.woff2",
+  variable: "--font-cal",
+  weight: "400 700",
+  display: "swap",
+});
+
+const garamond = EB_Garamond({
+  variable: "--font-garamond",
   subsets: ["latin"],
-  weight: ["400", "500", "600"],
+  weight: ["400", "500"],
   style: ["normal", "italic"],
   display: "swap",
 });
@@ -41,20 +50,6 @@ export const metadata: Metadata = {
   },
 };
 
-// Pre-hydration theme script — reads saved preference, defaults to LIGHT,
-// and applies data-theme + .dark class before React paints. Prevents
-// flash-of-wrong-theme and means OS dark-mode no longer force-applies.
-const themeInitScript = `
-try {
-  var saved = localStorage.getItem('theme');
-  var theme = saved === 'dark' || saved === 'light' ? saved : 'light';
-  document.documentElement.setAttribute('data-theme', theme);
-  if (theme === 'dark') document.documentElement.classList.add('dark');
-} catch (e) {
-  document.documentElement.setAttribute('data-theme', 'light');
-}
-`;
-
 export default function RootLayout({
   children,
   modal,
@@ -65,12 +60,8 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      data-theme="light"
-      className={`${sourceSerif.variable} ${jetbrainsMono.variable} antialiased`}
+      className={`${calSans.variable} ${garamond.variable} ${jetbrainsMono.variable} antialiased`}
     >
-      <head>
-        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
-      </head>
       <body className="min-h-screen bg-canvas text-ink">
         <a
           href="#main"

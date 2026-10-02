@@ -1,0 +1,32 @@
+:root {
+  --paper: #ffffff;
+  --ink: #1f1f1f;
+  --text: #4a4a4a;
+  --muted: #8a8a8a;
+  --line: #e1e2e3;
+  --cross: #c6c6c6;
+  --wash: #f5f5f5;
+  --lime: #d0e26f;
+
+  --l0: #f0f0ee;
+  --l1: #edf3c4;
+  --l2: #d0e26f;
+  --l3: #a6c233;
+  --l4: #6c8a12;
+
+  --sky: #0a3886;
+  --cream: #f6ead2;
+  --cream-dim: rgba(246, 234, 210, 0.74);
+
+  --frame-w: min(1400px, 100% - 20px);
+}
+
+/* Cal Sans ships an ital axis, but the face is declared upright only, so an
+   italic class on an older page would otherwise get a fake slant. */
+html {
+  font-synthesis-style: none;
+}
+
+body {
+  font-optical-sizing: auto;
+}
