@@ -1,5 +1,4 @@
-import { TopBar } from "./nav";
-import { StatusFooter } from "./status-footer";
+import { TopBar } from "./top-bar";
 
 export function PageShell({
   children,
@@ -9,16 +8,17 @@ export function PageShell({
   wide?: boolean;
 }) {
   return (
-    <div
-      className={
-        wide
-          ? "mx-auto w-full max-w-7xl px-6 sm:px-10"
-          : "mx-auto w-full max-w-4xl px-6 sm:px-10"
-      }
-    >
+    <>
       <TopBar />
-      <main id="main">{children}</main>
-      <StatusFooter />
-    </div>
+      <div className="v3-rule" aria-hidden />
+      <div className="v3-frame">
+        <div className={wide ? "mx-auto w-full max-w-7xl" : "mx-auto w-full max-w-4xl"}>
+          <main id="main" className="py-14">
+            {children}
+          </main>
+        </div>
+      </div>
+      <div className="v3-rule" aria-hidden />
+    </>
   );
 }
