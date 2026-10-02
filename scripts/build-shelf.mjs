@@ -23,7 +23,13 @@ const BOOK = { title: 0, author: 1, genre: 2, completed: 3, when: 5 };
 const SHEET_EPOCH = Date.UTC(1899, 11, 30);
 const DAY_MS = 86_400_000;
 
-const cell = (row, i) => (row[i] ?? "").toString().trim();
+// A title that is only a number, such as the film "65" or the series "1899", comes out of
+// the sheet export as "65.0", so the float formatting is undone.
+const cell = (row, i) =>
+  (row[i] ?? "")
+    .toString()
+    .trim()
+    .replace(/^(\d+)\.0$/, "$1");
 const list = (text) => text.split(",").map((s) => s.trim()).filter(Boolean);
 const number = (text) => (text === "" || text === "N/A" ? null : Number(text));
 
