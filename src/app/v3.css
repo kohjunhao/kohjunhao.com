@@ -518,12 +518,30 @@ body {
   font-weight: 500;
 }
 
+/* The picture column is always reserved so titles line up whether or not
+   an entry has one. */
 .v3-entry {
   display: grid;
-  grid-template-columns: 5.5rem 5rem minmax(0, 1fr);
+  grid-template-columns: 5.5rem 5rem minmax(0, 1fr) 13.75rem;
   gap: 16px;
   padding-block: 16px;
   border-bottom: 1px solid var(--line);
+}
+
+.v3-entry-img {
+  grid-column: 4;
+  overflow: hidden;
+  aspect-ratio: 8 / 5;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--wash);
+}
+
+.v3-entry-img img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .v3-entry-when,
@@ -583,9 +601,17 @@ body {
     padding-block: 14px;
   }
 
-  .v3-entry > div:last-child {
+  .v3-entry-body,
+  .v3-entry-img {
     grid-column: 1 / -1;
+  }
+
+  .v3-entry-body {
     margin-top: 2px;
+  }
+
+  .v3-entry-img {
+    margin-top: 10px;
   }
 
   .v3-entry-when span {

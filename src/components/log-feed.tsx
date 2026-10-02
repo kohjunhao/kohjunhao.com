@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { KINDS, type LogEntry } from "@/content/log";
 import { shortDay } from "@/lib/calendar";
@@ -16,6 +17,9 @@ const MONTH_NAMES = [
   "November",
   "December",
 ];
+
+const THUMB_WIDTH = 800;
+const THUMB_HEIGHT = 500;
 
 const entryCount = (n: number) => `${n} ${n === 1 ? "entry" : "entries"}`;
 
@@ -80,12 +84,23 @@ export function LogFeed({ entries }: { entries: LogEntry[] }) {
                 {entry.until && <span>to {shortDay(entry.until)}</span>}
               </div>
               <div className="v3-entry-kind">{KINDS[entry.kind]}</div>
-              <div>
+              <div className="v3-entry-body">
                 <h4 className="v3-entry-title">
                   <Title entry={entry} />
                 </h4>
                 <p className="v3-entry-deck">{entry.deck}</p>
               </div>
+              {entry.image && (
+                <div className="v3-entry-img">
+                  <Image
+                    src={`/log/${entry.image}.jpg`}
+                    alt=""
+                    width={THUMB_WIDTH}
+                    height={THUMB_HEIGHT}
+                    sizes="(max-width: 640px) 100vw, 220px"
+                  />
+                </div>
+              )}
             </article>
           ))}
         </div>
