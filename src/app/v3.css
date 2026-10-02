@@ -1287,3 +1287,51 @@ body {
     font-size: 10px;
   }
 }
+
+/* ── shelf: landing strip ────────────────────────────── */
+
+.v3-strip {
+  padding-block: 48px;
+}
+
+.v3-strip-row {
+  display: flex;
+  gap: 10px;
+  margin-top: 16px;
+  padding-top: 4px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+
+.v3-strip-row::-webkit-scrollbar {
+  display: none;
+}
+
+.v3-strip-row > .v3-tile {
+  flex: none;
+  width: 120px;
+  scroll-snap-align: start;
+}
+
+.v3-strip-links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-top: 18px;
+}
+
+.v3-strip-links .v3-caption {
+  margin-right: 4px;
+}
+
+.v3-strip-links .v3-pill {
+  text-decoration: none;
+}
+
+@media (max-width: 640px) {
+  .v3-strip {
+    padding-block: 36px;
+  }
+}

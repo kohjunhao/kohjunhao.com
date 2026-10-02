@@ -26,9 +26,11 @@ export const site = {
 } as const;
 
 export const sections = [
-  { label: "Investments", href: "/investments" },
-  { label: "Shelf", href: "/books" },
+  { label: "Films", href: "/films" },
+  { label: "Books", href: "/books" },
+  { label: "Games", href: "/games" },
   { label: "Writing", href: "/articles" },
+  { label: "Investments", href: "/investments" },
 ] as const;
 
 export type NavEntry = {
