@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { EB_Garamond, JetBrains_Mono } from "next/font/google";
 import localFont from "next/font/local";
+import { SkyFooter } from "@/components/sky-footer";
 import "./globals.css";
 import "./v3.css";
 
@@ -70,6 +71,7 @@ export default function RootLayout({
           Skip to content
         </a>
         {children}
+        <SkyFooter />
         {modal}
         <div id="modal-root" />
       </body>

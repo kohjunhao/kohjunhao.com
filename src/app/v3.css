@@ -474,3 +474,221 @@ body {
     padding-bottom: 16px;
   }
 }
+
+/* ── sky footer ──────────────────────────────────────── */
+
+.sky {
+  position: relative;
+  overflow: hidden;
+  background: var(--sky);
+  color: var(--cream);
+  font-family: var(--font-garamond), Garamond, Georgia, serif;
+  font-feature-settings: "kern", "liga";
+}
+
+.sky-grain {
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='g'><feTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%' height='100%' filter='url(%23g)'/></svg>");
+  opacity: 0.14;
+  mix-blend-mode: soft-light;
+  pointer-events: none;
+}
+
+.sky a {
+  color: var(--cream);
+}
+
+.sky :focus-visible {
+  outline-color: var(--cream);
+}
+
+.sky-inner {
+  width: var(--frame-w);
+  margin-inline: auto;
+  padding: 88px 32px 40px;
+}
+
+.sky-grid {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr 1fr 1.35fr;
+  gap: 40px;
+}
+
+.sky-name {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 32px;
+  font-weight: 500;
+  line-height: 1;
+}
+
+.sky-name svg {
+  flex-shrink: 0;
+}
+
+.sky-tagline {
+  margin-top: 18px;
+  color: var(--cream-dim);
+  font-size: 18px;
+  font-style: italic;
+  line-height: 1.45;
+}
+
+.sky-facts {
+  display: grid;
+  gap: 10px;
+  margin-top: 24px;
+  font-size: 17px;
+  line-height: 1.4;
+}
+
+.sky-facts li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.sky-facts svg {
+  flex-shrink: 0;
+  margin-top: 3px;
+}
+
+.sky-icons {
+  display: flex;
+  gap: 22px;
+  margin-top: 30px;
+}
+
+.sky-icons a {
+  display: block;
+  opacity: 0.9;
+}
+
+.sky-icons a:hover {
+  opacity: 1;
+}
+
+.sky-heading {
+  font-size: 15px;
+  font-weight: 400;
+  letter-spacing: 0.18em;
+  line-height: 1.3;
+  text-transform: uppercase;
+}
+
+.sky-heading::after {
+  content: "";
+  display: block;
+  width: 44px;
+  height: 1px;
+  margin-top: 10px;
+  background: var(--cream);
+}
+
+.sky-list {
+  margin-top: 18px;
+  font-size: 19px;
+  line-height: 1.9;
+}
+
+.sky-list a {
+  text-decoration: none;
+}
+
+.sky-list a:hover {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+.sky-colophon {
+  margin-top: 18px;
+  color: var(--cream-dim);
+  font-size: 17px;
+  line-height: 1.55;
+}
+
+.sky-colophon a {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+.sky-bottom {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  align-items: center;
+  row-gap: 6px;
+  margin-top: 40px;
+  color: var(--cream-dim);
+  font-size: 15px;
+  font-style: italic;
+}
+
+.sky-bottom li + li::before {
+  content: "";
+  display: inline-block;
+  width: 1px;
+  height: 14px;
+  margin-inline: 18px;
+  background: var(--cream);
+  vertical-align: -2px;
+}
+
+.sky-bottom a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.sky-bottom a:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.sky-art {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin-top: 48px;
+  background: var(--sky);
+}
+
+@media (max-width: 1024px) {
+  .sky-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .sky-brand {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 640px) {
+  .sky-inner {
+    padding: 56px 16px 32px;
+  }
+
+  .sky-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  /* Three items no longer fit on one line, and a wrapped line would start
+     with a bar, so they stack instead. */
+  .sky-bottom {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .sky-bottom li + li::before {
+    display: none;
+  }
+
+  .sky-art {
+    height: 220px;
+    object-fit: cover;
+    object-position: 50% 100%;
+  }
+}
