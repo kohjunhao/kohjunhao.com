@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "data": "node scripts/build-activity.mjs && node scripts/build-shelf.mjs && node scripts/build-shelf-covers.mjs && node scripts/build-logos.mjs"
   },
   "dependencies": {
     "cmdk": "^1.1.1",
