@@ -46,9 +46,8 @@ export const nav: NavEntry[] = [
   { index: "01", slug: "articles", label: "Articles", kind: "writing", note: "Long-form DeFi research" },
   { index: "02", slug: "projects", label: "Projects", kind: "ledger", note: "What I'm building" },
   { index: "03", slug: "investments", label: "Investments", kind: "ledger", note: "Angel portfolio" },
-  { index: "04", slug: "books", label: "Books", kind: "stock", note: "A public shelf" },
-  { index: "05", slug: "movies", label: "Movies", kind: "stock", note: "A public film log" },
-  { index: "06", slug: "games", label: "Games", kind: "stock", note: "Steam · Switch · PS5" },
-  { index: "07", slug: "curated", label: "Curated", kind: "stock", note: "Objects worth keeping" },
-  { index: "08", slug: "design", label: "Design", kind: "meta", note: "The system, in-product" },
+  { index: "04", slug: "films", label: "Films", kind: "stock", note: "Every film and show watched" },
+  { index: "05", slug: "books", label: "Books", kind: "stock", note: "A public shelf" },
+  { index: "06", slug: "games", label: "Games", kind: "stock", note: "Video games and board games" },
+  { index: "07", slug: "design", label: "Design", kind: "meta", note: "The system, in-product" },
 ];
