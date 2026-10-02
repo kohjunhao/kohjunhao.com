@@ -58,6 +58,8 @@ function stripChrome(body) {
       .replace(/\n+Search\.\.\.[\s\S]*$/, "\n")
       .replace(/\n+---\n+\*Originally published on [\s\S]*$/, "\n")
       .replace(/!\[[^\]]*\]\(https:\/\/paragraph\.com\/branding\/[^)]*\)\n*/g, "")
+      // The export escapes some tildes twice, which would print "(\~409K USD)".
+      .replace(/\\\\~/g, "\\~")
   );
 }
 
