@@ -18,6 +18,8 @@ const SIZE = 128;
 const MIN_SIZE = 32;
 const PAUSE_MS = 150;
 const force = process.argv.includes("--force");
+// Sites built on a hosted platform return the platform's mark instead of the company's.
+const WRONG_LOGO = new Set(["dawn"]);
 
 // Mirrors investmentSlug() in src/lib/stock.ts so file names match the page.
 const slugify = (name) =>
@@ -54,7 +56,7 @@ mkdirSync(OUT_DIR, { recursive: true });
 let found = 0;
 for (const { name, slug, host } of companies) {
   const file = join(OUT_DIR, `${slug}.webp`);
-  if (!host || (manifest[slug] && existsSync(file) && !force)) {
+  if (!host || WRONG_LOGO.has(slug) || (manifest[slug] && existsSync(file) && !force)) {
     continue;
   }
   const image =
