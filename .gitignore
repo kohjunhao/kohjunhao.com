@@ -44,3 +44,6 @@ next-env.d.ts
 .audit/
 data/raw/
 inbox/
+
+# worktrees made by coding agents
+.claude/worktrees/
