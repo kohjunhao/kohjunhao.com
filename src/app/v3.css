@@ -1333,7 +1333,9 @@ body {
 @media (max-width: 640px) {
   .v3-strip {
     padding-block: 36px;
-||||||| parent of 268ee91 (Serve the Paragraph essays in the new look)
+  }
+}
+
 /* ── writing ─────────────────────────────────────────── */
 
 .v3-writing {
