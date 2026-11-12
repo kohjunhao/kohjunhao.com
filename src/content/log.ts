@@ -22,13 +22,55 @@ export type LogEntry = {
   href?: string;
   /** File name under /public/log, without the extension. */
   image?: string;
+  /** How it ended, when "Shipped" would be untrue or less than the whole story. */
+  status?: string;
 };
+
+export const DEFAULT_STATUS = "Shipped";
 
 const FULLMARKS = "https://fullmarks.sg";
 
 // Newest first. Every line here has to be true and safe to publish:
 // no client or operator names, no money, health or address details.
 export const log: LogEntry[] = [
+  {
+    date: "2026-11-12",
+    kind: "build",
+    title: "This site gets rebuilt, again",
+    deck: "The 1828 view of Singapore harbour moves from the footer to the front door, and the log becomes a departures board.",
+    status: "Third version",
+  },
+  {
+    date: "2026-11-06",
+    until: "2026-11-07",
+    kind: "research",
+    title: "Went looking for the bitcoin hidden in a French book. Every run missed.",
+    deck: "An author hid a 24 word wallet phrase in a 2024 book about energy and money. A solver tried every candidate the ebook allows. The remaining clues sit in pictures that only the first print has.",
+    status: "Missed",
+  },
+  {
+    date: "2026-10-13",
+    kind: "build",
+    title: "Groundcrew Robotics gets a new look",
+    deck: "The home page, the research hub and every note move to one quieter design.",
+    href: "https://groundcrewrobotics.com",
+  },
+  {
+    date: "2026-10-03",
+    until: "2026-10-12",
+    kind: "build",
+    title: "Fixes merged into three open source projects",
+    deck: "Cloudflare's workers-sdk, LiteLLM and OpenLogi each took a patch. One stops noisy Docker errors, one sends a missing header, one handles a mouse that wakes up under a new name.",
+    href: "https://github.com/kohjunhao",
+    status: "Merged",
+  },
+  {
+    date: "2026-10-02",
+    kind: "research",
+    title: "A guide to bringing a robot into Southeast Asia",
+    deck: "Duties, licences and radio approvals by country, a requirements sheet for the climate and the lifts, and a tracker of robots already at work in the region.",
+    href: "https://groundcrewrobotics.com/research",
+  },
   {
     date: "2026-10-01",
     kind: "build",
@@ -132,6 +174,7 @@ export const log: LogEntry[] = [
     kind: "research",
     title: "Went looking for the 52 hertz whale. Stopped at day 396.",
     deck: "396 days of open hydrophone recordings from Monterey Bay were banked before the download was paused. The call has drifted lower since it was first heard, so the search has to match the shape of the call.",
+    status: "Stopped",
   },
   {
     date: "2026-08-28",
@@ -202,6 +245,7 @@ export const log: LogEntry[] = [
     title: "Rank 1 on Paradigm's RSI Simulator, for a while",
     deck: "On 12 Aug a run of 127.70 months beat the previous record by 12.5 months, played as @0xVega. The board has moved on since.",
     href: "https://www.paradigm.xyz/puzzles/rsi",
+    status: "Since beaten",
   },
   {
     date: "2026-08-06",
@@ -209,6 +253,7 @@ export const log: LogEntry[] = [
     kind: "print",
     title: "Man prints butterfly knife trainer. It fails again.",
     deck: "A plastic practice knife. Six versions of the print file exist. Cat toys and a dock were on the print list the same month.",
+    status: "Failed again",
   },
   {
     date: "2026-08-06",
@@ -239,6 +284,7 @@ export const log: LogEntry[] = [
     deck: "An open source driver could not see the mouse over Bluetooth. One lost message was aborting a handshake of about 35 steps. Pull request 469, merged on 10 Aug.",
     href: "https://github.com/AprilNEA/OpenLogi/pull/469",
     image: "openlogi",
+    status: "Merged",
   },
   {
     date: "2026-07-18",
