@@ -4,6 +4,7 @@ import localFont from "next/font/local";
 import { SkyFooter } from "@/components/sky-footer";
 import "./globals.css";
 import "./v3.css";
+import "./v4.css";
 
 const calSans = localFont({
   src: "../fonts/CalSansVF.woff2",

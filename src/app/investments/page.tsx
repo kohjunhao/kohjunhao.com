@@ -14,37 +14,22 @@ const GROUPS: { category: NonNullable<Investment["category"]>; label: string }[]
   { category: "Frontier Tech", label: "Frontier tech" },
 ];
 
-// Quiet paper tints for companies without a logo, picked by the name so a
-// company keeps its colour between builds.
-const TINTS = ["#efe9dc", "#e6ebe0", "#e3e8ef", "#efe3e3", "#ece6ef", "#e9ecd9", "#e4ecec", "#efe7dd"];
 const LOGO_SIZE = 40;
 
 const logoFor = (slug: string): { w: number; h: number } | undefined => (logos as Record<string, { w: number; h: number }>)[slug];
 
-function tint(name: string) {
-  let hash = 0;
-  for (const ch of name) {
-    hash = (hash * 31 + ch.charCodeAt(0)) % 1_000_003;
-  }
-  return TINTS[hash % TINTS.length];
-}
-
-function Mark({ inv }: { inv: Investment }) {
+function Name({ inv }: { inv: Investment }) {
   const slug = investmentSlug(inv.name);
-  const logo = logoFor(slug);
-  if (!logo) {
-    return (
-      <span className="inv-mark" style={{ "--tint": tint(inv.name) } as React.CSSProperties} aria-hidden>
-        {inv.name.slice(0, 1).toUpperCase()}
-      </span>
-    );
-  }
   return (
-    <span className="inv-mark">
-      {/* Small files already; the optimiser would only re-encode them. */}
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={`/logos/${slug}.webp`} alt="" width={LOGO_SIZE} height={LOGO_SIZE} loading="lazy" />
-    </span>
+    <li>
+      {logoFor(slug) && (
+        // Small files already; the optimiser would only re-encode them.
+        // eslint-disable-next-line @next/next/no-img-element
+        <img src={`/logos/${slug}.webp`} alt="" width={LOGO_SIZE} height={LOGO_SIZE} loading="lazy" />
+      )}
+      {inv.name}
+      {inv.year && <sup>{inv.year}</sup>}
+    </li>
   );
 }
 
@@ -58,12 +43,10 @@ export default function InvestmentsPage() {
     <>
       <TopBar />
       <div className="v3-rule" aria-hidden />
-      <main id="main" className="v3-frame">
-        <div className="inv-head">
-          <h1 className="v3-label">Investments</h1>
-          <span className="v3-caption">angel cheques, pre-seed and seed, no click-through</span>
-        </div>
-        <p className="inv-sum">{investments.length} companies.</p>
+      <main id="main" className="v3-frame inv">
+        <h1 className="inv-title">
+          {investments.length} companies. <span>Angel cheques, pre-seed and seed.</span>
+        </h1>
 
         {groups.map(({ label, items }) => (
           <section key={label} className="inv-group" aria-label={label}>
@@ -73,18 +56,11 @@ export default function InvestmentsPage() {
             </div>
             <ul className="inv-wall">
               {items.map((inv) => (
-                <li key={inv.name} className="inv-tile">
-                  <Mark inv={inv} />
-                  <div>
-                    <div className="inv-name">{inv.name}</div>
-                    {inv.year && <div className="inv-year">{inv.year}</div>}
-                  </div>
-                </li>
+                <Name key={inv.name} inv={inv} />
               ))}
             </ul>
           </section>
         ))}
-        <p className="inv-note">Logos appear where the company has a public site on file; the rest show an initial.</p>
       </main>
       <div className="v3-rule" aria-hidden />
     </>

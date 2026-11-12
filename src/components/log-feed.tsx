@@ -60,13 +60,13 @@ export function LogFeed({ entries }: { entries: LogEntry[] }) {
 
   return (
     <section className="v3-frame v3-log" id="log" aria-labelledby="log-heading">
-      <div className="v3-activity-head">
-        <h2 id="log-heading" className="v3-label">
-          Log
+      <div className="sec-head">
+        <h2 id="log-heading">
+          The full manifest.{" "}
+          <span>
+            {entryCount(entries.length)} since {monthName(oldest.date.slice(0, 7))} {oldest.date.slice(0, 4)}, newest first.
+          </span>
         </h2>
-        <span className="v3-caption">
-          {entryCount(entries.length)} since {monthName(oldest.date.slice(0, 7))} {oldest.date.slice(0, 4)}, newest first
-        </span>
       </div>
 
       {months.map(([month, monthEntries]) => (
@@ -83,7 +83,10 @@ export function LogFeed({ entries }: { entries: LogEntry[] }) {
                 <time dateTime={entry.date}>{shortDay(entry.date)}</time>
                 {entry.until && <span>to {shortDay(entry.until)}</span>}
               </div>
-              <div className="v3-entry-kind">{KINDS[entry.kind]}</div>
+              <div className="v3-entry-kind">
+                {KINDS[entry.kind]}
+                {entry.status && <span className="v3-entry-status">{entry.status}</span>}
+              </div>
               <div className="v3-entry-body">
                 <h4 className="v3-entry-title">
                   <Title entry={entry} />

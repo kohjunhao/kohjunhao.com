@@ -17,6 +17,8 @@ export type CalendarDay = {
 
 export type Calendar = {
   weeks: number;
+  /** The first day counted. The grid itself starts on the Monday before. */
+  from: string;
   /** The newest day with data. */
   through: string;
   /** Seven per week, Monday first, so the grid fills column by column. */
@@ -104,6 +106,7 @@ export function buildCalendar(): Calendar {
 
   return {
     weeks,
+    from: activity.from,
     through: activity.through,
     days,
     monthLabels,

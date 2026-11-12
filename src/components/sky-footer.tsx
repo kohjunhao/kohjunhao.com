@@ -145,7 +145,7 @@ export function SkyFooter() {
           <div>
             <h2 className="sky-heading">Colophon</h2>
             <p className="sky-colophon">
-              Set in Cal Sans and EB Garamond. The view below is Singapore from Government Hill, drawn by Robert
+              Set in Cal Sans and EB Garamond. The engraving is Singapore from Government Hill, drawn by Robert
               James Elliot and{" "}
               <a href={ART_CREDIT} target="_blank" rel="noopener noreferrer">
                 published in 1828

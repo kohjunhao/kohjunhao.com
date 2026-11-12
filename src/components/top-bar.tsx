@@ -1,9 +1,11 @@
 import Link from "next/link";
 import { sections, site } from "@/lib/site";
 
-export function TopBar() {
+export type TopBarTone = "paper" | "sky";
+
+export function TopBar({ tone = "paper" }: { tone?: TopBarTone }) {
   return (
-    <header className="v3-frame v3-top">
+    <header className="v3-frame v3-top" data-tone={tone}>
       <Link href="/" className="v3-wordmark">
         {site.name}
       </Link>

@@ -1,49 +1,62 @@
 import Link from "next/link";
 import { Tile } from "@/components/tile";
-import { books, cover, films, type Film } from "@/lib/shelf";
+import { boardGames, books, cover, films, games, type Film } from "@/lib/shelf";
 
-const FILM_COUNT = 24;
+const FILM_COUNT = 22;
 const BOOK_COUNT = 8;
-const MIN_TILES = 12;
 
 const newestFirst = (a: Film, b: Film) => (b.year ?? 0) - (a.year ?? 0);
 
-const PAGES = [
-  { label: "Films", href: "/films" },
-  { label: "Books", href: "/books" },
-  { label: "Games", href: "/games" },
-];
-
 export function ShelfStrip() {
-  const newest = [...films].sort(newestFirst);
-  const covered = newest.filter((f) => cover("films", f.slug)).slice(0, FILM_COUNT);
+  const filmTiles = [...films]
+    .sort(newestFirst)
+    .filter((f) => cover("films", f.slug))
+    .slice(0, FILM_COUNT);
   const bookTiles = books.filter((b) => cover("books", b.slug)).slice(0, BOOK_COUNT);
-  const shortBy = MIN_TILES - covered.length - bookTiles.length;
-  const filler = shortBy > 0 ? newest.filter((f) => !covered.includes(f)).slice(0, shortBy) : [];
+
+  const pages = [
+    { label: "Films and shows", href: "/films", count: films.length },
+    { label: "Books", href: "/books", count: books.length },
+    { label: "Games", href: "/games", count: games.length + boardGames.length },
+  ];
+
+  const tiles = (
+    <>
+      {filmTiles.map((f) => (
+        <Tile key={f.slug} kind="films" slug={f.slug} title={f.title} year={f.year} caption={f.director || undefined} />
+      ))}
+      {bookTiles.map((b) => (
+        <Tile key={b.slug} kind="books" slug={b.slug} title={b.title} caption={b.author || undefined} />
+      ))}
+    </>
+  );
 
   return (
-    <section className="v3-frame v3-strip" aria-labelledby="shelf">
-      <div className="v3-activity-head">
-        <h2 id="shelf" className="v3-label">
-          Shelf
+    <section className="v3-frame shelf" aria-labelledby="shelf">
+      <div className="sec-head">
+        <h2 id="shelf">
+          Shore leave. <span>Watched, read and played.</span>
         </h2>
-        <span className="v3-caption">What I watched, read and played</span>
       </div>
 
-      <div className="v3-strip-row">
-        {[...covered, ...filler].map((f) => (
-          <Tile key={f.slug} kind="films" slug={f.slug} title={f.title} year={f.year} caption={f.director || undefined} />
-        ))}
-        {bookTiles.map((b) => (
-          <Tile key={b.slug} kind="books" slug={b.slug} title={b.title} caption={b.author || undefined} />
-        ))}
+      {/* The row is doubled so the drift can loop without a seam. */}
+      <div className="shelf-belt">
+        <div className="shelf-track">
+          <div className="shelf-run">{tiles}</div>
+          <div className="shelf-run" aria-hidden>
+            {tiles}
+          </div>
+        </div>
       </div>
 
-      <nav className="v3-strip-links" aria-label="See all">
-        <span className="v3-caption">See all</span>
-        {PAGES.map(({ label, href }) => (
-          <Link key={href} href={href} className="v3-pill">
-            {label}
+      <nav className="shelf-pages" aria-label="The shelves">
+        {pages.map(({ label, href, count }) => (
+          <Link key={href} href={href}>
+            <b>{count.toLocaleString("en-US")}</b>
+            <span>{label}</span>
+            <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden>
+              <path d="M5.5 3 9.5 7l-4 4" fill="none" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
           </Link>
         ))}
       </nav>
