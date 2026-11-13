@@ -39,8 +39,8 @@ export function plateModel() {
 
   const MIN_ORB_RADIUS = 16;
   const ORB_RADIUS_PER_WIDTH = 0.026;
-  const SUN_SCALE = 1.15;
-  const MOON_SCALE = 0.9;
+  type Body = "sun" | "moon";
+  const ORB_SCALE: Record<Body, number> = { sun: 1.15, moon: 0.9 };
   const MOONLIGHT = "#f1eede";
 
   function skyAt(minute: number): Rgb {
@@ -71,7 +71,7 @@ export function plateModel() {
     const isDay = h >= SUNRISE && h <= SUNSET;
     const arc = isDay ? (h - SUNRISE) / (SUNSET - SUNRISE) : ((h - SUNSET + 24) % 24) / (24 - SUNSET + SUNRISE);
     return {
-      body: isDay ? ("sun" as const) : ("moon" as const),
+      body: (isDay ? "sun" : "moon") as Body,
       arc,
       x: 0.05 + 0.9 * arc,
       y: 0.6 - 0.5 * Math.sin(Math.PI * arc),
@@ -91,31 +91,28 @@ export function plateModel() {
   }
 
   /** The disc's radius in pixels on a plate this wide. */
-  function orbRadius(plateWidth: number, body: "sun" | "moon") {
-    const base = Math.max(MIN_ORB_RADIUS, plateWidth * ORB_RADIUS_PER_WIDTH);
-    return body === "sun" ? base * SUN_SCALE : Number((base * MOON_SCALE).toFixed(1));
+  function orbRadius(plateWidth: number, body: Body) {
+    return Math.max(MIN_ORB_RADIUS, plateWidth * ORB_RADIUS_PER_WIDTH) * ORB_SCALE[body];
   }
 
-  // An SVG a little larger than the disc, centred on the orb's anchor point.
-  function svgBox(r: number, inner: string) {
-    const d = (r * 2 + 4).toFixed(1);
-    const o = (-r - 2).toFixed(1);
-    return `<svg width="${d}" height="${d}" viewBox="${o} ${o} ${d} ${d}" style="left:${o}px;top:${o}px">${inner}</svg>`;
+  /** The same diameter as CSS, measured against the plate (a size container), so it needs no JavaScript on resize. */
+  function orbDiameterCss(body: Body) {
+    return `calc(max(${MIN_ORB_RADIUS}px, ${ORB_RADIUS_PER_WIDTH * 100}cqw) * ${2 * ORB_SCALE[body]})`;
   }
 
-  function sunSvg(r: number, color: string) {
-    return svgBox(r, `<circle r="${r.toFixed(1)}" fill="${color}"/>`);
+  // Discs are drawn on a unit square and sized by CSS.
+  const UNIT_BOX = 'viewBox="-1 -1 2 2"';
+
+  function sunSvg(color: string) {
+    return `<svg ${UNIT_BOX}><circle r="1" fill="${color}"/></svg>`;
   }
 
-  function moonSvg(r: number, ms: number) {
+  function moonSvg(ms: number) {
     const { k, waning } = moonPhase(ms);
-    const rx = (r * Math.abs(k)).toFixed(2);
+    const rx = Math.abs(k).toFixed(3);
     const flip = waning ? -1 : 1;
-    const lit = `M0,${-r}A${r},${r} 0 0,1 0,${r}A${rx},${r} 0 0,${k > 0 ? 0 : 1} 0,${-r}Z`;
-    return svgBox(
-      r,
-      `<circle r="${r}" fill="${MOONLIGHT}" opacity=".12"/><path transform="scale(${flip},1)" d="${lit}" fill="${MOONLIGHT}"/>`,
-    );
+    const lit = `M0,-1A1,1 0 0,1 0,1A${rx},1 0 0,${k > 0 ? 0 : 1} 0,-1Z`;
+    return `<svg ${UNIT_BOX}><circle r="1" fill="${MOONLIGHT}" opacity=".12"/><path transform="scale(${flip},1)" d="${lit}" fill="${MOONLIGHT}"/></svg>`;
   }
 
   /** `21:04` */
@@ -136,17 +133,19 @@ export function plateModel() {
     return (part("hour") % 24) * MINUTES_PER_HOUR + part("minute");
   }
 
+  const percent = (fraction: number) => `${(fraction * 100).toFixed(2)}%`;
+
   /** Everything the page needs to draw one minute, as ready-to-apply strings. */
-  function frame(minute: number, width: number, height: number, ms: number) {
+  function frame(minute: number, ms: number) {
     const sky = skyAt(minute);
     const orb = orbAt(minute);
-    const r = orbRadius(width, orb.body);
-    const svg = orb.body === "sun" ? sunSvg(r, sunColor(orb.arc)) : moonSvg(r, ms);
     return {
       sky: `rgb(${sky.join(",")})`,
       night: darkness(sky).toFixed(2),
-      transform: `translate(${(width * orb.x).toFixed(1)}px,${(height * orb.y).toFixed(1)}px)`,
-      svg,
+      left: percent(orb.x),
+      top: percent(orb.y),
+      size: orbDiameterCss(orb.body),
+      svg: orb.body === "sun" ? sunSvg(sunColor(orb.arc)) : moonSvg(ms),
       clock: clock(minute),
     };
   }

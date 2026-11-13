@@ -67,20 +67,33 @@ test("Singapore time is UTC plus eight, wrapping past midnight", () => {
 
 test("a frame draws a sun by day and a moon by night", () => {
   const ms = Date.UTC(2026, 10, 13);
-  const noon = m.frame(at(12), 1176, 356, ms);
+  const noon = m.frame(at(12), ms);
   assert.equal(noon.sky, "rgb(247,244,234)");
   assert.equal(noon.night, "0.00");
-  assert.match(noon.svg, /<circle r="35\.2" fill="rgb\(240,/);
+  assert.match(noon.svg, /<circle r="1" fill="rgb\(240,/);
   assert.doesNotMatch(noon.svg, /<path/);
+  assert.equal(noon.size, "calc(max(16px, 2.6cqw) * 2.3)");
 
-  const night = m.frame(at(21), 1176, 356, ms);
+  const night = m.frame(at(21), ms);
   assert.equal(night.night, "1.00");
   assert.match(night.svg, /<path transform="scale\(-?1,1\)"/);
+  assert.equal(night.size, "calc(max(16px, 2.6cqw) * 1.8)");
   assert.equal(night.clock, "21:00");
+});
+
+test("a frame places the orb as percentages of the plate", () => {
+  const rise = m.frame(at(6, 51), 0);
+  assert.equal(rise.left, "5.00%");
+  assert.equal(rise.top, "60.00%");
+});
+
+test("the pixel radius grows with the plate above a floor", () => {
+  assert.equal(m.orbRadius(1000, "sun"), 26 * 1.15);
+  assert.equal(m.orbRadius(300, "moon"), 16 * 0.9);
 });
 
 test("the model runs from its own source, as the inline script runs it", () => {
   const copy = new Function(`return (${plateModel})()`)();
   const ms = Date.UTC(2026, 10, 13);
-  assert.deepEqual(copy.frame(at(21, 4), 1176, 356, ms), m.frame(at(21, 4), 1176, 356, ms));
+  assert.deepEqual(copy.frame(at(21, 4), ms), m.frame(at(21, 4), ms));
 });

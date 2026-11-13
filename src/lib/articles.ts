@@ -1,4 +1,5 @@
 import data from "@/content/articles.json";
+import { counted, yearSpan } from "./format";
 
 // Built by scripts/build-articles.mjs from the essays first published on Paragraph, newest first.
 export type Article = {
@@ -18,13 +19,7 @@ export function getArticle(slug: string) {
   return articles.find((a) => a.slug === slug);
 }
 
-export const paragraphUrl = (article: Article) => `${PARAGRAPH_URL}/${article.slug}`;
+/** `4 essays from 2022.` */
+export const writingSummary = `${counted(articles.length, "essay", "essays")} from ${yearSpan(articles.map((a) => a.date))}.`;
 
-export function formatDate(iso: string) {
-  return new Date(`${iso}T00:00:00Z`).toLocaleDateString("en-GB", {
-    day: "numeric",
-    month: "short",
-    year: "numeric",
-    timeZone: "UTC",
-  });
-}
+export const readingTime = (a: Article) => `${a.minutes} min`;
