@@ -34,11 +34,18 @@ const FULLMARKS = "https://fullmarks.sg";
 // no client or operator names, no money, health or address details.
 export const log: LogEntry[] = [
   {
+    date: "2026-11-13",
+    kind: "build",
+    title: "This site becomes a spreadsheet",
+    deck: "Most of it already was one. Select a few cells and the totals show at the bottom right.",
+    status: "Fourth version",
+  },
+  {
     date: "2026-11-12",
     kind: "build",
     title: "This site gets rebuilt, again",
     deck: "The 1828 view of Singapore harbour moves from the footer to the front door, and the log becomes a departures board.",
-    status: "Third version",
+    status: "Never shipped",
   },
   {
     date: "2026-11-06",
