@@ -1,14 +1,3 @@
-export type BlogPost = {
-  index: string;
-  title: string;
-  note: string;
-  date: string;
-};
-
-export const blogPosts: BlogPost[] = [
-  { index: "01", title: "Starting again, in public", note: "Notes on why this site now exists", date: "2026.04.22" },
-];
-
 export type ProjectStatus = "shipping" | "exploring" | "paused" | "dormant";
 
 export type Project = {
