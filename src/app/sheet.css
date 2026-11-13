@@ -255,7 +255,7 @@ button {
 }
 
 .findtoggle {
-  display: none !important;
+  display: none;
 }
 
 .find {
@@ -551,7 +551,9 @@ button {
   white-space: normal;
 }
 
-.k-entry td.fmt {
+.k-entry td.f-good,
+.k-entry td.f-bad,
+.k-entry td.f-warn {
   white-space: nowrap;
 }
 
@@ -1181,15 +1183,12 @@ button {
   }
 
   .findtoggle {
-    display: inline-grid !important;
+    display: inline-grid;
   }
 
   .find,
-  .switch {
-    display: none;
-  }
-
-  .fxbar.finding .fxtext {
+  .fxbar.finding .fxtext,
+  .fxbar.finding .switch {
     display: none;
   }
 
@@ -1197,12 +1196,8 @@ button {
     flex: 1;
   }
 
-  .fxbar.finding .find,
-  .fxbar.finding .switch {
-    display: inline-flex;
-  }
-
   .fxbar.finding .find {
+    display: block;
     flex: 1;
     width: auto;
     min-width: 0;
