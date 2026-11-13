@@ -90,7 +90,11 @@ export function plateModel() {
     return { k: Math.cos((2 * Math.PI * age) / SYNODIC_DAYS), waning: age > SYNODIC_DAYS / 2 };
   }
 
-  const orbRadius = (plateWidth: number) => Math.max(MIN_ORB_RADIUS, plateWidth * ORB_RADIUS_PER_WIDTH);
+  /** The disc's radius in pixels on a plate this wide. */
+  function orbRadius(plateWidth: number, body: "sun" | "moon") {
+    const base = Math.max(MIN_ORB_RADIUS, plateWidth * ORB_RADIUS_PER_WIDTH);
+    return body === "sun" ? base * SUN_SCALE : Number((base * MOON_SCALE).toFixed(1));
+  }
 
   // An SVG a little larger than the disc, centred on the orb's anchor point.
   function svgBox(r: number, inner: string) {
@@ -136,8 +140,8 @@ export function plateModel() {
   function frame(minute: number, width: number, height: number, ms: number) {
     const sky = skyAt(minute);
     const orb = orbAt(minute);
-    const r = orbRadius(width);
-    const svg = orb.body === "sun" ? sunSvg(r * SUN_SCALE, sunColor(orb.arc)) : moonSvg(Number((r * MOON_SCALE).toFixed(1)), ms);
+    const r = orbRadius(width, orb.body);
+    const svg = orb.body === "sun" ? sunSvg(r, sunColor(orb.arc)) : moonSvg(r, ms);
     return {
       sky: `rgb(${sky.join(",")})`,
       night: darkness(sky).toFixed(2),
