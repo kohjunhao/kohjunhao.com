@@ -1,4 +1,4 @@
-import { columnRange, type Cell, type Column, type RowKind, type Sheet, type Slot, type View } from "./model";
+import { columnRange, type Cell, type Column, type CoverShape, type RowKind, type Sheet, type Slot, type View } from "./model";
 import { int } from "./format";
 
 const GAP_COLUMN: Column = { width: 24, narrow: true };
@@ -15,6 +15,7 @@ export type TableSpec = {
   bodyKind?: RowKind;
   pivot?: PivotBlock[];
   defaultView?: View;
+  coverShape?: CoverShape;
 };
 
 const HEAD_ROW = 0;
@@ -53,6 +54,7 @@ export function tableSheet(spec: TableSpec): Sheet {
     rowKinds,
     table: { head: HEAD_ROW, first: FIRST_ROW, last: spec.body.length, firstCol: 0, lastCol: tableCols - 1 },
     defaultView: spec.defaultView,
+    coverShape: spec.coverShape,
   };
 }
 

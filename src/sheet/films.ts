@@ -21,6 +21,7 @@ export function buildFilms(): Sheet {
 
   return tableSheet({
     slug: "films",
+    coverShape: "portrait",
     columns: [
       { name: "Title", width: 300, mobileWidth: 220 },
       { name: "Year", width: 64 },

@@ -802,6 +802,10 @@ button {
   aspect-ratio: 1;
 }
 
+.covers.portrait .art {
+  aspect-ratio: 2 / 3;
+}
+
 .covers .art img {
   position: absolute;
   inset: 6px;

@@ -6,6 +6,7 @@ import { int, upToOneDecimal } from "@/sheet/format";
 import {
   cellAt,
   displayOrder,
+  fillSheet,
   hasCovers,
   isSingleCell,
   mergeOwners,
@@ -55,9 +56,11 @@ export function SheetApp({ sheet, book, active, label }: Props) {
     URL.revokeObjectURL(url);
   }, [sheet]);
 
+  const filled = useMemo(() => fillSheet(sheet), [sheet]);
+
   return (
     <Frame book={book} onDownload={sheet.table ? download : undefined}>
-      <SheetView sheet={sheet} book={book} active={active} label={label} />
+      <SheetView sheet={filled} usedColumns={sheet.columns.length} book={book} active={active} label={label} />
     </Frame>
   );
 }
@@ -72,7 +75,7 @@ const isEditable = (el: EventTarget | null) =>
 
 const PRINTABLE = /^[\p{L}\p{N}]$/u;
 
-function SheetView({ sheet, book, active, label }: Props) {
+function SheetView({ sheet, usedColumns, book, active, label }: Props & { usedColumns: number }) {
   const { notifyViewOnly } = useContext(FrameContext);
   const router = useRouter();
   const [selection, dispatch] = useReducer(selectionReducer, sheet, initialSelection);
@@ -81,6 +84,8 @@ function SheetView({ sheet, book, active, label }: Props) {
   const [findOpen, setFindOpen] = useState(false);
   const [view, setView] = useState<View>(sheet.defaultView ?? "rows");
   const [hoverRow, setHoverRow] = useState<number | null>(null);
+  // The cell selected on load would otherwise open with its picture sitting over the data.
+  const [touched, setTouched] = useState(false);
 
   const scroller = useRef<HTMLDivElement>(null);
   const table = useRef<HTMLTableElement>(null);
@@ -181,7 +186,7 @@ function SheetView({ sheet, book, active, label }: Props) {
     }
     if (e.key === "Home" || e.key === "End") {
       e.preventDefault();
-      const col = e.key === "Home" ? 0 : lastCol;
+      const col = e.key === "Home" ? 0 : usedColumns - 1;
       reveal.current = true;
       dispatch({ type: "move", to: ([r]) => ownerOf(owners, [r, col]), extend: e.shiftKey });
       return;
@@ -225,6 +230,7 @@ function SheetView({ sheet, book, active, label }: Props) {
       const inGrid = target === document.body || scroller.current?.contains(target);
       const nativeLink = e.key === "Enter" && target.closest("a");
       if (inGrid && !nativeLink) {
+        setTouched(true);
         keyHandler.current(e);
       }
     }
@@ -242,6 +248,7 @@ function SheetView({ sheet, book, active, label }: Props) {
   }
 
   function onPointerDown(e: React.PointerEvent) {
+    setTouched(true);
     pointerType.current = e.pointerType;
     const target = e.target as Element;
 
@@ -309,7 +316,7 @@ function SheetView({ sheet, book, active, label }: Props) {
   const floating: { picture: Picture; from: "hover" | "selection" } | null = hoverPicture
     ? { picture: hoverPicture, from: "hover" }
     : (() => {
-        const picture = rowPicture(sheet, order, focus[0]);
+        const picture = touched ? rowPicture(sheet, order, focus[0]) : null;
         return picture ? { picture, from: "selection" as const } : null;
       })();
 
@@ -470,7 +477,7 @@ function Covers({ sheet, order, focusRow, onSelect }: { sheet: Sheet; order: num
     return null;
   }
   return (
-    <ul className="covers" aria-label="Covers">
+    <ul className={sheet.coverShape === "portrait" ? "covers portrait" : "covers"} aria-label="Covers">
       {order.map((src, i) => {
         if (src < 0) {
           return null;

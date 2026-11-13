@@ -34,6 +34,7 @@ export type Slot = Cell | null | "covered";
 export type Column = { width: number; mobileWidth?: number; narrow?: boolean };
 export type RowKind = "name" | "summary" | "head" | "entry";
 export type View = "rows" | "covers";
+export type CoverShape = "square" | "portrait";
 
 /** Row and column indexes are zero based; `last` and `lastCol` are inclusive. */
 export type TableRange = { head: number; first: number; last: number; firstCol: number; lastCol: number };
@@ -46,6 +47,8 @@ export type Sheet = {
   table?: TableRange;
   todayColumn?: number;
   defaultView?: View;
+  /** The tile the covers view draws. Posters and book jackets are portrait; game art is mixed. */
+  coverShape?: CoverShape;
   /** The cell selected on load, as [row, column]. */
   select?: Addr;
 };

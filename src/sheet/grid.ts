@@ -1,7 +1,26 @@
-import { isCell, shownText, type Addr, type Cell, type Sheet } from "./model";
+import { isCell, shownText, type Addr, type Cell, type Column, type Sheet } from "./model";
 
 /** Empty rows drawn after the last row, as a spreadsheet always has more. */
 export const TAIL_ROWS = 8;
+
+const EMPTY_COLUMN: Column = { width: 104 };
+/** Wide enough that a full-width desktop window never shows the end of the columns. */
+const FILL_WIDTH = 1920;
+/** Tall enough that a short sheet still runs past the bottom of the window. */
+const FILL_ROWS = 60;
+
+/** A sheet padded with empty columns and rows, so the grid carries on past the data the way a real one does. */
+export function fillSheet(sheet: Sheet): Sheet {
+  const width = sheet.columns.reduce((sum, c) => sum + c.width, 0);
+  const extraColumns = Math.max(0, Math.ceil((FILL_WIDTH - width) / EMPTY_COLUMN.width));
+  const extraRows = Math.max(0, FILL_ROWS - TAIL_ROWS - sheet.rows.length);
+
+  return {
+    ...sheet,
+    columns: [...sheet.columns, ...Array.from({ length: extraColumns }, () => EMPTY_COLUMN)],
+    rows: [...sheet.rows, ...Array.from({ length: extraRows }, () => [])],
+  };
+}
 
 export type Direction = "asc" | "desc";
 export type Sort = { column: number; direction: Direction } | null;
