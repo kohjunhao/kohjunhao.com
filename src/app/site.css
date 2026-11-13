@@ -745,6 +745,11 @@ details[open] > summary > .pm::after {
   margin-top: 8px;
   padding-bottom: 14px;
 }
+.embed h1 {
+  margin: 0;
+  padding-top: 7px;
+  font-weight: 400;
+}
 .embed iframe {
   flex: 1;
   width: 100%;
@@ -874,5 +879,14 @@ details[open] > summary > .pm::after {
   }
   .embed {
     height: calc(100dvh - 56px - 24px);
+  }
+  .embed .grid {
+    margin-top: 0;
+  }
+  .embed .side {
+    margin-bottom: 2px;
+  }
+  .embed h1 {
+    padding-top: 0;
   }
 }
