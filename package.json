@@ -10,21 +10,17 @@
     "data": "node scripts/build-activity.mjs && node scripts/build-shelf.mjs && node scripts/build-shelf-covers.mjs && node scripts/build-logos.mjs"
   },
   "dependencies": {
-    "cmdk": "^1.1.1",
     "marked": "18.0.14",
-    "motion": "^12.38.0",
     "next": "16.4.2",
     "react": "19.2.4",
     "react-dom": "19.2.4"
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.4.2",
-    "tailwindcss": "^4",
     "typescript": "^5"
   }
 }
