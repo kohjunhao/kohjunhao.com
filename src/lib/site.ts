@@ -22,11 +22,3 @@ export const site = {
     groundcrew: "https://groundcrewrobotics.com",
   },
 } as const;
-
-export const sections = [
-  { label: "Films", href: "/films" },
-  { label: "Books", href: "/books" },
-  { label: "Games", href: "/games" },
-  { label: "Writing", href: "/articles" },
-  { label: "Investments", href: "/investments" },
-] as const;

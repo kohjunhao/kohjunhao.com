@@ -1,73 +1,12 @@
-export type ProjectStatus = "shipping" | "exploring" | "paused" | "dormant";
-
 export type Project = {
   slug: string;
   name: string;
-  status: ProjectStatus;
-  year: string;
-  note: string;
-  article?: string;
-  embed?: string;
-  about?: string;
+  embed: string;
 };
 
 export const projects: Project[] = [
-  {
-    slug: "blackjack",
-    name: "Blackjack Simulator",
-    status: "shipping",
-    year: "2026",
-    note: "EV, variance, and deviations against real shoes",
-    embed: "/embeds/blackjack/index.html",
-    about:
-      "A browser-native blackjack simulator. Runs millions of hands against configurable rule sets, basic strategy, and index deviations — plots EV, variance, and bankroll drawdown in real time. Built to quickly A/B a rule change or an indexed play before committing table hours to it.",
-  },
-  {
-    slug: "state-of-world",
-    name: "State of the World",
-    status: "shipping",
-    year: "2026",
-    note: "Fifty indicators, drawn small and side by side",
-    embed: "/embeds/state-of-world/index.html",
-    about:
-      "A one-page dashboard of fifty indicators across eight domains — macroeconomy, demographics, climate, energy, geopolitics, technology, markets, health. Small multiples, sparkline + value + delta, range frames, single accent. Built in the Aizome system following Tufte's rules: above all else, show the data.",
-  },
-  {
-    slug: "kohjunhao-com",
-    name: "kohjunhao.com",
-    status: "shipping",
-    year: "2026",
-    note: "This site. Next.js + Aizome design system",
-    article: "starting-again-in-public",
-  },
-  {
-    slug: "aizome",
-    name: "Aizome",
-    status: "shipping",
-    year: "2026",
-    note: "The design system that powers this site",
-  },
-  {
-    slug: "x-likes-aggregator",
-    name: "x-likes-aggregator",
-    status: "paused",
-    year: "2025",
-    note: "Parse, categorize, and search your Twitter/X likes export",
-  },
-  {
-    slug: "alfred",
-    name: "Alfred",
-    status: "exploring",
-    year: "2025",
-    note: "Crypto AI companion · private beta",
-  },
-  {
-    slug: "compendium",
-    name: "Compendium",
-    status: "dormant",
-    year: "2023",
-    note: "Remember all the games, books, and movies in your life",
-  },
+  { slug: "blackjack", name: "Blackjack Simulator", embed: "/embeds/blackjack/index.html" },
+  { slug: "state-of-world", name: "State of the World", embed: "/embeds/state-of-world/index.html" },
 ];
 
 export function getProject(slug: string): Project | undefined {
@@ -148,8 +87,4 @@ export function investmentSlug(name: string): string {
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-|-$/g, "");
-}
-
-export function getInvestment(slug: string): Investment | undefined {
-  return investments.find((i) => investmentSlug(i.name) === slug);
 }

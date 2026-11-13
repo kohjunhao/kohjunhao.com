@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next";
 import { articles } from "@/lib/articles";
 
 const ORIGIN = "https://kohjunhao.com";
-const PAGES = ["", "/films", "/books", "/games", "/investments", "/articles"];
+const PAGES = ["", "/films", "/books", "/games", "/investments", "/articles", "/about"];
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const pages = PAGES.map((path) => ({ url: `${ORIGIN}${path}` }));

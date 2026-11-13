@@ -2,8 +2,10 @@ import { Marked } from "marked";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { TopBar } from "@/components/top-bar";
+import { CanvasPage } from "@/components/canvas-page";
+import { Handles } from "@/components/icons";
 import { articles, formatDate, getArticle, paragraphUrl } from "@/lib/articles";
+import { workbook } from "@/sheet/tabs";
 
 type Params = { slug: string };
 
@@ -61,45 +63,37 @@ export default async function ArticlePage(props: { params: Promise<Params> }) {
   const newer = articles[index - 1];
 
   return (
-    <>
-      <TopBar />
-      <div className="v3-rule" aria-hidden />
+    <CanvasPage book={workbook()} active="writing" nameBox="Text 1" text={article.title}>
+      <article className="textbox">
+        <Handles />
+        <h1>{article.title}</h1>
+        <p className="meta">
+          <time dateTime={article.date}>{formatDate(article.date)}</time>
+          <span aria-hidden="true"> · </span>
+          {article.minutes} min read
+          <span aria-hidden="true"> · </span>
+          <a href={paragraphUrl(article)} target="_blank" rel="noopener noreferrer">
+            First published on Paragraph
+          </a>
+        </p>
 
-      <main id="main" className="v3-frame v3-reading">
-        <article className="v3-column">
-          <header>
-            <h1 className="v3-reading-title">{article.title}</h1>
-            <p className="v3-reading-meta">
-              <time dateTime={article.date}>{formatDate(article.date)}</time>
-              <span aria-hidden> · </span>
-              {article.minutes} min read
-              <span aria-hidden> · </span>
-              <a href={paragraphUrl(article)} target="_blank" rel="noopener noreferrer">
-                Published on Paragraph
-              </a>
-            </p>
-          </header>
+        <div className="prose" dangerouslySetInnerHTML={{ __html: renderEssay(article.markdown) }} />
 
-          <div className="v3-prose" dangerouslySetInnerHTML={{ __html: renderEssay(article.markdown) }} />
-        </article>
-
-        <nav className="v3-column v3-pager" aria-label="More essays">
+        <nav className="pager" aria-label="More essays">
           {older && (
-            <Link href={`/articles/${older.slug}`} className="v3-pager-link">
-              <span className="v3-caption">Previous</span>{" "}
+            <Link href={`/articles/${older.slug}`}>
+              <small>Older</small>
               {older.title}
             </Link>
           )}
           {newer && (
-            <Link href={`/articles/${newer.slug}`} className="v3-pager-link v3-pager-next">
-              <span className="v3-caption">Next</span>{" "}
+            <Link href={`/articles/${newer.slug}`} className="newer">
+              <small>Newer</small>
               {newer.title}
             </Link>
           )}
         </nav>
-      </main>
-
-      <div className="v3-rule" aria-hidden />
-    </>
+      </article>
+    </CanvasPage>
   );
 }

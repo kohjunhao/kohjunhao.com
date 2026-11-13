@@ -58,8 +58,3 @@ export function cover(kind: ShelfKind, slug: string): Cover | null {
   }
   return { src: `/shelf/${kind}/${slug}.webp`, w: entry.w, h: entry.h, color: entry.color ?? null };
 }
-
-export { TINTS, hash, tint } from "./tint";
-
-export const byTitle = <T extends { title: string }>(a: T, b: T) =>
-  a.title.localeCompare(b.title, "en", { sensitivity: "base" });

@@ -9,12 +9,15 @@ const OLD_ARTICLE_SLUGS: Record<string, string> = {
 };
 
 const nextConfig: NextConfig = {
+  devIndicators: false,
   async redirects() {
-    return Object.entries(OLD_ARTICLE_SLUGS).map(([from, to]) => ({
+    const essays = Object.entries(OLD_ARTICLE_SLUGS).map(([from, to]) => ({
       source: `/articles/${from}`,
       destination: `/articles/${to}`,
       permanent: true,
     }));
+    // The projects index was folded into the log, which links each project.
+    return [...essays, { source: "/projects", destination: "/", permanent: true }];
   },
 };
 
