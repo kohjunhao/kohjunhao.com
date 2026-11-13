@@ -36,7 +36,7 @@ export function buildAbout(): Sheet {
 
   return {
     slug: "about",
-    columns: [{ width: 170, mobileWidth: 120 }, { width: 560, mobileWidth: 300 }],
+    columns: [{ width: 170, mobileWidth: 132 }, { width: 560 }],
     rows,
     select: [0, 1],
   };

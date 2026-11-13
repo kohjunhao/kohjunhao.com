@@ -10,7 +10,7 @@ const MAIN: { name: string; column: Column }[] = [
   { name: "What", column: { width: 450, mobileWidth: 284 } },
   { name: "Pic", column: { width: 76 } },
   { name: "Kind", column: { width: 92 } },
-  { name: "Status", column: { width: 112 } },
+  { name: "Status", column: { width: 124 } },
   { name: "Link", column: { width: 172 } },
 ];
 const WEEK_COLUMN: Column = { width: 11, narrow: true };
