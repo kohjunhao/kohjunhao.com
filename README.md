@@ -1,27 +1,36 @@
 # kohjunhao.com
 
-Koh Jun Hao's personal site, built as one working spreadsheet. Each page is a sheet tab: the
-log of what shipped, the films, books and games he has finished, his angel investments, four
-essays and an About sheet. Cells select, ranges total in the status bar, headers sort and Find
-filters. Next.js 16, App Router, deployed on Vercel from `main`.
+Koh Jun Hao's personal site. One cream page: the 1828 engraving of Singapore harbour across the
+top, its sky following the hour in Singapore, then a sentence about him and four folds for the
+log of what he has made, his angel investments, the films, games and books he has finished, and
+four essays. Next.js 16, App Router, deployed on Vercel from `main`.
 
 ## Run it
 
 ```bash
 npm install
 npm run dev
+npm test
 ```
 
 ## How it is built
 
-Every sheet is data. `src/sheet/model.ts` defines one `Sheet` shape (columns, rows of cells,
-an optional table range), and each tab has a pure builder beside it (`log.ts`, `films.ts`,
-`books.ts`, `games.ts`, `portfolio.ts`, `writing.ts`, `about.ts`, `not-found.ts`) that turns
-the content files into a `Sheet` on the server. `src/sheet/grid.ts` holds the grid logic:
-selection, sort, Find, merged cells, status-bar sums and the CSV export.
-`src/components/sheet-app.tsx` draws any `Sheet` and never branches on which one it is.
-Essays and the two embedded projects sit on a gridded canvas instead
-(`src/components/canvas-page.tsx`).
+The data lives in `src/content/` and `src/data/`. Each kind of content has one typed model in
+`src/lib/`, and both the home page fold and the full page read from it:
+
+- `log.ts` groups the log by month and gives each entry its date, status and link.
+- `shelf.ts` describes the films, games and books as columns and rows, with their covers.
+- `portfolio.ts` lists the companies A to Z with their sectors and counts. Notes, years and
+  links in `stock.ts` never reach a page.
+- `articles.ts` holds the essays.
+
+`src/lib/format.ts` formats dates and counts. `src/lib/plate.ts` is the sky: its colour at any
+minute, where the sun or moon sits, and the moon's phase. The home page inlines that model in a
+script that paints the sky before first paint, so a night visit never flashes cream. The tests
+in `test/` cover both files and run on Node's built-in test runner.
+
+The pages are in `src/app/`, the parts they share in `src/components/` and the stylesheet in
+`src/app/site.css`.
 
 ## Data
 
@@ -40,19 +49,22 @@ runs, in order:
   (`data/raw/shelf.json`, not in the repo) into `src/data/shelf.json`.
 - `scripts/build-shelf-covers.mjs`: cover art for the shelf from Open Library, the Steam store
   and English Wikipedia into `public/shelf/`, with `src/data/covers.json` as the manifest.
-- `scripts/build-logos.mjs`: company logos for the portfolio sheet into `public/logos/`.
+- `scripts/build-logos.mjs`: company logos into `public/logos/`.
 
 Also:
 
+- `scripts/build-plate.mjs data/raw/singapore-1828.jpg` crops and levels the raw scan of the
+  engraving into `public/plate/` at two widths, and renders the dusk plate for the share card.
 - `scripts/fetch-articles.mjs` pulls the essays from Paragraph as Markdown into
   `data/raw/articles/`; `scripts/build-articles.mjs` turns them into `src/content/articles.json`.
 - `scripts/build-log-media.mjs` makes the thumbnails for the log from `scripts/log-media.json`.
 - `scripts/shot.mjs` screenshots pages with the installed Chrome.
 
-`data/raw/` is gitignored: it holds the private sheet export, commit emails and raw essays.
+`data/raw/` is gitignored: it holds the private sheet export, commit emails, raw essays and the
+raw scan.
 
 ## Type
 
-Inter for the cells and the interface, JetBrains Mono for the name box and the formula bar,
-both loaded from Google Fonts by `next/font`. The share card draws with static Inter files in
-`src/fonts/` (SIL Open Font License, see `src/fonts/OFL-Inter.txt`).
+Newsreader for the serif and Geist for everything else, both loaded from Google Fonts by
+`next/font`. The share card draws with a static Newsreader file in `src/og/` (SIL Open Font
+License, see `src/og/OFL-Newsreader.txt`).

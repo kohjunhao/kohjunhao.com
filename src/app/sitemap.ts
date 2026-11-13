@@ -1,11 +1,18 @@
 import type { MetadataRoute } from "next";
 import { articles } from "@/lib/articles";
+import { SHELF_ORDER } from "@/lib/shelf";
+import { projects } from "@/lib/stock";
 
 const ORIGIN = "https://kohjunhao.com";
-const PAGES = ["", "/films", "/books", "/games", "/investments", "/articles"];
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const pages = PAGES.map((path) => ({ url: `${ORIGIN}${path}` }));
-  const essays = articles.map((a) => ({ url: `${ORIGIN}/articles/${a.slug}` }));
-  return [...pages, ...essays];
+  const paths = [
+    "",
+    ...SHELF_ORDER.map((id) => `/${id}`),
+    "/investments",
+    "/articles",
+    ...articles.map((a) => `/articles/${a.slug}`),
+    ...projects.map((p) => `/projects/${p.slug}`),
+  ];
+  return paths.map((path) => ({ url: `${ORIGIN}${path}` }));
 }
