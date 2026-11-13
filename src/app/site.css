@@ -614,6 +614,7 @@ details[open] > summary > .pm::after {
 }
 .prose {
   font: 400 19px/1.6 var(--serif);
+  overflow-wrap: break-word;
 }
 .prose p,
 .prose ul,
@@ -779,7 +780,7 @@ details[open] > summary > .pm::after {
     width: 150px;
   }
   .grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     margin-top: 30px;
   }
   .lab {

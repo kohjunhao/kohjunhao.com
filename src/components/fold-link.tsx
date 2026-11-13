@@ -5,16 +5,25 @@ import { usePathname } from "next/navigation";
 import type { MouseEvent, ReactNode } from "react";
 import { foldName, type FoldId } from "@/lib/folds";
 
+// The fold's height transition in site.css. A fold near the bottom of the page cannot scroll to
+// the top until it has grown, so the scroll runs again once it has.
+const FOLD_OPEN_MS = 340;
+
 /** Opens the fold (or section) with this id and scrolls to it. False when the page has none. */
 export function openFold(id: string, behavior: ScrollBehavior) {
   const target = document.getElementById(id);
   if (!target) {
     return false;
   }
+  const scroll = () => target.scrollIntoView({ behavior, block: "start" });
+  const opening = target instanceof HTMLDetailsElement && !target.open;
   if (target instanceof HTMLDetailsElement) {
     target.open = true;
   }
-  target.scrollIntoView({ behavior, block: "start" });
+  scroll();
+  if (opening) {
+    window.setTimeout(scroll, FOLD_OPEN_MS);
+  }
   return true;
 }
 
