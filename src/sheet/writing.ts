@@ -19,7 +19,7 @@ export function buildWriting(): Sheet {
       { v: a.date, text: fullDate(a.date) },
       numberCell(a.minutes),
       { v: a.description },
-      { v: "Read", href: paragraphUrl(a) },
+      { v: "Read", href: paragraphUrl(a), role: "link" },
     ]),
   });
 

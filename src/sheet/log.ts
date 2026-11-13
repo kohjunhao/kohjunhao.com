@@ -86,14 +86,14 @@ function entryRow(e: LogEntry, timeline: (from: number, to: number, fill: Fill) 
   const src = e.image ? `/log/${e.image}.jpg` : null;
 
   return [
-    { v: e.date, text: e.until ? dayRange(e.date, e.until) : dayMonth(e.date) },
+    { v: e.date, text: e.until ? dayRange(e.date, e.until) : dayMonth(e.date), format: "muted" },
     { v: e.title, sub: e.deck },
     src
       ? { v: null, thumb: { src, ...THUMB, alt: "" }, picture: { src, ...PICTURE, alt: e.title } }
       : null,
-    { v: KINDS[e.kind] },
+    { v: KINDS[e.kind], format: "muted" },
     { v: status, format },
-    e.href ? { v: e.href, text: linkText(e.href), href: e.href } : null,
+    e.href ? { v: e.href, text: linkText(e.href), href: e.href, role: "link" } : null,
     ...timeline(weekOf(e.date), weekOf(e.until ?? e.date), BAR_FILL[format]),
   ];
 }

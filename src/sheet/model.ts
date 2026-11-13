@@ -1,6 +1,6 @@
 export type Format = "plain" | "muted" | "good" | "bad" | "warn";
 export type Fill = "h1" | "h2" | "h3" | "h4" | "bar" | "bar-bad" | "bar-warn";
-export type Role = "name" | "intro" | "label" | "total" | "head" | "month" | "key";
+export type Role = "name" | "intro" | "label" | "total" | "head" | "month" | "key" | "link";
 export type Inline = string | { text: string; href: string };
 export type Picture = { src: string; w: number; h: number; alt: string; tint?: string };
 
