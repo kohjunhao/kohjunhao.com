@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Standalone pages compiled in the browser; their script tags share globals the linter cannot see.
+    "public/embeds/**",
   ]),
 ]);
 
