@@ -23,10 +23,10 @@ export type LogEntry = {
   /** File name under /public/log, without the extension. */
   image?: string;
   /** How it ended, when "Shipped" would be untrue or less than the whole story. */
-  status?: string;
+  status?: Status;
 };
 
-export const DEFAULT_STATUS = "Shipped";
+export type Status = "Merged" | "Missed" | "Stopped" | "Failed again" | "Never shipped" | "Since beaten";
 
 const FULLMARKS = "https://fullmarks.sg";
 
@@ -36,9 +36,8 @@ export const log: LogEntry[] = [
   {
     date: "2026-11-13",
     kind: "build",
-    title: "This site becomes a spreadsheet",
-    deck: "Most of it already was one. Select a few cells and the totals show at the bottom right.",
-    status: "Fourth version",
+    title: "This site gets a view",
+    deck: "The 1828 engraving of the harbour moves to the top and keeps Singapore time. Everything else folds into four lines.",
   },
   {
     date: "2026-11-12",
