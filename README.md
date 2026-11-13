@@ -1,8 +1,9 @@
 # kohjunhao.com
 
-Koh Jun Hao's personal site: a log of what shipped, an activity calendar, the films, books
-and games on his shelf, his angel investments and four essays. Next.js 16, App Router,
-deployed on Vercel from `main`.
+Koh Jun Hao's personal site, built as one working spreadsheet. Each page is a sheet tab: the
+log of what shipped, the films, books and games he has finished, his angel investments, four
+essays and an About sheet. Cells select, ranges total in the status bar, headers sort and Find
+filters. Next.js 16, App Router, deployed on Vercel from `main`.
 
 ## Run it
 
@@ -10,6 +11,17 @@ deployed on Vercel from `main`.
 npm install
 npm run dev
 ```
+
+## How it is built
+
+Every sheet is data. `src/sheet/model.ts` defines one `Sheet` shape (columns, rows of cells,
+an optional table range), and each tab has a pure builder beside it (`log.ts`, `films.ts`,
+`books.ts`, `games.ts`, `portfolio.ts`, `writing.ts`, `about.ts`, `not-found.ts`) that turns
+the content files into a `Sheet` on the server. `src/sheet/grid.ts` holds the grid logic:
+selection, sort, Find, merged cells, status-bar sums and the CSV export.
+`src/components/sheet-app.tsx` draws any `Sheet` and never branches on which one it is.
+Essays and the two embedded projects sit on a gridded canvas instead
+(`src/components/canvas-page.tsx`).
 
 ## Data
 
@@ -28,13 +40,12 @@ runs, in order:
   (`data/raw/shelf.json`, not in the repo) into `src/data/shelf.json`.
 - `scripts/build-shelf-covers.mjs`: cover art for the shelf from Open Library, the Steam store
   and English Wikipedia into `public/shelf/`, with `src/data/covers.json` as the manifest.
-- `scripts/build-logos.mjs`: company logos for the investments page into `public/logos/`.
+- `scripts/build-logos.mjs`: company logos for the portfolio sheet into `public/logos/`.
 
 Also:
 
 - `scripts/fetch-articles.mjs` pulls the essays from Paragraph as Markdown into
   `data/raw/articles/`; `scripts/build-articles.mjs` turns them into `src/content/articles.json`.
-- `scripts/build-footer-art.mjs` recolours the 1828 engraving in the footer.
 - `scripts/build-log-media.mjs` makes the thumbnails for the log from `scripts/log-media.json`.
 - `scripts/shot.mjs` screenshots pages with the installed Chrome.
 
@@ -42,6 +53,6 @@ Also:
 
 ## Type
 
-Cal Sans v2 (SIL Open Font License, see `src/fonts/OFL-CalSans.txt`) for the site and
-EB Garamond for the footer. The footer picture is Robert James Elliot's "View of the town
-and roads of Singapore from the Government Hill", published 1828, public domain.
+Inter for the cells and the interface, JetBrains Mono for the name box and the formula bar,
+both loaded from Google Fonts by `next/font`. The share card draws with static Inter files in
+`src/fonts/` (SIL Open Font License, see `src/fonts/OFL-Inter.txt`).
